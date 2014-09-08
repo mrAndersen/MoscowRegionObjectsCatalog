@@ -2,8 +2,35 @@
 
 {% block javascripts %}
     <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+    <script type="text/javascript">
+        window.onload = function(){
+
+            ymaps.ready(function(){
+                myMap = new ymaps.Map("map",
+                        {
+                            center: [55.76, 37.64],
+                            zoom: 10
+                        }
+                );
+
+                myMap.controls.add('')
+
+
+            });
+        };
+
+
+
+
+
+
+
+
+    </script>
 {% endblock %}
 
 {% block body %}
-    <div class="map"></div>
+    <div class="left"></div>
+    <div id="map"></div>
+    <div class="right"></div>
 {% endblock %}
