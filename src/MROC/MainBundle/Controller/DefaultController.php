@@ -2,12 +2,15 @@
 
 namespace MROC\MainBundle\Controller;
 
+use Intervention\Image\ImageManagerStatic;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
 {
-    public function indexAction($name)
+    public function indexAction()
     {
-        return $this->render('MROCMainBundle:Default:index.html.twig', array('name' => $name));
+
+
+        return $this->render('MROCMainBundle:Default:index.html.twig');
     }
 }
