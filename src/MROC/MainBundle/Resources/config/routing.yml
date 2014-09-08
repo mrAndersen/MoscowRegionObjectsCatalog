@@ -1,0 +1,3 @@
+mroc_main_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: MROCMainBundle:Default:index }

@@ -1,0 +1,4 @@
+mroc_main:
+    resource: "@MROCMainBundle/Resources/config/routing.yml"
+    prefix:   /
+
