@@ -4,33 +4,201 @@
     <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script type="text/javascript">
         window.onload = function(){
+            var containerDiv    = $('.container');
+            var mapDiv          = $('#map');
+            var leftBar         = $('.left');
+            var rightBar        = $('.right');
+            var animationPeriod = 200;
 
             ymaps.ready(function(){
-                myMap = new ymaps.Map("map",
+                moscowRegionMap = new ymaps.Map("map",
                         {
                             center: [55.76, 37.64],
-                            zoom: 10
+                            zoom: 10,
+                            controls: ['smallMapDefaultSet']
                         }
                 );
 
-                myMap.controls.add('')
-
-
+                resizeObjects();
             });
+
+            function getMapSize(leftBar, rightBar)
+            {
+                var size = 0;
+                var width = $('body').innerWidth();
+                var left = !!(leftBar.attr('data-state') == 'on');
+                var right = !!(rightBar.attr('data-state') == 'on');
+
+                if(left == true && right == true){
+                    size = width - 198*2;
+                }
+
+                if((left == false && right == true) || (left === true && right == false)){
+                    size = width - 198;
+                }
+
+                if(left == false && right == false){
+                    size = width;
+                }
+                return size;
+            }
+
+            function getContainerHeight()
+            {
+                var height = $('body').innerHeight();
+                var size = height - 96 - 136;
+                size = size < 650 ? 650 : size;
+
+                return size
+            }
+
+            function resizeObjects()
+            {
+                mapDiv.css('width',getMapSize(leftBar,rightBar)+'px');
+                containerDiv.css('height',getContainerHeight()+'px');
+                $('.best-list').css('height',
+                        getContainerHeight() - 47 -
+                                $('.filter-line').outerHeight() -
+                                $('.tabs').outerHeight() -
+                                $('.tab-content').outerHeight() -
+                                $('.best-line').outerHeight() + 'px'
+                );
+
+                moscowRegionMap.container.fitToViewport(true)
+            }
+
+            $(window).resize(function(){
+                resizeObjects();
+            });
+
+            $(document).on('click tap','.arrow.hide-left-bar, .arrow.hide-right-bar',function(e){
+                var subject = $(this).hasClass('hide-left-bar') ? 'left' : 'right';
+
+                var object = subject == 'left' ? leftBar : rightBar;
+                var parametersOut = subject == 'left' ? {left:'-195'} : {right:'-195'};
+                var parametersIn = subject == 'left' ? {left:'0'} : {right:'0'};
+
+                var paddingParametersOut = subject == 'left' ? {'padding-left': '0'} : {'padding-right':'0'};
+                var paddingParametersIn = subject == 'left' ? {'padding-left': '198'} : {'padding-right':'198'};
+
+                var icon = object.find('.icon');
+
+                if(object.attr('data-state') == 'on'){
+                    object.animate(parametersOut,animationPeriod,function(){
+                        object.attr('data-state','off');
+                        icon.toggleClass('arrow-left arrow-right');
+
+                        mapDiv.css('width',getMapSize(leftBar,rightBar)+'px');
+                        mapDiv.animate(paddingParametersOut,animationPeriod,function(){
+                            moscowRegionMap.container.fitToViewport(true);
+                        });
+                    });
+                }
+
+                if(object.attr('data-state') == 'off'){
+                    object.animate(parametersIn,animationPeriod,function(){
+                        object.attr('data-state','on');
+                        icon.toggleClass('arrow-left arrow-right');
+
+                        mapDiv.css('width',getMapSize(leftBar,rightBar)+'px');
+                        mapDiv.animate(paddingParametersIn,animationPeriod,function(){
+                            moscowRegionMap.container.fitToViewport(true);
+                        });
+                    });
+                }
+            });
+
         };
-
-
-
-
-
-
-
 
     </script>
 {% endblock %}
 
 {% block body %}
-    <div class="left"></div>
-    <div id="map"></div>
-    <div class="right"></div>
+    <div class="top-header">
+        ГУП "МосОблКачество"
+    </div>
+    <div class="container">
+        <div class="left" data-state="on">
+            <div class="arrow hide-left-bar"><i class="icon arrow-left"></i></div>
+            <div class="filter-line line">
+                Фильтр
+            </div>
+
+            <div class="tabs">
+                <a class="tab active" data-for-tab="by-type">По типу</a>
+                <a class="tab" data-for-tab="by-production">По виду продукции</a>
+            </div>
+            <div class="tab-content">
+                <div class="content" data-tab-name="by-type">
+                    <ul>
+                        <li><label><input type="checkbox">Ярмарки</label></li>
+                        <li><label><input type="checkbox">Палатки</label></li>
+                        <li><label><input type="checkbox">Рынки</label></li>
+                    </ul>
+                </div>
+                <div class="content" data-tab-name="by-production"></div>
+            </div>
+            <div class="best">
+                <div class="best-line line">Рейтинг лучших</div>
+                <div class="best-list">
+                    {% for i in 1..5 %}
+                        <div class="list-item">
+                            {{ i }}. <a class="bold" href="#">Рынок около центральной 58а</a><br>
+                            <span>Рейтинг: 4.9</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+        </div>
+        <div id="map"></div>
+        <div class="right" data-state="on">
+            <div class="arrow hide-right-bar"><i class="icon arrow-right"></i></div>
+            <div class="object-info">
+                <div class="id">#8674</div>
+                <div class="address">
+                    Ул. Центральная, вблизи платформы номер 67
+                </div>
+                <div class="type">Передвижное сооружение</div>
+                <div class="sub-type">Продукты быстрого приготовления</div>
+                <img class="image" src="" alt=""/>
+                <div class="rating-container">
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star empty"></div>
+                    <div class="star empty"></div>
+                </div>
+                <div class="current-rating">Рейтинг: 3.2</div>
+                <div class="current-position">Местов рейтинге: 122</div>
+            </div>
+            <div class="comments">
+                <div class="comments-line">Отзывы</div>
+                <div class="comments-list">
+                    <div class="comment">
+                        <div class="who">Василий</div>
+                        <div class="text">В этой палатке самые  добрые продавцы, за 20 лет ни разу не обвесили</div>
+                    </div>
+                </div>
+                <a class="do-comment">Оставить отзыв</a>
+                <a class="red button">Пожаловаться на объект</a>
+            </div>
+
+        </div>
+    </div>
+    <div class="footer">
+        <div class="inner">
+            <div class="to-left">
+                <a class="bold" href="">Сайт министерства потребительских рынка и услуг МО</a><br>
+                <a class="bold" href="">Сайт министерства потребительских рынка и услуг МО</a>
+            </div>
+            <div class="to-right">
+                <a class="red button">Пожаловаться на работу сервиса</a><br>
+                <a class="default button">Отправить вопрос</a>
+            </div>
+
+        </div>
+
+    </div>
 {% endblock %}
