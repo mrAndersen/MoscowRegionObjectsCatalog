@@ -1,0 +1,62 @@
+{% extends '::base.html.twig' %}
+
+ {% block stylesheets %}
+     <link rel="stylesheet" href="{{ asset('/css/mobile/main.css') }}">
+ {% endblock %}
+
+{% block javascripts %}
+    <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+    <script type="text/javascript">
+        window.onload = function(){
+            var menuLayerSwitch = $('.open-mobile-menu');
+
+            var map = document.getElementById('map');
+            var menuLayer = document.getElementsByClassName('menu-layer')[0];
+            var topMenu = document.getElementsByClassName('top-menu')[0];
+
+            map.style.height = window.screen.height - topMenu.offsetHeight + 'px';
+            menuLayer.style.height = window.screen.height - topMenu.offsetHeight + 'px';
+
+
+            menuLayerSwitch.click(function(){
+                $(menuLayer).slideToggle(100);
+                menuLayerSwitch.toggleClass('active');
+            });
+
+            ymaps.ready(function(){
+                moscowRegionMap = new ymaps.Map("map",
+                        {
+                            center: [55.76, 37.64],
+                            zoom: 10,
+                            controls: ['smallMapDefaultSet']
+                        }
+                );
+            });
+        };
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="mobile-wrapper">
+        <div class="top-menu">
+            <div class="left-block">
+                <i class="icon open-mobile-menu"></i>
+            </div>
+            <div class="header">ГУП “МосОблКачество”</div>
+        </div>
+        <div class="menu-layer">
+            <div class="inner">
+                <a class="open-filter">Фильтр</a>
+                <a class="open-object-info">Информация об объекте</a>
+                <div class="hr"></div>
+                <div class="button red">Пожаловаться</div>
+                <div class="button default">Отправить вопрос</div>
+                <div class="links">
+                    <a href="">Сайт министерства потребительских услуг и рынка МО</a>
+                    <a href="">Сайт министерства потребительских услуг и рынка МО</a>
+                </div>
+            </div>
+        </div>
+        <div id="map"></div>
+    </div>
+{% endblock %}

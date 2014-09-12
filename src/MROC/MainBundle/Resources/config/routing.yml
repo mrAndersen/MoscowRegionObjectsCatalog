@@ -1,3 +1,7 @@
 mroc_main_homepage:
     path:     /
     defaults: { _controller: MROCMainBundle:Default:index }
+
+mroc_main_homepage_mobile:
+    path:     /mobile
+    defaults: { _controller: MROCMainBundle:Default:mobileIndex }

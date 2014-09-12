@@ -4,8 +4,9 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no, maximum-scale=1" />
         <title>{% block title %}MROC. Starting page{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="stylesheet" href="{{ asset('/css/main.css') }}">
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('/css/main.css') }}">
+        {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <script src="{{ asset('/js/jquery-2.1.1.min.js') }}" type="text/javascript"></script>
         {% block javascripts %}{% endblock %}
