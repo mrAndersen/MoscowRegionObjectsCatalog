@@ -1,0 +1,15 @@
+mroc_admin_homepage:
+    path:     /
+    defaults: { _controller: MROCAdminBundle:Default:index }
+
+MROCAdminBundle_object:
+    resource: "@MROCAdminBundle/Resources/config/routing/object.yml"
+    prefix:   /object
+
+MROCAdminBundle_object_type:
+    resource: "@MROCAdminBundle/Resources/config/routing/objecttype.yml"
+    prefix:   /object_type
+
+MROCAdminBundle_sale_type:
+    resource: "@MROCAdminBundle/Resources/config/routing/saletype.yml"
+    prefix:   /sale_type

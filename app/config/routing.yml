@@ -1,3 +1,7 @@
+mroc_admin:
+    resource: "@MROCAdminBundle/Resources/config/routing.yml"
+    prefix:   /admin
+
 mroc_main:
     resource: "@MROCMainBundle/Resources/config/routing.yml"
     prefix:   /

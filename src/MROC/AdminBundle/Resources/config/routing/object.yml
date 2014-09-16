@@ -1,0 +1,30 @@
+object:
+    path:     /list
+    defaults: { _controller: "MROCAdminBundle:Object:index" }
+
+object_show:
+    path:     /{id}/show
+    defaults: { _controller: "MROCAdminBundle:Object:show" }
+
+object_new:
+    path:     /new
+    defaults: { _controller: "MROCAdminBundle:Object:new" }
+
+object_create:
+    path:     /create
+    defaults: { _controller: "MROCAdminBundle:Object:create" }
+    requirements: { _method: post }
+
+object_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "MROCAdminBundle:Object:edit" }
+
+object_update:
+    path:     /{id}/update
+    defaults: { _controller: "MROCAdminBundle:Object:update" }
+    requirements: { _method: post|put }
+
+object_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "MROCAdminBundle:Object:delete" }
+    requirements: { _method: post|delete }

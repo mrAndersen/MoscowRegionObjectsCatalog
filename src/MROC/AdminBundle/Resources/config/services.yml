@@ -1,0 +1,7 @@
+parameters:
+#    mroc_admin.example.class: MROC\AdminBundle\Example
+
+services:
+#    mroc_admin.example:
+#        class: %mroc_admin.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

@@ -1,0 +1,16 @@
+{% extends '::admin_base.html.twig' %}
+
+{% block body -%}
+    <h1>Создание объекта</h1>
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_row(form.address) }}
+    {{ form_row(form.owner) }}
+    {{ form_row(form.object_type) }}
+    {{ form_row(form.sale_type) }}
+    {{ form_widget(form.save) }}
+
+    {{ form_widget(form._token) }}
+{% endblock %}
