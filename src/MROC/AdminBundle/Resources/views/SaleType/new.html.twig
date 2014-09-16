@@ -1,15 +1,13 @@
 {% extends '::admin_base.html.twig' %}
 
 {% block body -%}
-    <h1>SaleType creation</h1>
+    <h1>Создание типа продукции</h1>
 
-    {{ form(form) }}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('sale_type') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+    {{ form_row(form.name) }}
+    {{ form_widget(form.save) }}
+
+    {{ form_widget(form._token) }}
 {% endblock %}

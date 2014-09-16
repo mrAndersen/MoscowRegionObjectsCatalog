@@ -22,47 +22,99 @@ html{
       list-style: none;
     }
     h1{
-      margin: 20px;
       border-bottom: solid 1px #444;
+      float: left;
+      width: 100%;
     }
-    form{
-      margin: 20px;
-      label{
-        width: 200px;
+    .admin-menu{
+      list-style: none;
+      display: block;
+      margin: 0 0 20px 0;
+      float: left;
+      width: 100%;
+      border-bottom: solid 1px #444;
+      li.parent{
         float: left;
-        text-align: right;
-        padding: 0 10px 0 0;
-        position: relative;
-        top: 8px;
-      }
-      input[type="text"]{
-        font-family: "PT Sans";
-        font-size: 14px;
-        margin: 5px 0 0 0;
-        border: solid 1px #CFCFCF;
-        border-radius: 3px;
-        padding: 3px 10px;
-        width: 400px;
-      }
-      select{
-        font-family: "PT Sans";
-        font-size: 14px;
-        padding: 3px 10px;
-        width: 200px;
-        border-radius: 3px;
-        border: solid 1px #CFCFCF;
-        margin: 5px 0 0 0;
-      }
-      button[type="submit"]{
+        background: #444;
+        color: #FFF;
         padding: 5px 10px;
-        color: #444;
-        display: inline-block;
-        border: solid 1px #CFCFCF;
-        border-radius: 3px;
+        border-right: solid 1px #CFCFCF;
         cursor: pointer;
-        background: #FFF;
+        position: relative;
+        ul.child{
+          width: 250px;
+          position: absolute;
+          display: none;
+          list-style: none;
+          top: 28px;
+          left: 0;
+          background: #444;
+          color: #FFF;
+          border-top: solid 1px #FFF;
+          li{
+            a{
+              color: #FFF;
+              padding: 5px 40px;
+              display: block;
+              text-decoration: none;
+              border-bottom: solid 1px #CFCFCF;
+              &:hover{
+                color: #444;
+                background: #fff;
+              }
+            }
+          }
+        }
         &:hover{
-          background: #eee;
+          color: #444;
+          background: #fff;
+        }
+      }
+    }
+    .admin-container{
+      margin: 20px;
+      float: left;
+      form{
+        margin: 20px;
+        float: left;
+        width: 100%;
+        label{
+          width: 200px;
+          float: left;
+          text-align: right;
+          padding: 0 10px 0 0;
+          position: relative;
+          top: 8px;
+        }
+        input[type="text"]{
+          font-family: "PT Sans";
+          font-size: 14px;
+          margin: 5px 0 0 0;
+          border: solid 1px #CFCFCF;
+          border-radius: 3px;
+          padding: 3px 10px;
+          width: 400px;
+        }
+        select{
+          font-family: "PT Sans";
+          font-size: 14px;
+          padding: 3px 10px;
+          width: 200px;
+          border-radius: 3px;
+          border: solid 1px #CFCFCF;
+          margin: 5px 0 0 0;
+        }
+        button[type="submit"]{
+          padding: 5px 10px;
+          color: #444;
+          display: inline-block;
+          border: solid 1px #CFCFCF;
+          border-radius: 3px;
+          cursor: pointer;
+          background: #FFF;
+          &:hover{
+            background: #eee;
+          }
         }
       }
     }

@@ -1,5 +1,5 @@
 sale_type:
-    path:     /
+    path:     /list
     defaults: { _controller: "MROCAdminBundle:SaleType:index" }
 
 sale_type_show:

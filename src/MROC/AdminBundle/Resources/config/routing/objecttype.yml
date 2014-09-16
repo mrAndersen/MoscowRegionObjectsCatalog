@@ -1,5 +1,5 @@
 object_type:
-    path:     /
+    path:     /list
     defaults: { _controller: "MROCAdminBundle:ObjectType:index" }
 
 object_type_show:

@@ -18,6 +18,10 @@ class SaleTypeType extends AbstractType
             ->add('name','text',array(
                 'label' => 'Название'
             ))
+            ->add('save', 'submit', array(
+                'attr' => array('class' => 'save'),
+                'label' => 'Добавить'
+            ));
         ;
     }
     
