@@ -19,7 +19,7 @@ class ObjectTypeType extends AbstractType
                 'label' => 'Название'
             ))
             ->add('save', 'submit', array(
-                'attr' => array('class' => 'save'),
+                'attr' => array('class' => 'button success'),
                 'label' => 'Добавить'
             ));
         ;

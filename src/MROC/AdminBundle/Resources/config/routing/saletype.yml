@@ -2,10 +2,6 @@ sale_type:
     path:     /list
     defaults: { _controller: "MROCAdminBundle:SaleType:index" }
 
-sale_type_show:
-    path:     /{id}/show
-    defaults: { _controller: "MROCAdminBundle:SaleType:show" }
-
 sale_type_new:
     path:     /new
     defaults: { _controller: "MROCAdminBundle:SaleType:new" }
@@ -27,4 +23,3 @@ sale_type_update:
 sale_type_delete:
     path:     /{id}/delete
     defaults: { _controller: "MROCAdminBundle:SaleType:delete" }
-    requirements: { _method: post|delete }

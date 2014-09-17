@@ -6,7 +6,7 @@
         window.onload = function(){
 
 
-
+            var list            = {{ list | raw }};
             var containerDiv    = $('.container');
             var mapDiv          = $('#map');
             var leftBar         = $('.left');
@@ -17,11 +17,45 @@
                 moscowRegionMap = new ymaps.Map("map",
                         {
                             center: [55.76, 37.64],
-                            zoom: 10,
+                            zoom: 9,
                             controls: ['smallMapDefaultSet']
                         }
                 );
 
+                var mapObjects = [];
+                iterate(list,function(key,val){
+                    var g = new ymaps.GeoObject({
+                        geometry: {
+                            type: "Point",
+                            coordinates: val.coordinates
+                        },
+                        properties: {
+                            clusterCaption: 'Объект # '+val.id,
+                        }
+                    },{
+                        hasBaloon: false
+                    });
+                    g.properties.set('mrocId',val.id);
+                    mapObjects.push(g);
+                });
+
+                var cluster = new ymaps.Clusterer();
+                var activeObjectMonitor;
+
+                cluster.events
+                        .add('balloonopen',function(event){
+                            activeObjectMonitor = new ymaps.Monitor(event.get('cluster').state);
+                            activeObjectMonitor.add('activeObject', function (newValue) {
+                                console.log(newValue.properties.get('mrocId'));
+                            });
+                        })
+                        .remove('balloonclose', function (event) {
+                            activeObjectMonitor.removeAll();
+                        });
+
+
+                cluster.add(mapObjects);
+                moscowRegionMap.geoObjects.add(cluster);
                 resizeObjects();
             });
 
@@ -133,9 +167,9 @@
             <div class="tab-content">
                 <div class="content" data-tab-name="by-type">
                     <ul>
-                        <li><label><input type="checkbox">Ярмарки</label></li>
-                        <li><label><input type="checkbox">Палатки</label></li>
-                        <li><label><input type="checkbox">Рынки</label></li>
+                        {% for k,v in object_type_list %}
+                            <li><label><input type="checkbox" class="object_type_select" value="{{ v.id }}">{{ v.name }}</label></li>
+                        {% endfor %}
                     </ul>
                 </div>
                 <div class="content" data-tab-name="by-production"></div>

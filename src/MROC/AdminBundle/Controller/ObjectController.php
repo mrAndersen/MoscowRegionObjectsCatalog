@@ -44,7 +44,7 @@ class ObjectController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('object_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('object'));
         }
 
         return $this->render('MROCAdminBundle:Object:new.html.twig', array(
@@ -88,28 +88,6 @@ class ObjectController extends Controller
     }
 
     /**
-     * Finds and displays a Object entity.
-     *
-     */
-    public function showAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('MROCMainBundle:Object')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Object entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-
-        return $this->render('MROCAdminBundle:Object:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
      * Displays a form to edit an existing Object entity.
      *
      */
@@ -124,12 +102,10 @@ class ObjectController extends Controller
         }
 
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('MROCAdminBundle:Object:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -151,6 +127,7 @@ class ObjectController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Object entity.
      *
@@ -165,60 +142,38 @@ class ObjectController extends Controller
             throw $this->createNotFoundException('Unable to find Object entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('object_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('object'));
         }
 
         return $this->render('MROCAdminBundle:Object:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         ));
     }
+
     /**
      * Deletes a Object entity.
      *
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction($id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('MROCMainBundle:Object')->find($id);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('MROCMainBundle:Object')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Object entity.');
-            }
-
-            $em->remove($entity);
-            $em->flush();
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Object entity.');
         }
 
-        return $this->redirect($this->generateUrl('object'));
-    }
+        $em->remove($entity);
+        $em->flush();
 
-    /**
-     * Creates a form to delete a Object entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('object_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
-        ;
+
+        return $this->redirect($this->generateUrl('object'));
     }
 }

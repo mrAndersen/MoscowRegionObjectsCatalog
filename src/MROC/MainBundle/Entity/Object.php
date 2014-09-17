@@ -43,9 +43,34 @@ class Object
     /**
      * @var string
      *
-     * @ORM\Column(name="owner", type="string", length=800)
+     * @ORM\Column(name="owner", type="string", length=800, nullable=true)
      */
     private $owner;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="coordinates", type="string", length=100, nullable=true)
+     */
+    private $coordinates;
+
+    /**
+     * @param string $coordinates
+     */
+    public function setCoordinates($coordinates)
+    {
+        $this->coordinates = $coordinates;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCoordinates()
+    {
+        return $this->coordinates;
+    }
+
+
 
     /**
      * @param mixed $object_type

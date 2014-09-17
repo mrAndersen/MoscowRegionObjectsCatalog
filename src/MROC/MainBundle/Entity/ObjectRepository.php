@@ -12,4 +12,20 @@ use Doctrine\ORM\EntityRepository;
  */
 class ObjectRepository extends EntityRepository
 {
+    public function getIdAddressList()
+    {
+        $em = $this->getEntityManager();
+        $q = $em->createQueryBuilder()->select('n.coordinates','n.id')
+            ->from('MROCMainBundle:Object','n')
+            ->getQuery();
+        $result = $q->getResult();
+
+        foreach($result as $k=>$v){
+            $result[$k]['coordinates'] = explode(' ',$v['coordinates']);
+            $result[$k]['coordinates'] = array_reverse($result[$k]['coordinates']);
+        }
+        return $result;
+    }
+
+
 }

@@ -44,7 +44,7 @@ class ObjectTypeController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('object_type_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('object_type'));
         }
 
         return $this->render('MROCAdminBundle:ObjectType:new.html.twig', array(
@@ -88,28 +88,6 @@ class ObjectTypeController extends Controller
     }
 
     /**
-     * Finds and displays a ObjectType entity.
-     *
-     */
-    public function showAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('MROCMainBundle:ObjectType')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find ObjectType entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-
-        return $this->render('MROCAdminBundle:ObjectType:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
      * Displays a form to edit an existing ObjectType entity.
      *
      */
@@ -124,12 +102,10 @@ class ObjectTypeController extends Controller
         }
 
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('MROCAdminBundle:ObjectType:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -164,61 +140,36 @@ class ObjectTypeController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find ObjectType entity.');
         }
-
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('object_type_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('object_type'));
         }
 
         return $this->render('MROCAdminBundle:ObjectType:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         ));
     }
     /**
      * Deletes a ObjectType entity.
      *
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction($id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('MROCMainBundle:ObjectType')->find($id);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('MROCMainBundle:ObjectType')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find ObjectType entity.');
-            }
-
-            $em->remove($entity);
-            $em->flush();
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find ObjectType entity.');
         }
 
-        return $this->redirect($this->generateUrl('object_type'));
-    }
+        $em->remove($entity);
+        $em->flush();
 
-    /**
-     * Creates a form to delete a ObjectType entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('object_type_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
-        ;
+        return $this->redirect($this->generateUrl('object_type'));
     }
 }

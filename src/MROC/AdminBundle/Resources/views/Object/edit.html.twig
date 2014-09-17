@@ -1,16 +1,16 @@
 {% extends '::admin_base.html.twig' %}
 
 {% block body -%}
-    <h1>Object edit</h1>
+    <h1>Редактирование объекта</h1>
 
-    {{ form(edit_form) }}
+    {{ form_start(edit_form) }}
+    {{ form_errors(edit_form) }}
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('object') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    {{ form_row(edit_form.address) }}
+    {{ form_row(edit_form.owner) }}
+    {{ form_row(edit_form.object_type) }}
+    {{ form_row(edit_form.sale_type) }}
+    {{ form_widget(edit_form.save,{'label':'Изменить'}) }}
+
+    {{ form_widget(edit_form._token) }}
 {% endblock %}

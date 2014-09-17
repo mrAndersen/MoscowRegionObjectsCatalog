@@ -1,4 +1,0 @@
-services:
-    sync:
-        class: MROC\MainBundle\CsvSync
-        arguments: [@kernel,@service_container]

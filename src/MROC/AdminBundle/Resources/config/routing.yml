@@ -1,6 +1,10 @@
 mroc_admin_homepage:
-    path:     /
+    path: /
     defaults: { _controller: MROCAdminBundle:Default:index }
+
+mroc_admin_csv:
+    path: /csv
+    defaults: { _controller: MROCAdminBundle:Default:importCSV }
 
 MROCAdminBundle_object:
     resource: "@MROCAdminBundle/Resources/config/routing/object.yml"

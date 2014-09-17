@@ -1,16 +1,13 @@
 {% extends '::admin_base.html.twig' %}
 
 {% block body -%}
-    <h1>SaleType edit</h1>
+    <h1>Редактирование типа продукции</h1>
 
-    {{ form(edit_form) }}
+    {{ form_start(edit_form) }}
+    {{ form_errors(edit_form) }}
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('sale_type') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    {{ form_row(edit_form.name) }}
+    {{ form_widget(edit_form.save,{'label': 'Изменить'}) }}
+
+    {{ form_widget(edit_form._token) }}
 {% endblock %}

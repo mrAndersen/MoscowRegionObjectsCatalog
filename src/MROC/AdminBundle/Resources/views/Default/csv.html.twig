@@ -1,0 +1,25 @@
+{% extends '::admin_base.html.twig' %}
+
+{% block body -%}
+    <h1>Импорт из csv файла</h1>
+    {% if results is defined %}
+        <p>
+            В результате операции импорта было загружено:
+        </p>
+        <ul class="default">
+            <li>Объектов: {{ results.o }}</li>
+            <li>Типов объектов: {{ results.ot }}</li>
+            <li>Типов продукции: {{ results.st }}</li>
+        </ul>
+    {% else %}
+        <p>
+            Внимание! Загрузка данных из файла полностью перезапишет существующую базу. А так же создаст
+            новые типы объектов и типы продукции согласно уникальным значениям из вашего файла.
+        </p>
+        <form method="post" enctype="multipart/form-data" action="{{ path('mroc_admin_csv') }}">
+            <input type="file" name="csv_file"><br><br>
+            <input type="submit" class="button primary" value="Загрузить">
+        </form>
+    {% endif %}
+
+{% endblock %}

@@ -2,10 +2,6 @@ object:
     path:     /list
     defaults: { _controller: "MROCAdminBundle:Object:index" }
 
-object_show:
-    path:     /{id}/show
-    defaults: { _controller: "MROCAdminBundle:Object:show" }
-
 object_new:
     path:     /new
     defaults: { _controller: "MROCAdminBundle:Object:new" }
@@ -27,4 +23,3 @@ object_update:
 object_delete:
     path:     /{id}/delete
     defaults: { _controller: "MROCAdminBundle:Object:delete" }
-    requirements: { _method: post|delete }

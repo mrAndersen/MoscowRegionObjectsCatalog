@@ -1,4 +1,9 @@
 @import "fonts.less";
+@primary: #428bca;
+@success: #5cb85c;
+@info:    #5bc0de;
+@warning: #f0ad4e;
+@danger:  #d9534f;
 
 *{
   margin: 0;
@@ -14,6 +19,30 @@ html{
     font-size: 14px;
     background: #f3f4f6;
     color: #444;
+    .button{
+      display: inline-block;
+      padding: 5px 10px;
+      margin: 0 5px;
+      text-decoration: none;
+      color: #FFF;
+      border-radius: 3px;
+      cursor: pointer;
+      &.info{
+        background: @info;
+      }
+      &.success{
+        background: @success;
+      }
+      &.warning{
+        background: @warning;
+      }
+      &.danger{
+        background: @danger;
+      }
+      &.primary{
+        background: @primary;
+      }
+    }
     a{
       color: #39C;
     }
@@ -21,10 +50,28 @@ html{
       margin: 20px;
       list-style: none;
     }
+    .records_list{
+      margin: 20px 0 0 0;
+      float: left;
+      td,th {
+        border-bottom: solid 1px #CFCFCF;
+        margin: 5px;
+        padding: 5px 10px;
+      }
+    }
+    p{
+      margin: 10px 0;
+      float: left;
+    }
     h1{
       border-bottom: solid 1px #444;
       float: left;
       width: 100%;
+    }
+    ul.default{
+      float: left;
+      clear: both;
+      margin: 0 40px;
     }
     .admin-menu{
       list-style: none;
@@ -41,6 +88,18 @@ html{
         border-right: solid 1px #CFCFCF;
         cursor: pointer;
         position: relative;
+        &:hover{
+          color: #444;
+          background: #fff;
+        }
+        a{
+          color: #FFF;
+          text-decoration: none;
+          &:hover{
+            color: #444;
+            background: #fff;
+          }
+        }
         ul.child{
           width: 250px;
           position: absolute;
@@ -103,18 +162,6 @@ html{
           border-radius: 3px;
           border: solid 1px #CFCFCF;
           margin: 5px 0 0 0;
-        }
-        button[type="submit"]{
-          padding: 5px 10px;
-          color: #444;
-          display: inline-block;
-          border: solid 1px #CFCFCF;
-          border-radius: 3px;
-          cursor: pointer;
-          background: #FFF;
-          &:hover{
-            background: #eee;
-          }
         }
       }
     }
