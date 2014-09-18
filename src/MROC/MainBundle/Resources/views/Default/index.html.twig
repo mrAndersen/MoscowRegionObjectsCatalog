@@ -96,7 +96,9 @@
                         success: function(result)
                         {
                             panel.attr('data-current-id',mrocId);
+                            panel.find('*').not('.arrow, .icon').remove();
                             panel.find('.arrow').after(result.view);
+
                             showRightBar();
                         }
                     })
