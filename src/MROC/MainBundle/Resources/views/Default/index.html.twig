@@ -52,7 +52,7 @@
                         .add('balloonopen',function(event){
                             activeObjectMonitor = new ymaps.Monitor(event.get('cluster').state);
                             activeObjectMonitor.add('activeObject', function (newValue) {
-                                console.log(newValue.properties.get('mrocId'));
+                                fillSidePanel(newValue.properties.get('mrocId'));
                             });
                         })
                         .remove('balloonclose', function (event) {
