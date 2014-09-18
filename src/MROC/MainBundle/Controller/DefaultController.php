@@ -41,7 +41,6 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $node = $em->getRepository('MROCMainBundle:Object')->findOneBy(array('id' => $id));
-
         $view = $this->renderView('MROCMainBundle:Default:extended_info.html.twig',array(
             'node' => $node
         ));
