@@ -2,8 +2,11 @@
 
 namespace MROC\AdminBundle\Controller;
 
+use Doctrine\Entity;
 use Doctrine\ORM\EntityManager;
+use Intervention\Image\ImageManagerStatic;
 use Keboola\Csv\CsvFile;
+use MROC\AdminBundle\Helpers\YaMap;
 use MROC\MainBundle\Entity\Object;
 use \MROC\MainBundle\Entity\ObjectType;
 use MROC\MainBundle\Entity\SaleType;
@@ -15,7 +18,25 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('MROCAdminBundle:Default:index.html.twig');
+//        $root = $this->get('kernel')->getRootDir();
+//        $web = $root.'/../web';
+//        $path = $web.'/images/test3.jpg';
+//
+//        $helper = new YaMap();
+//        $test = $helper->getLatLonFromImage($path);
+
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $ot = count($em->getRepository('MROCMainBundle:ObjectType')->findAll());
+        $o = count($em->getRepository('MROCMainBundle:Object')->findAll());
+        $st = count($em->getRepository('MROCMainBundle:SaleType')->findAll());
+
+        return $this->render('MROCAdminBundle:Default:index.html.twig',array(
+            'ot' => $ot,
+            'o' => $o,
+            'st' => $st
+        ));
     }
 
     public function clearDatabase()
@@ -23,34 +44,20 @@ class DefaultController extends Controller
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
-        $toClear[] = $em->getRepository('MROCMainBundle:ObjectType')->findAll();
-        $toClear[] = $em->getRepository('MROCMainBundle:SaleType')->findAll();
-        $toClear[] = $em->getRepository('MROCMainBundle:Object')->findAll();
+        $repositories[] = $em->getRepository('MROCMainBundle:ObjectType');
+        $repositories[] = $em->getRepository('MROCMainBundle:SaleType');
+        $repositories[] = $em->getRepository('MROCMainBundle:Object');
 
-        foreach($toClear as $k=>$v){
-            foreach($v as $k2=>$v2){
+        foreach($repositories as $k=>$v){
+            $list = $v->findAll();
+            foreach($list as $k2=>$v2){
                 $em->remove($v2);
             }
+            $table = $em->getClassMetadata($v->getClassName())->getTableName();
+            $em->getConnection()->exec("ALTER TABLE ".$table." AUTO_INCREMENT = 1");
         }
 
         $em->flush();
-    }
-
-    public function getLatLon($geocode)
-    {
-        $url = 'http://geocode-maps.yandex.ru/1.x/?format=json&geocode=';
-        $url = $url.$geocode;
-
-        try{
-            $json = file_get_contents($url);
-            $array = json_decode($json,true);
-
-            $coordinates = $array['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point']['pos'];
-        }catch (\Exception $e){
-            $coordinates = null;
-        }
-
-        return $coordinates;
     }
 
     public function importCSVAction(Request $request)
@@ -68,7 +75,6 @@ class DefaultController extends Controller
             }
 
             $this->clearDatabase();
-            $objectsRepo = $em->getRepository('MROCMainBundle:Object');
             $objectsTypeRepo = $em->getRepository('MROCMainBundle:ObjectType');
             $saleTypeRepo = $em->getRepository('MROCMainBundle:SaleType');
             $ot = 0; $st = 0; $o = 0;
@@ -102,7 +108,8 @@ class DefaultController extends Controller
                     $saleType = $saleTypeRepo->findOneBy(array('name'=>$saleTypeName));
                 }
 
-                $coordinates = $this->getLatLon($address);
+                $helper = new YaMap();
+                $coordinates = $helper->getLatLon($address);
 
                 $object = new Object();
                 $object->setAddress($address);

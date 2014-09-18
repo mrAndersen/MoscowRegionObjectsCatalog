@@ -1,1 +1,13 @@
-Hello!
+{% extends '::admin_base.html.twig' %}
+
+{% block body -%}
+    <h1>Панель администратора</h1>
+    <p>
+        Сейчас в базе:
+    </p>
+    <ul class="default">
+        <li>Объектов: {{ o }}</li>
+        <li>Типов объектов: {{ ot }}</li>
+        <li>Типов продукции: {{ st }}</li>
+    </ul>
+{% endblock %}

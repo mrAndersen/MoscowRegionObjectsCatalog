@@ -1,9 +1,16 @@
 @import "fonts.less";
+
 @primary: #428bca;
 @success: #5cb85c;
 @info:    #5bc0de;
 @warning: #f0ad4e;
 @danger:  #d9534f;
+
+@primary-hover: #3071A9;
+@success-hover: #449D44;
+@info-hover: #31B0D5;
+@warning-hover: #EC971F;
+@danger-hover: #C9302C;
 
 *{
   margin: 0;
@@ -29,18 +36,33 @@ html{
       cursor: pointer;
       &.info{
         background: @info;
+        &:hover{
+          background: @info-hover;
+        }
       }
       &.success{
         background: @success;
+        &:hover{
+          background: @success-hover;
+        }
       }
       &.warning{
         background: @warning;
+        &:hover{
+          background: @warning-hover;
+        }
       }
       &.danger{
         background: @danger;
+        &:hover{
+          background: @danger-hover;
+        }
       }
       &.primary{
         background: @primary;
+        &:hover{
+          background: @primary-hover;
+        }
       }
     }
     a{
@@ -74,59 +96,46 @@ html{
       margin: 0 40px;
     }
     .admin-menu{
-      list-style: none;
-      display: block;
-      margin: 0 0 20px 0;
-      float: left;
-      width: 100%;
-      border-bottom: solid 1px #444;
-      li.parent{
+      background: @success;
+      padding: 0;
+      margin: 0;
+      list-style-type: none;
+      height: 28px;
+      ul{
+        position: absolute;
+        left: -9999px;
+        top: -9999px;
+        list-style-type: none;
+      }
+      li{
         float: left;
-        background: #444;
-        color: #FFF;
-        padding: 5px 10px;
-        border-right: solid 1px #CFCFCF;
-        cursor: pointer;
-        position: relative;
         &:hover{
-          color: #444;
-          background: #fff;
-        }
-        a{
-          color: #FFF;
-          text-decoration: none;
-          &:hover{
-            color: #444;
-            background: #fff;
-          }
-        }
-        ul.child{
-          width: 250px;
-          position: absolute;
-          display: none;
-          list-style: none;
-          top: 28px;
-          left: 0;
-          background: #444;
-          color: #FFF;
-          border-top: solid 1px #FFF;
-          li{
-            a{
-              color: #FFF;
-              padding: 5px 40px;
-              display: block;
-              text-decoration: none;
-              border-bottom: solid 1px #CFCFCF;
-              &:hover{
-                color: #444;
-                background: #fff;
+          position: relative;
+          background: @success-hover;
+          ul{
+            left: 0px;
+            top: 28px;
+            background: @primary;
+            padding: 0px;
+            li{
+              a{
+                padding: 5px;
+                display: block;
+                width: 168px;
+                text-indent: 15px;
+                background-color: @primary;
+                &:hover{
+                  background:@primary-hover;
+                }
               }
             }
           }
         }
-        &:hover{
-          color: #444;
-          background: #fff;
+        a{
+          padding: 5px 10px;
+          display: block;
+          color: #fff;
+          text-decoration: none;
         }
       }
     }

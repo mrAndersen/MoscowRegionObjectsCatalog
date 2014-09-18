@@ -4,14 +4,15 @@
     <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script type="text/javascript">
         window.onload = function(){
-
-
             var list            = {{ list | raw }};
             var containerDiv    = $('.container');
             var mapDiv          = $('#map');
             var leftBar         = $('.left');
             var rightBar        = $('.right');
             var animationPeriod = 200;
+
+
+
 
             ymaps.ready(function(){
                 moscowRegionMap = new ymaps.Map("map",
@@ -31,12 +32,16 @@
                         },
                         properties: {
                             clusterCaption: 'Объект # '+val.id,
-                            balloonContent: 'test'
+                            balloonContent: 'Объект # '+val.id
                         }
                     },{
                         hasBaloon: false
                     });
                     g.properties.set('mrocId',val.id);
+                    g.events.add('balloonopen',function(e){
+                        fillSidePanel(g.properties.get('mrocId'));
+                    });
+
                     mapObjects.push(g);
                 });
 
@@ -59,6 +64,44 @@
                 moscowRegionMap.geoObjects.add(cluster);
                 resizeObjects();
             });
+
+
+            function showRightBar()
+            {
+                var icon = rightBar.find('.icon');
+
+                rightBar.animate({right:'0'},animationPeriod,function(){
+                    rightBar.attr('data-state','on');
+                    icon.toggleClass('arrow-left arrow-right');
+
+                    mapDiv.css('width',getMapSize(leftBar,rightBar)+'px');
+                    mapDiv.animate({'padding-right':'198'},animationPeriod,function(){
+                        moscowRegionMap.container.fitToViewport(true);
+                    });
+                });
+            }
+
+            function fillSidePanel(mrocId)
+            {
+                var panel = $('.container .right');
+                var url = panel.attr('data-extended-url');
+
+                if(panel.attr('data-current-id') != mrocId){
+                    $.ajax({
+                        type: 'post',
+                        url: url,
+                        data:{
+                            id: mrocId
+                        },
+                        success: function(result)
+                        {
+                            panel.attr('data-current-id',mrocId);
+                            panel.find('.arrow').after(result.view);
+                            showRightBar();
+                        }
+                    })
+                }
+            }
 
             function getMapSize(leftBar, rightBar)
             {
@@ -190,38 +233,8 @@
 
         </div>
         <div id="map"></div>
-        <div class="right" data-state="on">
-            <div class="arrow hide-right-bar"><i class="icon arrow-right"></i></div>
-            <div class="object-info">
-                <div class="id">#8674</div>
-                <div class="address">
-                    Ул. Центральная, вблизи платформы номер 67
-                </div>
-                <div class="type">Передвижное сооружение</div>
-                <div class="sub-type">Продукты быстрого приготовления</div>
-                <img class="image" src="" alt=""/>
-                <div class="rating-container">
-                    <div class="star"></div>
-                    <div class="star"></div>
-                    <div class="star"></div>
-                    <div class="star empty"></div>
-                    <div class="star empty"></div>
-                </div>
-                <div class="current-rating">Рейтинг: 3.2</div>
-                <div class="current-position">Местов рейтинге: 122</div>
-            </div>
-            <div class="comments">
-                <div class="comments-line">Отзывы</div>
-                <div class="comments-list">
-                    <div class="comment">
-                        <div class="who">Василий</div>
-                        <div class="text">В этой палатке самые  добрые продавцы, за 20 лет ни разу не обвесили</div>
-                    </div>
-                </div>
-                <a class="do-comment">Оставить отзыв</a>
-                <a class="red button">Пожаловаться на объект</a>
-            </div>
-
+        <div class="right" data-state="off" data-current-id="0" data-extended-url="{{ path('mroc_main_get_extended_info') }}">
+            <div class="arrow hide-right-bar"><i class="icon arrow-left"></i></div>
         </div>
     </div>
     <div class="footer">

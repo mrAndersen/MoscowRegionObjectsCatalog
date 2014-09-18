@@ -6,6 +6,7 @@
         <thead>
         <tr>
             <th>Id</th>
+            <th>Рейтинг</th>
             <th>Координаты</th>
             <th>Адрес</th>
             <th>Владелец</th>
@@ -18,6 +19,7 @@
         {% for entity in entities %}
             <tr>
                 <td>{{ entity.id }}</td>
+                <td>{{ entity.rating }}</td>
                 <td>{{ entity.coordinates }}</td>
                 <td>{{ entity.address }}</td>
                 <td>{{ entity.owner }}</td>

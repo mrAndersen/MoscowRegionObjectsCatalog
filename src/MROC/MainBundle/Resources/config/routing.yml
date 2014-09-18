@@ -5,3 +5,7 @@ mroc_main_homepage:
 mroc_main_homepage_mobile:
     path:     /mobile
     defaults: { _controller: MROCMainBundle:Default:mobileIndex }
+
+mroc_main_get_extended_info:
+    path: /extended
+    defaults: { _controller: MROCMainBundle:Default:getExtended }

@@ -2,6 +2,7 @@
 
 namespace MROC\AdminBundle\Controller;
 
+use MROC\AdminBundle\Helpers\YaMap;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -41,6 +42,10 @@ class ObjectController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $helper = new YaMap();
+
+            $entity->setCoordinates($helper->getLatLon($entity->getAddress()));
+
             $em->persist($entity);
             $em->flush();
 

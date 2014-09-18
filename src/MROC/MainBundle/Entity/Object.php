@@ -22,6 +22,13 @@ class Object
     private $id;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="rating", type="float", nullable=true)
+     */
+    private $rating;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="address", type="string", length=800, nullable=true)
@@ -70,7 +77,21 @@ class Object
         return $this->coordinates;
     }
 
+    /**
+     * @param float $rating
+     */
+    public function setRating($rating)
+    {
+        $this->rating = $rating;
+    }
 
+    /**
+     * @return float
+     */
+    public function getRating()
+    {
+        return $this->rating;
+    }
 
     /**
      * @param mixed $object_type
