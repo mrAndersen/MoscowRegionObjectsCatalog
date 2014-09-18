@@ -31,8 +31,15 @@ class ObjectType extends AbstractType
                 'label' => 'Тип продукции',
                 'property' => 'name'
             ))
+            ->add('image', 'file',array(
+                'label' => 'Фотография'
+            ))
+            ->add('override','checkbox',array(
+                'label' => 'Генерировать координаты из фотографии',
+                'required' => false
+            ))
             ->add('save', 'submit', array(
-                'attr' => array('class' => 'button success'),
+                'attr' => array('class' => 'button success submit'),
                 'label' => 'Добавить'
             ));
         ;

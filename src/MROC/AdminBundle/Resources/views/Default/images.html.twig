@@ -1,0 +1,20 @@
+{% extends '::admin_base.html.twig' %}
+
+{% block body -%}
+    <h1>Синхронизация фотографий</h1>
+    <p>
+        Каждому объекту должна соответствовать одна фотография с именем равным айди объекта для которого необхоидмо её загрузить.
+        После выполнения этой операции все фотографии будут перезаписаны.
+    </p>
+    <form method="post" action="{{ path('mroc_admin_images') }}" enctype="multipart/form-data">
+        <div class="row">
+            <label for="override">Перезаписать координаты из фотографии, если есть.</label>
+            <input type="checkbox" id="override" name="override" checked>
+        </div>
+        <div class="row">
+            <label>Фотографии</label>
+            <input type="file" multiple name="images[]">
+        </div>
+        <input type="submit" class="button primary" value="Загрузить">
+    </form>
+{% endblock %}

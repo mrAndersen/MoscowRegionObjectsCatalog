@@ -31,6 +31,21 @@ class Object
     /**
      * @var string
      *
+     * @ORM\Column(name="image", type="string", nullable=true)
+     */
+    private $image;
+
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="override", type="boolean", nullable=true)
+     */
+    private $override;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="address", type="string", length=800, nullable=true)
      */
     private $address;
@@ -75,6 +90,38 @@ class Object
     public function getCoordinates()
     {
         return $this->coordinates;
+    }
+
+    /**
+     * @param string $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param boolean $override
+     */
+    public function setOverride($override)
+    {
+        $this->override = $override;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getOverride()
+    {
+        return $this->override;
     }
 
     /**

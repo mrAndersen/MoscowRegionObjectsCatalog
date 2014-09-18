@@ -16,6 +16,26 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
+    public function imagesAction(Request $request)
+    {
+        if($request->getMethod() == 'POST'){
+            $images = $request->files->get('images');
+
+            $override = $request->get('override',null);
+
+
+
+
+
+
+            die;
+        }
+
+        if($request->getMethod() == 'GET'){
+            return $this->render('MROCAdminBundle:Default:images.html.twig');
+        }
+    }
+
     public function indexAction()
     {
 //        $root = $this->get('kernel')->getRootDir();

@@ -3,6 +3,7 @@
 namespace MROC\AdminBundle\Controller;
 
 use MROC\AdminBundle\Helpers\YaMap;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -40,11 +41,24 @@ class ObjectController extends Controller
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isValid()){
+            $path = $this->get('kernel')->getRootDir().'/../web/objects';
+
+            /** @var UploadedFile $image */
+            $image = $entity->getImage();
+
+            $name = md5($entity->getOwner().mt_rand(0,999999999));
+            $ext = $image->guessExtension();
+            $image->move($path,$name.'.'.$ext);
+
+            $truePath = $path.'/'.$name.'.'.$ext;
+
+            $entity->setImage($truePath);
+
             $em = $this->getDoctrine()->getManager();
             $helper = new YaMap();
 
-            $entity->setCoordinates($helper->getLatLon($entity->getAddress()));
+            $entity->getOverride() === true ? $entity->setCoordinates($helper->getLatLonFromImage($truePath)) : $entity->setCoordinates($helper->getLatLon($entity->getAddress()));
 
             $em->persist($entity);
             $em->flush();
