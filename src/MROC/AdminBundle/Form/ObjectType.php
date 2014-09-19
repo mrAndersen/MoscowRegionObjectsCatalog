@@ -32,7 +32,9 @@ class ObjectType extends AbstractType
                 'property' => 'name'
             ))
             ->add('image', 'file',array(
-                'label' => 'Фотография'
+                'label' => 'Фотография',
+                'data_class' => null,
+                'required' => false
             ))
             ->add('override','checkbox',array(
                 'label' => 'Генерировать координаты из фотографии',

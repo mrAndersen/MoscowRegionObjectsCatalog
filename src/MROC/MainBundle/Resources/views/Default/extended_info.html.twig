@@ -3,16 +3,27 @@
     <div class="address">{{ node.address }}</div>
     <div class="type">{{ node.objectType.name }}</div>
     <div class="sub-type">{{ node.saleType.name }}</div>
-    <img class="image" src="" alt=""/>
+    {% if node.imageT and node.image %}
+        <a class="image" href="{{ node.image }}"><img src="{{ node.imageT }}" alt="Объект # {{ node.id }}"/></a>
+    {% else %}
+        <div class="image empty">Фотография недоступна</div>
+    {% endif %}
     <div class="rating-container">
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star empty"></div>
-        <div class="star empty"></div>
+        <i class="icon star-empty"></i>
+        <i class="icon star-empty"></i>
+        <i class="icon star-empty"></i>
+        <i class="icon star-empty"></i>
+        <i class="icon star-empty"></i>
     </div>
-    <div class="current-rating">Рейтинг: 3.2</div>
-    <div class="current-position">Местов рейтинге: 122</div>
+    <div class="current-rating">
+        Рейтинг:
+        {% if node.rating %}
+            {{ node.rating }}
+        {% else %}
+            нет
+        {% endif %}
+    </div>
+    <div class="current-position">Местов рейтинге: {{ rank }}</div>
 </div>
 <div class="comments">
     <div class="comments-line">Отзывы</div>

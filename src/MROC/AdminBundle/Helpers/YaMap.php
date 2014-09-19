@@ -28,7 +28,7 @@ class YaMap
     {
         $exif = exif_read_data($path);
 
-        if($exif['GPSLongitude'] && $exif['GPSLatitude']){
+        if(isset($exif['GPSLongitude']) && isset($exif['GPSLatitude'])){
             $lon = number_format($this->getGps($exif["GPSLongitude"], $exif['GPSLongitudeRef']),6);
             $lat = number_format($this->getGps($exif["GPSLatitude"], $exif['GPSLatitudeRef']),6);
 

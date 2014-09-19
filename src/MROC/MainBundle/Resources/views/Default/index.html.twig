@@ -1,5 +1,5 @@
 {% extends '::base.html.twig' %}
-
+{% block title %}Главная страница, ГУП "МосОблКачество"{% endblock %}
 {% block javascripts %}
     <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script type="text/javascript">
@@ -10,9 +10,7 @@
             var leftBar         = $('.left');
             var rightBar        = $('.right');
             var animationPeriod = 200;
-
-
-
+            var hasVotedForIds  = [];
 
             ymaps.ready(function(){
                 moscowRegionMap = new ymaps.Map("map",
@@ -67,7 +65,7 @@
 
             function showRightBar()
             {
-                var icon = rightBar.find('.icon');
+                var icon = rightBar.find('.arrow .icon');
 
                 rightBar.animate({right:'0'},animationPeriod,function(){
                     rightBar.attr('data-state','on');
@@ -153,6 +151,47 @@
                 resizeObjects();
             });
 
+            $(document).on('mouseover','.rating-container .icon.star-empty',function(e){
+                var n = $(this).index();
+
+                var beforeElementsAndCurrent = $.merge($(this),$('.rating-container .icon:lt('+n+')'));
+                var afterElements = $('.rating-container .icon:gt('+n+')');
+
+
+                beforeElementsAndCurrent.addClass('star');
+                beforeElementsAndCurrent.removeClass('star-empty');
+
+                afterElements.addClass('star-empty');
+                afterElements.removeClass('star');
+            });
+
+            $(document).on('mouseleave','.rating-container .icon',function(e){
+                $(this).removeClass('star');
+                $(this).addClass('star-empty')
+            });
+
+            $(document).on('click tap','.rating-container .icon',function(e){
+                var rating = $(this).index() + 1;
+                var mrocId = parseInt(rightBar.attr('data-current-id'));
+
+                if($.inArray(mrocId,hasVotedForIds) == -1){
+                    hasVotedForIds.push(mrocId);
+
+                    $.ajax({
+                        type: 'post',
+                        url : '{{ path('_xhr_mroc_main_modify_rating') }}',
+                        data:{
+                            id: mrocId,
+                            rating: rating
+                        },
+                        success: function(result){
+                            alert('Спасибо за ваш голос!');
+                        }
+                    })
+                }
+            });
+
+
             $(document).on('click tap','.arrow.hide-left-bar, .arrow.hide-right-bar',function(e){
                 var subject = $(this).hasClass('hide-left-bar') ? 'left' : 'right';
 
@@ -234,7 +273,7 @@
 
         </div>
         <div id="map"></div>
-        <div class="right" data-state="off" data-current-id="0" data-extended-url="{{ path('mroc_main_get_extended_info') }}">
+        <div class="right" data-state="off" data-current-id="0" data-extended-url="{{ path('_xhr_mroc_main_get_extended_info') }}">
             <div class="arrow hide-right-bar"><i class="icon arrow-left"></i></div>
         </div>
     </div>

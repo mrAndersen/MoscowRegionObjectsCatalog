@@ -1,17 +1,27 @@
 {% extends '::admin_base.html.twig' %}
 
 {% block body -%}
-    <h1>Список объектов</h1>
+    <h1>Список объектов ({{ count }})</h1>
+    <div class="filters">
+        Сортировка
+        <select name="filters">
+            <option value="{{ path('object',{'sort':'id','order':'asc'}) }}">По Id 1>9</option>
+            <option value="{{ path('object',{'sort':'id','order':'desc'}) }}">По Id 9>1</option>
+            <option value="{{ path('object',{'sort':'owner','order':'asc'}) }}">По Владельцу A>Z</option>
+            <option value="{{ path('object',{'sort':'owner','order':'desc'}) }}">По Владельцу Z>A</option>
+            <option value="{{ path('object',{'sort':'address','order':'asc'}) }}">По Адресу A>Z</option>
+            <option value="{{ path('object',{'sort':'address','order':'desc'}) }}">По Адресу Z>A</option>
+        </select>
+    </div>
     <table class="records_list">
         <thead>
         <tr>
             <th>Id</th>
-            <th>Рейтинг</th>
-            <th>Координаты</th>
-            <th>Адрес</th>
+            <th>Рейтинг(Отзывы)</th>
+            <th>Координаты | Адрес</th>
             <th>Владелец</th>
-            <th>Тип продукции</th>
             <th>Тип объекта</th>
+            <th>Тип продукции</th>
             <th>Действия</th>
         </tr>
         </thead>
@@ -19,9 +29,15 @@
         {% for entity in entities %}
             <tr>
                 <td>{{ entity.id }}</td>
-                <td>{{ entity.rating }}</td>
-                <td>{{ entity.coordinates }}</td>
-                <td>{{ entity.address }}</td>
+                <td>
+                    {% if entity.rating %}
+                        {{ entity.rating }}
+                        ({{ entity.votes }})
+                    {% else %}
+                        &mdash;
+                    {% endif %}
+                </td>
+                <td>{{ entity.coordinates }} | {{ entity.address }}</td>
                 <td>{{ entity.owner }}</td>
                 <td>{{ entity.objectType.name }}</td>
                 <td>{{ entity.saleType.name }}</td>
@@ -33,4 +49,16 @@
         {% endfor %}
         </tbody>
     </table>
+
+    {% if pages > 0 %}
+        <div class="pages">
+            {% for i in 1..pages %}
+                {% if i == current + 1 %}
+                    <a class="page button info active" href="{{ path('object',{'page': i-1}) }}">{{ i }}</a>
+                {% else %}
+                    <a class="page button info" href="{{ path('object',{'page': i-1}) }}">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}

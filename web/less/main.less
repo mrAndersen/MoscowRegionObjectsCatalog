@@ -234,14 +234,37 @@ html{
           .type{
             margin: 5px 0;
           }
+          .rating-container{
+            float: left;
+            width: 100%;
+            text-align: center;
+            i{
+              cursor: pointer;
+            }
+          }
           .image{
             display: block;
-            height: 100px;
             width: 167px;
+            height: 100px;
             margin: 10px 0;
+            &.empty{
+              padding: 40px 0 0 0;
+              border: solid 1px #CFCFCF;
+              text-align: center;
+              height: 60px;
+              color: #FFF;
+              background: #444;
+            }
+            img{
+              display: block;
+              margin: 0 auto;
+            }
           }
           .current-rating, .current-position{
-            text-align: center;
+            text-align: left;
+          }
+          .current-position{
+            margin: 0 0 5px 0;
           }
         }
       }

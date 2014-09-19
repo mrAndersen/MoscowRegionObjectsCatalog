@@ -2,7 +2,11 @@
 
 namespace MROC\AdminBundle\Controller;
 
+use Doctrine\ORM\EntityManager;
+use Intervention\Image\Image;
+use Intervention\Image\ImageManagerStatic;
 use MROC\AdminBundle\Helpers\YaMap;
+use MROC\MainBundle\Entity\ObjectRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -21,16 +25,31 @@ class ObjectController extends Controller
      * Lists all Object entities.
      *
      */
-    public function indexAction()
+    public function indexAction($page)
     {
+        $pageSize = 10;
+        $start = $page * $pageSize;
+
+        /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
+        /** @var ObjectRepository $repo */
+        $repo = $em->getRepository('MROCMainBundle:Object');
 
-        $entities = $em->getRepository('MROCMainBundle:Object')->findAll();
+        $count = $repo->getElementsCount();
+        $pages = ceil($count / $pageSize);
 
-        return $this->render('MROCAdminBundle:Object:index.html.twig', array(
+        $dql = 'select q from MROCMainBundle:Object q';
+        $query = $em->createQuery($dql)->setMaxResults($pageSize)->setFirstResult($start);
+        $entities = $query->getResult();
+
+        return $this->render('MROCAdminBundle:Object:index.html.twig',array(
             'entities' => $entities,
+            'pages' => $pages,
+            'current' => $page,
+            'count' => $count
         ));
     }
+
     /**
      * Creates a new Object entity.
      *
@@ -42,23 +61,19 @@ class ObjectController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()){
-            $path = $this->get('kernel')->getRootDir().'/../web/objects';
-
-            /** @var UploadedFile $image */
-            $image = $entity->getImage();
-
-            $name = md5($entity->getOwner().mt_rand(0,999999999));
-            $ext = $image->guessExtension();
-            $image->move($path,$name.'.'.$ext);
-
-            $truePath = $path.'/'.$name.'.'.$ext;
-
-            $entity->setImage($truePath);
+            $entity->upload();
 
             $em = $this->getDoctrine()->getManager();
             $helper = new YaMap();
 
-            $entity->getOverride() === true ? $entity->setCoordinates($helper->getLatLonFromImage($truePath)) : $entity->setCoordinates($helper->getLatLon($entity->getAddress()));
+            if($entity->getOverride() == true){
+                $entity->setCoordinates($helper->getLatLonFromImage($entity->getImage()));
+                if($entity->getCoordinates() == null){
+                    $entity->setCoordinates($helper->getLatLon($entity->getAddress()));
+                }
+            }else{
+                $entity->setCoordinates($helper->getLatLon($entity->getAddress()));
+            }
 
             $em->persist($entity);
             $em->flush();
@@ -164,9 +179,10 @@ class ObjectController extends Controller
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
-        if ($editForm->isValid()) {
-            $em->flush();
+        if ($editForm->isValid()){
+            $entity->upload();
 
+            $em->flush();
             return $this->redirect($this->generateUrl('object'));
         }
 
@@ -174,6 +190,22 @@ class ObjectController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
         ));
+    }
+
+    public function removeImageFromDisk($id)
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        /** @var Object $node */
+        $node = $em->getRepository('MROCMainBundle:Object')->findOneBy(array('id'=>$id));
+
+        $path = $this->get('kernel')->getRootDir().'/../web';
+
+        $truePath = $path.$node->getImage();
+        $trueTPath = $path.$node->getImageT();
+
+        unlink($truePath);
+        unlink($trueTPath);
     }
 
     /**

@@ -27,5 +27,34 @@ class ObjectRepository extends EntityRepository
         return $result;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getElementsCount()
+    {
+        $em = $this->getEntityManager();
+        $query = $em->getConnection()->prepare('select count(*) as count from '.$this->getClassMetadata()->getTableName());
+        $query->execute();
+        $st = $query->fetch();
+        return $st['count'];
+    }
+
+    /**
+     * @param $node Object
+     * @return array
+     */
+    public function getRank($node)
+    {
+        $em = $this->getEntityManager();
+        $t_name = $em->getClassMetadata($this->getClassName())->getTableName();
+
+        $q = $em->getConnection()->prepare('select z.rank from (select t.id, t.rating, @rownum := @rownum + 1 as rank from '.$t_name.' t, (select @rownum :=0) r order by rating desc) as z where id = :id');
+        $q->bindValue(':id',$node->getId());
+        $q->execute();
+
+        $result = $q->fetch();
+        return $result['rank'];
+    }
+
 
 }

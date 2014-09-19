@@ -1,6 +1,6 @@
 object:
-    path:     /list
-    defaults: { _controller: "MROCAdminBundle:Object:index" }
+    path:     /list/{page}
+    defaults: { _controller: "MROCAdminBundle:Object:index", page:0 }
 
 object_new:
     path:     /new

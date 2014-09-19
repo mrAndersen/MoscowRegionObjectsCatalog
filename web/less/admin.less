@@ -26,6 +26,14 @@ html{
     font-size: 14px;
     background: #f3f4f6;
     color: #444;
+    select{
+      font-family: "PT Sans";
+      font-size: 14px;
+      padding: 3px 10px;
+      border-radius: 3px;
+      border: solid 1px #CFCFCF;
+      margin: 5px 0 0 0;
+    }
     .button{
       display: inline-block;
       padding: 5px 10px;
@@ -82,6 +90,9 @@ html{
         border-bottom: solid 1px #CFCFCF;
         margin: 5px;
         padding: 5px 10px;
+      }
+      th{
+        text-align: left;
       }
     }
     p{
@@ -145,6 +156,18 @@ html{
     .admin-container{
       margin: 20px;
       float: left;
+      .pages{
+        float: left;
+        width: 100%;
+        margin: 10px 0;
+        .page{
+          float: left;
+          text-align: center;
+          &.active{
+            background: @info-hover;
+          }
+        }
+      }
       form{
         margin: 20px;
         float: left;
@@ -153,6 +176,10 @@ html{
           float: left;
           width: 100%;
           margin: 5px 0 0;
+        }
+        .empty{
+          height: 22px;
+          padding: 8px 0 0 0;
         }
         label{
           width: 200px;
@@ -178,13 +205,10 @@ html{
           height: 32px;
         }
         select{
-          font-family: "PT Sans";
-          font-size: 14px;
-          padding: 3px 10px;
           width: 200px;
-          border-radius: 3px;
-          border: solid 1px #CFCFCF;
-          margin: 5px 0 0 0;
+        }
+        img{
+          margin: 10px 0 0 0;
         }
       }
     }
