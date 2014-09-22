@@ -1,0 +1,35 @@
+{% extends '::admin_base.html.twig' %}
+{% block body -%}
+    <h1>Список претензий по сайту ({{ count }})</h1>
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Имя</th>
+                <th>Email</th>
+                <th>Проблема</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.id }}</td>
+                <td>{{ entity.name }}</td>
+                <td>{{ entity.email }}</td>
+                <td>{{ entity.problem }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if pages > 0 %}
+        <div class="pages">
+            {% for i in 1..pages %}
+                {% if i == current + 1 %}
+                    <a class="page button info active" href="{{ path('mroc_admin_complaints',{'page': i-1}) }}">{{ i }}</a>
+                {% else %}
+                    <a class="page button info" href="{{ path('mroc_admin_complaints',{'page': i-1}) }}">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

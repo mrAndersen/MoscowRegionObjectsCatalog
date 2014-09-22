@@ -5,7 +5,9 @@ namespace MROC\MainBundle\Controller;
 use Doctrine\ORM\EntityManager;
 use Intervention\Image\ImageManagerStatic;
 use Keboola\Csv\CsvFile;
+use MROC\MainBundle\Entity\Complaint;
 use MROC\MainBundle\Entity\Object;
+use MROC\MainBundle\Form\ComplaintType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +15,57 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class DefaultController extends Controller
 {
+    public function complaintAction(Request $request)
+    {
+        if($request->getMethod() == 'GET'){
+            $entity = new Complaint();
+
+            $form = $this->createForm(new ComplaintType(),$entity,array(
+                'action' => $this->generateUrl('_xhr_mroc_main_complaint'),
+                'method' => 'POST'
+            ));
+
+            return $this->render('MROCMainBundle:Forms:complaint.html.twig', array(
+                'entity' => $entity,
+                'form'   => $form->createView(),
+            ));
+        }
+
+        if($request->getMethod() == 'POST'){
+            /** @var EntityManager $em */
+            $em = $this->getDoctrine()->getManager();
+
+            $entity = new Complaint();
+            $form = $this->createForm(new ComplaintType(), $entity);
+            $form->handleRequest($request);
+
+            if($form->isValid()){
+                $em->persist($entity);
+                $em->flush();
+
+                $message = 'Ваше сообщение успешно отправлено!';
+                $errors = array();
+            }else{
+                $message = 'Произошли ошибки:';
+
+                $errors = array();
+                foreach($form->getErrors(true) as $k=>$v){
+                    $errors[] = $v->getMessage();
+                }
+            }
+
+            return new JsonResponse(array('message'=>$message,'errors'=>$errors));
+        }
+    }
+
+
+
+
+
+
+
+
+
     public function indexAction()
     {
         /** @var EntityManager $em */

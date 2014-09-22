@@ -1,0 +1,7 @@
+MROC\MainBundle\Entity\Complaint:
+    properties:
+        email:
+            - Email:
+                message: Указаный вами email - {{ value }} не является адресом электронной почты.
+                checkMX: true
+                checkHost: true

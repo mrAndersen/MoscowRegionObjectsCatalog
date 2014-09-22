@@ -24,3 +24,17 @@ function iterate(arrayLikeStructure,callback)
         }
     }
 }
+
+$(document).on('click tap','.modal .close',function(){
+    $('.modal').slideToggle(200,function(){
+        $('.darken').hide();
+    });
+});
+
+function showPopup(content)
+{
+    $('.darken').show();
+    $('.modal-content').html(content);
+
+    $('.modal').slideDown(200);
+}

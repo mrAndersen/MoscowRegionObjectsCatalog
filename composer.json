@@ -20,7 +20,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "intervention/image": "2.0.9",
         "friendsofsymfony/user-bundle": "1.3.5",
-        "keboola/csv": "1.1.*"
+        "keboola/csv": "1.1.*",
+        "gregwar/captcha-bundle": "1.0.12"
 
     },
     "require-dev": {

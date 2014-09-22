@@ -16,6 +16,75 @@ html{
     font-family: "PT Sans";
     font-weight: normal;
     font-size: 14px;
+    .darken{
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 20;
+      display: none;
+    }
+    .modal{
+      position: fixed;
+      z-index: 100;
+      width: 750px;
+      left: 50%;
+      margin: 0 0 0 -375px;
+      top: 10%;
+      background: #FFF;
+      display: none;
+      form{
+        .row{
+          float: left;
+          width: 100%;
+        }
+        img{
+          float: left;
+          margin: 0 70px 0 0;
+        }
+        input[type="text"]{
+          font-size: 15px;
+          border: solid 1px #CCC;
+          padding: 3px 10px;
+          width: 300px;
+          margin: 0 0 10px 0;
+        }
+        textarea{
+          font-size: 15px;
+          border: solid 1px #CCC;
+          padding: 3px 10px;
+          width: 500px;
+          resize: none;
+          font-family: 'PT Sans';
+          margin: 0 0 10px;
+        }
+      }
+      .modal-content{
+        padding: 40px 20px;
+        float: left;
+        width: 710px;
+      }
+      .modal-header{
+        float: left;
+        background: #369;
+        color: #FFF;
+        font-size: 23px;
+        padding: 18px 25px;
+        width: 700px;
+        .header-text{
+          float: left;
+          width: 500px;
+        }
+        .close{
+          float: right;
+          line-height: 29px;
+          font-size: 50px;
+          cursor: pointer;
+        }
+      }
+    }
     a{
       font-size: 12px;
       color: #3399cc;
@@ -45,6 +114,11 @@ html{
         .to-left{
           float: left;
           text-align: left;
+          .sq-link{
+            float: left;
+            display: block;
+            margin: 0 20px 0 0;
+          }
         }
         .to-right{
           float: right;

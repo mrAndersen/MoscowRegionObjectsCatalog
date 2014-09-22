@@ -1,1 +1,29 @@
-.button{display:inline-block;cursor:pointer;margin:10px 0 0 0;font-size:14px;padding:5px 11px 5px 12px;border-radius:8px}.button.red{background:#F33;color:#FFF}.button.default{background:#fff;color:#069;font-weight:bold}
+.button {
+  display: inline-block;
+  cursor: pointer;
+  margin: 10px 0 0 0;
+  font-size: 14px;
+  padding: 5px 11px 5px 12px;
+  border-radius: 8px;
+}
+.button.red {
+  background: #F33;
+  color: #FFF;
+}
+.button.blue {
+  background: #3399cc;
+  color: #fff;
+  border-bottom: solid 2px #339999;
+}
+.button.default {
+  background: #fff;
+  color: #006699;
+  font-weight: bold;
+}
+.button.center {
+  text-align: center;
+}
+.button.fixed200 {
+  width: 200px;
+  font-size: 16px;
+}

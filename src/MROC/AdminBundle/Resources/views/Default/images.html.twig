@@ -2,19 +2,26 @@
 
 {% block body -%}
     <h1>Синхронизация фотографий</h1>
-    <p>
-        Каждому объекту должна соответствовать одна фотография с именем равным айди объекта для которого необхоидмо её загрузить.
-        После выполнения этой операции все фотографии будут перезаписаны.
-    </p>
-    <form method="post" action="{{ path('mroc_admin_images') }}" enctype="multipart/form-data">
-        <div class="row">
-            <label for="override">Перезаписать координаты из фотографии, если есть.</label>
-            <input type="checkbox" id="override" name="override" checked>
-        </div>
-        <div class="row">
-            <label>Фотографии</label>
-            <input type="file" multiple name="images[]">
-        </div>
-        <input type="submit" class="button primary" value="Загрузить">
-    </form>
+    {% if total is defined %}
+        <p>
+            Синхроназиация прошла успешно, было загружено {{ total }} фотографий, из них {{ had_gps }} обладали GPS данными,
+            которые были в свою очередь тоже обновлены.
+        </p>
+    {% else %}
+        <p>
+            Каждому объекту должна соответствовать одна фотография с именем равным айди объекта для которого необхоидмо её загрузить.
+            После выполнения этой операции все фотографии будут перезаписаны.
+        </p>
+        <form method="post" action="{{ path('mroc_admin_images') }}" enctype="multipart/form-data">
+            <div class="row">
+                <label for="override">Перезаписать координаты из фотографии, если есть.</label>
+                <input type="checkbox" id="override" name="override" checked>
+            </div>
+            <div class="row">
+                <label>Фотографии</label>
+                <input type="file" multiple name="images[]">
+            </div>
+            <input type="submit" class="button primary" value="Загрузить">
+        </form>
+    {% endif %}
 {% endblock %}

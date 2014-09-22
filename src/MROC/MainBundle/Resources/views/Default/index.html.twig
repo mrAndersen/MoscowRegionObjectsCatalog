@@ -242,6 +242,38 @@
                     });
                 }
             });
+
+            $(document).on('click tap','.complaint',function(){
+
+                $.ajax({
+                    type: 'get',
+                    url: '{{ path('_xhr_mroc_main_complaint') }}',
+                    success: function(result){
+                        showPopup(result);
+                    }
+                });
+            });
+
+            $(document).on('click tap','.send-complaint',function(e){
+                e.preventDefault();
+
+                var form = $('form[name="mroc_mainbundle_complaint"]');
+
+                $.ajax({
+                    type: 'post',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(result){
+                        if(result.errors.length > 0){
+                            showPopup(result.message + '<br>'+ result.errors.join('<br>'));
+                        }else{
+                            showPopup(result.message);
+                        }
+
+                    }
+                });
+            });
+
         };
 
     </script>
@@ -293,8 +325,6 @@
                     {% endfor %}
                 </div>
             </div>
-
-
         </div>
         <div id="map"></div>
         <div class="right" data-state="off" data-current-id="0" data-extended-url="{{ path('_xhr_mroc_main_get_extended_info') }}">
@@ -304,15 +334,24 @@
     <div class="footer">
         <div class="inner">
             <div class="to-left">
-                <a class="bold" href="">Сайт министерства потребительских рынка и услуг МО</a><br>
-                <a class="bold" href="">Сайт министерства потребительских рынка и услуг МО</a>
+                <a href="#" class="sq-link"><img alt="Гражданам украины" src="{{ asset('/images/ukraine.png')}}"></a>
+                <a href="#" class="sq-link"><img alt="Сотрудничество" src="{{ asset('/images/crimea.png') }}"></a>
+                <a href="#" class="sq-link"><img alt="Оценка воздействия" src="{{ asset('/images/regular.png') }}"></a>
+                <a href="#" class="sq-link"><img alt="Конкурс" src="{{ asset('/images/competition.png') }}"></a>
             </div>
             <div class="to-right">
-                <a class="red button">Пожаловаться на работу сервиса</a><br>
-                <a class="default button">Отправить вопрос</a>
+                <a class="red button complaint">Пожаловаться на работу сервиса</a><br>
+                <a class="default button send-question">Отправить вопрос</a>
             </div>
-
         </div>
+    </div>
 
+    <div class="darken"></div>
+    <div class="modal">
+        <div class="modal-header">
+            <div class="header-text">Отправить жалобу</div>
+            <div class="close">&times;</div>
+        </div>
+        <div class="modal-content"></div>
     </div>
 {% endblock %}

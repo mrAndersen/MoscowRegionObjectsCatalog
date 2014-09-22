@@ -200,22 +200,6 @@ class ObjectController extends Controller
         ));
     }
 
-    public function removeImageFromDisk($id)
-    {
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
-        /** @var Object $node */
-        $node = $em->getRepository('MROCMainBundle:Object')->findOneBy(array('id'=>$id));
-
-        $path = $this->get('kernel')->getRootDir().'/../web';
-
-        $truePath = $path.$node->getImage();
-        $trueTPath = $path.$node->getImageT();
-
-        unlink($truePath);
-        unlink($trueTPath);
-    }
-
     /**
      * Deletes a Object entity.
      *

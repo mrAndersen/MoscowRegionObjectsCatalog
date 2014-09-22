@@ -7,8 +7,9 @@ use Doctrine\ORM\EntityManager;
 use Intervention\Image\ImageManagerStatic;
 use Keboola\Csv\CsvFile;
 use MROC\AdminBundle\Helpers\YaMap;
+use MROC\MainBundle\Entity\Complaint;
 use MROC\MainBundle\Entity\Object;
-use \MROC\MainBundle\Entity\ObjectType;
+use MROC\MainBundle\Entity\ObjectType;
 use MROC\MainBundle\Entity\SaleType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -20,15 +21,43 @@ class DefaultController extends Controller
     {
         if($request->getMethod() == 'POST'){
             $images = $request->files->get('images');
-
             $override = $request->get('override',null);
 
+            $em = $this->getDoctrine()->getManager();
+            $helper = new YaMap();
+            $i = 0; $j = 0;
 
+            foreach($images as $k=>$v){
+                /** @var UploadedFile $v */
+                $name = $v->getClientOriginalName();
+                $path = $v->getRealPath();
+                $id = explode('.',$name);
+                $id = $id[0];
 
+                /** @var \MROC\MainBundle\Entity\Object $node */
+                $node = $em->getRepository('MROCMainBundle:Object')->findOneBy(array('id'=>$id));
 
+                if($node !== null && $override !== null){
+                    $coordinates = $helper->getLatLonFromImage($path);
+                    if($coordinates){
+                        $node->setCoordinates($coordinates);
+                        $i++;
+                    }
+                }
 
+                $node->setImage($v);
+                $node->upload();
 
-            die;
+                $em->persist($node);
+                $j++;
+            }
+
+            $em->flush();
+
+            return $this->render('MROCAdminBundle:Default:images.html.twig',array(
+                'had_gps' => $i,
+                'total' => $j
+            ));
         }
 
         if($request->getMethod() == 'GET'){
@@ -73,17 +102,18 @@ class DefaultController extends Controller
             foreach($list as $k2=>$v2){
                 $em->remove($v2);
             }
-            $table = $em->getClassMetadata($v->getClassName())->getTableName();
-            $em->getConnection()->exec("ALTER TABLE ".$table." AUTO_INCREMENT = 1");
         }
-
         $em->flush();
+
+        foreach($repositories as $k=>$v){
+            $table = $em->getClassMetadata($v->getClassName())->getTableName();
+            $test[] = $em->getConnection()->exec("ALTER TABLE ".$table." AUTO_INCREMENT = 1");
+        }
     }
 
     public function importCSVAction(Request $request)
     {
         if($request->getMethod() == 'POST'){
-
             /** @var EntityManager $em */
             $em = $this->getDoctrine()->getManager();
             /** @var UploadedFile $file */
@@ -156,5 +186,34 @@ class DefaultController extends Controller
 
 
         return $this->render('MROCAdminBundle:Default:csv.html.twig');
+    }
+
+    public function complaintListAction($page, Request $request)
+    {
+        $pageSize = 20;
+        $start = $page * $pageSize;
+
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        /** @var Complaint $repo */
+        $repo = $em->getRepository('MROCMainBundle:Complaint');
+
+        $count = $repo->getElementsCount();
+        $pages = ceil($count / $pageSize);
+
+
+        $qb = $em->createQueryBuilder()
+            ->select('n')->from('MROCMainBundle:Complaint','n')
+            ->setMaxResults($pageSize)
+            ->setFirstResult($start);
+
+        $entities = $qb->getQuery()->getResult();
+
+        return $this->render('MROCAdminBundle:Default:complaints.html.twig',array(
+            'entities' => $entities,
+            'pages' => $pages,
+            'current' => $page,
+            'count' => $count
+        ));
     }
 }

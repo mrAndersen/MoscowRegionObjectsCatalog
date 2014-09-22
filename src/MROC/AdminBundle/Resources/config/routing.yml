@@ -10,6 +10,10 @@ mroc_admin_images:
     path: /images
     defaults: { _controller: MROCAdminBundle:Default:images }
 
+mroc_admin_complaints:
+    path: /complaints
+    defaults: { _controller: MROCAdminBundle:Default:complaintList, page:0 }
+
 MROCAdminBundle_object:
     resource: "@MROCAdminBundle/Resources/config/routing/object.yml"
     prefix:   /object

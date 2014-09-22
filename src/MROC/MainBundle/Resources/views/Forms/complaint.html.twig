@@ -1,0 +1,20 @@
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<div class="row">
+    {{ form_widget(form.name,{'attr': {'placeholder': 'Ваше имя' }}) }}
+    {{ form_errors(form.name) }}
+</div>
+<div class="row">
+    {{ form_widget(form.email,{'attr': {'placeholder': 'E-mail' }}) }}
+    {{ form_errors(form.email) }}
+</div>
+<div class="row">
+    {{ form_widget(form.problem,{'attr': {'placeholder': 'Проблема','rows': 10 }}) }}
+    {{ form_errors(form.problem) }}
+</div>
+<div class="row">
+    {{ form_widget(form.captcha,{'attr': {'placeholder':'Капча'}}) }}
+    {{ form_errors(form.captcha) }}
+</div>
+{{ form_widget(form.send, {'attr': {'class':'button blue center fixed200 send-complaint'}}) }}
+{{ form_widget(form._token) }}

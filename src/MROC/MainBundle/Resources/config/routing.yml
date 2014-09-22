@@ -13,3 +13,7 @@ _xhr_mroc_main_get_extended_info:
 _xhr_mroc_main_modify_rating:
     path: /rating
     defaults: { _controller: MROCMainBundle:Default:modifyRating }
+
+_xhr_mroc_main_complaint:
+    path: /complaint
+    defaults: { _controller: MROCMainBundle:Default:complaint }
