@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class ObjectRepository extends EntityRepository
 {
+
     public function getIdAddressList()
     {
         $em = $this->getEntityManager();
@@ -24,6 +25,19 @@ class ObjectRepository extends EntityRepository
             $result[$k]['coordinates'] = explode(' ',$v['coordinates']);
             $result[$k]['coordinates'] = array_reverse($result[$k]['coordinates']);
         }
+        return $result;
+    }
+
+    public function getTop($n = 5)
+    {
+        $em = $this->getEntityManager();
+        $q = $em->createQueryBuilder()->select('n')
+            ->from('MROCMainBundle:Object','n')
+            ->orderBy('n.rating','desc')
+            ->setMaxResults($n)
+            ->getQuery();
+
+        $result = $q->getResult();
         return $result;
     }
 

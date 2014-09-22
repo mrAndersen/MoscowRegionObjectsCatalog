@@ -1,16 +1,46 @@
 {% extends '::admin_base.html.twig' %}
+{% block javascripts %}
+    <script>
+        $(function(){
+            var filters = $('select[name="filters"]');
 
+            filters.change(function(e){
+                window.location.href = $(this).val();
+                e.preventDefault();
+            })
+        });
+    </script>
+{% endblock %}
 {% block body -%}
     <h1>Список объектов ({{ count }})</h1>
     <div class="filters">
         Сортировка
+        {% if app.request.query.get('sort') is defined %}
+            {% set sortType = app.request.query.get('sort') %}
+            {% set sortOrder = app.request.query.get('order') %}
+        {% else %}
+            {% set sortType = 'id' %}
+            {% set sortOrder = 'asc' %}
+        {% endif %}
+
         <select name="filters">
-            <option value="{{ path('object',{'sort':'id','order':'asc'}) }}">По Id 1>9</option>
-            <option value="{{ path('object',{'sort':'id','order':'desc'}) }}">По Id 9>1</option>
-            <option value="{{ path('object',{'sort':'owner','order':'asc'}) }}">По Владельцу A>Z</option>
-            <option value="{{ path('object',{'sort':'owner','order':'desc'}) }}">По Владельцу Z>A</option>
-            <option value="{{ path('object',{'sort':'address','order':'asc'}) }}">По Адресу A>Z</option>
-            <option value="{{ path('object',{'sort':'address','order':'desc'}) }}">По Адресу Z>A</option>
+            {% if sortType == 'id' and sortOrder == 'asc' %}{% set selected = true %}{% else %}{% set selected = false %}{% endif %}
+            <option {% if selected %}selected{% endif %} value="{{ path('object',{'sort':'id','order':'asc'}) }}">По Id 1&mdash;9</option>
+
+            {% if sortType == 'id' and sortOrder == 'desc' %}{% set selected = true %}{% else %}{% set selected = false %}{% endif %}
+            <option {% if selected %}selected{% endif %} value="{{ path('object',{'sort':'id','order':'desc'}) }}">По Id 9&mdash;1</option>
+
+            {% if sortType == 'owner' and sortOrder == 'asc' %}{% set selected = true %}{% else %}{% set selected = false %}{% endif %}
+            <option {% if selected %}selected{% endif %} value="{{ path('object',{'sort':'owner','order':'asc'}) }}">По Владельцу A&mdash;Z</option>
+
+            {% if sortType == 'owner' and sortOrder == 'desc' %}{% set selected = true %}{% else %}{% set selected = false %}{% endif %}
+            <option {% if selected %}selected{% endif %} value="{{ path('object',{'sort':'owner','order':'desc'}) }}">По Владельцу Z&mdash;A</option>
+
+            {% if sortType == 'address' and sortOrder == 'asc' %}{% set selected = true %}{% else %}{% set selected = false %}{% endif %}
+            <option {% if selected %}selected{% endif %} value="{{ path('object',{'sort':'address','order':'asc'}) }}">По Адресу A&mdash;Z</option>
+
+            {% if sortType == 'address' and sortOrder == 'desc' %}{% set selected = true %}{% else %}{% set selected = false %}{% endif %}
+            <option {% if selected %}selected{% endif %} value="{{ path('object',{'sort':'address','order':'desc'}) }}">По Адресу Z&mdash;A</option>
         </select>
     </div>
     <table class="records_list">
@@ -54,9 +84,9 @@
         <div class="pages">
             {% for i in 1..pages %}
                 {% if i == current + 1 %}
-                    <a class="page button info active" href="{{ path('object',{'page': i-1}) }}">{{ i }}</a>
+                    <a class="page button info active" href="{{ path('object',{'page': i-1,'sort': sortType,'order': sortOrder}) }}">{{ i }}</a>
                 {% else %}
-                    <a class="page button info" href="{{ path('object',{'page': i-1}) }}">{{ i }}</a>
+                    <a class="page button info" href="{{ path('object',{'page': i-1,'sort': sortType,'order': sortOrder}) }}">{{ i }}</a>
                 {% endif %}
             {% endfor %}
         </div>

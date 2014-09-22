@@ -19,13 +19,16 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $list = $em->getRepository('MROCMainBundle:Object')->getIdAddressList();
+        $top =$em->getRepository('MROCMainBundle:Object')->getTop(5);
+
         $objectTypes = $em->getRepository('MROCMainBundle:ObjectType')->findAll();
         $saleTypes = $em->getRepository('MROCMainBundle:SaleType')->findAll();
 
         return $this->render('MROCMainBundle:Default:index.html.twig',array(
             'list' => json_encode($list),
             'object_type_list' => $objectTypes,
-            'sale_type_list' => $saleTypes
+            'sale_type_list' => $saleTypes,
+            'top' => $top
         ));
     }
 

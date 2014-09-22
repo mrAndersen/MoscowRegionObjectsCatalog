@@ -25,10 +25,13 @@ class ObjectController extends Controller
      * Lists all Object entities.
      *
      */
-    public function indexAction($page)
+    public function indexAction($page, Request $request)
     {
         $pageSize = 10;
         $start = $page * $pageSize;
+
+        $sort = $request->query->get('sort','id');
+        $order = $request->query->get('order','asc');
 
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
@@ -38,9 +41,14 @@ class ObjectController extends Controller
         $count = $repo->getElementsCount();
         $pages = ceil($count / $pageSize);
 
-        $dql = 'select q from MROCMainBundle:Object q';
-        $query = $em->createQuery($dql)->setMaxResults($pageSize)->setFirstResult($start);
-        $entities = $query->getResult();
+
+        $qb = $em->createQueryBuilder()
+            ->select('n')->from('MROCMainBundle:Object','n')
+            ->orderBy('n.'.$sort,$order)
+            ->setMaxResults($pageSize)
+            ->setFirstResult($start);
+
+        $entities = $qb->getQuery()->getResult();
 
         return $this->render('MROCAdminBundle:Object:index.html.twig',array(
             'entities' => $entities,
