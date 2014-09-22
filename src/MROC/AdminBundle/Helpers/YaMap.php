@@ -10,7 +10,7 @@ class YaMap
     public function getLatLon($geocode)
     {
         $url = 'http://geocode-maps.yandex.ru/1.x/?format=json&geocode=';
-        $url = $url.$geocode;
+        $url = $url.urlencode($geocode);
 
         try{
             $json = file_get_contents($url);

@@ -67,13 +67,6 @@ class DefaultController extends Controller
 
     public function indexAction()
     {
-//        $root = $this->get('kernel')->getRootDir();
-//        $web = $root.'/../web';
-//        $path = $web.'/images/test3.jpg';
-//
-//        $helper = new YaMap();
-//        $test = $helper->getLatLonFromImage($path);
-
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 

@@ -42,6 +42,35 @@ class Complaint
      */
     private $problem;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created", type="datetime")
+     */
+    private $created;
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @param \DateTime $created
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+    }
+
+
+    public function setCreatedNow()
+    {
+        $this->created = new \DateTime();
+    }
+
 
     /**
      * Get id

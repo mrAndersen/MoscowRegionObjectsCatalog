@@ -17,3 +17,7 @@ _xhr_mroc_main_modify_rating:
 _xhr_mroc_main_complaint:
     path: /complaint
     defaults: { _controller: MROCMainBundle:Default:complaint }
+
+_xhr_mroc_main_question:
+    path: /question
+    defaults: { _controller: MROCMainBundle:Default:question }

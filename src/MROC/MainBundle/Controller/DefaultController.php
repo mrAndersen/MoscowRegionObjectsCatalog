@@ -8,6 +8,7 @@ use Keboola\Csv\CsvFile;
 use MROC\MainBundle\Entity\Complaint;
 use MROC\MainBundle\Entity\Object;
 use MROC\MainBundle\Form\ComplaintType;
+use MROC\MainBundle\Form\QuestionType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,50 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class DefaultController extends Controller
 {
+
+    public function questionAction(Request $request)
+    {
+        if($request->getMethod() == 'GET'){
+            $form = $this->createForm(new QuestionType(),null,array(
+                'action' => $this->generateUrl('_xhr_mroc_main_question'),
+                'method' => 'POST'
+            ));
+
+            return $this->render('MROCMainBundle:Forms:question.html.twig', array(
+                'form'   => $form->createView(),
+            ));
+        }
+
+        if($request->getMethod() == 'POST'){
+            $form = $this->createForm(new QuestionType());
+            $form->handleRequest($request);
+
+            if($form->isValid()){
+
+
+
+                $message = 'Ваше сообщение успешно отправлено!';
+                $errors = array();
+            }else{
+                $message = 'Произошли ошибки:';
+
+                $errors = array();
+                foreach($form->getErrors(true) as $k=>$v){
+                    $errors[] = $v->getMessage();
+                }
+            }
+
+            return new JsonResponse(array('message'=>$message,'errors'=>$errors));
+        }
+    }
+
+
+    public function commentAction(Request $reqeust)
+    {
+
+    }
+
+
     public function complaintAction(Request $request)
     {
         if($request->getMethod() == 'GET'){
@@ -40,6 +85,8 @@ class DefaultController extends Controller
             $form->handleRequest($request);
 
             if($form->isValid()){
+                $entity->setCreatedNow();
+
                 $em->persist($entity);
                 $em->flush();
 

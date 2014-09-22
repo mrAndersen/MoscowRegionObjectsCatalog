@@ -244,19 +244,29 @@
             });
 
             $(document).on('click tap','.complaint',function(){
-
+                $('.dark').show();
                 $.ajax({
                     type: 'get',
                     url: '{{ path('_xhr_mroc_main_complaint') }}',
                     success: function(result){
-                        showPopup(result);
+                        showPopup('Отправить жалобу',result);
+                    }
+                });
+            });
+
+            $(document).on('click tap','.question',function(){
+                $('.darken').show();
+                $.ajax({
+                    type: 'get',
+                    url: '{{ path('_xhr_mroc_main_question') }}',
+                    success: function(result){
+                        showPopup('Задать вопрос',result);
                     }
                 });
             });
 
             $(document).on('click tap','.send-complaint',function(e){
                 e.preventDefault();
-
                 var form = $('form[name="mroc_mainbundle_complaint"]');
 
                 $.ajax({
@@ -265,9 +275,28 @@
                     data: form.serialize(),
                     success: function(result){
                         if(result.errors.length > 0){
-                            showPopup(result.message + '<br>'+ result.errors.join('<br>'));
+                            showPopup('Отправить жалобу','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
                         }else{
-                            showPopup(result.message);
+                            showPopup('Отправить жалобу',result.message);
+                        }
+
+                    }
+                });
+            });
+
+            $(document).on('click tap','.send-question',function(e){
+                e.preventDefault();
+                var form = $('form[name="mroc_mainbundle_question"]');
+
+                $.ajax({
+                    type: 'post',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(result){
+                        if(result.errors.length > 0){
+                            showPopup('Задать вопрос','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
+                        }else{
+                            showPopup('Задать вопрос',result.message);
                         }
 
                     }
@@ -341,7 +370,7 @@
             </div>
             <div class="to-right">
                 <a class="red button complaint">Пожаловаться на работу сервиса</a><br>
-                <a class="default button send-question">Отправить вопрос</a>
+                <a class="default button question">Отправить вопрос</a>
             </div>
         </div>
     </div>

@@ -1,7 +1,13 @@
 MROC\MainBundle\Entity\Complaint:
     properties:
+        problem:
+            - NotBlank:
+                message: Поле с описанием проблемы должно быть заполнено.
+        name:
+            - NotBlank:
+                message: Поле с именем должно быть заполнено.
         email:
+            - NotBlank:
+                message: Поле с электронной почтой должно быть заполнено.
             - Email:
                 message: Указаный вами email - {{ value }} не является адресом электронной почты.
-                checkMX: true
-                checkHost: true

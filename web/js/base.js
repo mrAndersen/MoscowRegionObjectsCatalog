@@ -31,10 +31,11 @@ $(document).on('click tap','.modal .close',function(){
     });
 });
 
-function showPopup(content)
+function showPopup(header,content)
 {
     $('.darken').show();
     $('.modal-content').html(content);
+    $('.header-text').html(header);
 
     $('.modal').slideDown(200);
 }

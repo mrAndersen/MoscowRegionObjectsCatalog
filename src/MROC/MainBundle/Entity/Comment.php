@@ -29,6 +29,13 @@ class Comment
     private $moderated;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="posted", type="datetime")
+     */
+    private $posted;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="text", type="string", length=1000)
@@ -73,6 +80,22 @@ class Comment
     public function getModerated()
     {
         return $this->moderated;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getPosted()
+    {
+        return $this->posted;
+    }
+
+    /**
+     * @param \DateTime $posted
+     */
+    public function setPosted($posted)
+    {
+        $this->posted = $posted;
     }
 
     /**
