@@ -21,3 +21,11 @@ _xhr_mroc_main_complaint:
 _xhr_mroc_main_question:
     path: /question
     defaults: { _controller: MROCMainBundle:Default:question }
+
+_xhr_mroc_main_comment:
+    path: /comment
+    defaults: { _controller: MROCMainBundle:Default:comment }
+
+_xhr_mroc_main_global_complaint:
+    path: /global
+    defaults: { _controller: MROCMainBundle:Default:globalComplaint }

@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Intervention\Image\ImageManagerStatic;
 use Keboola\Csv\CsvFile;
 use MROC\AdminBundle\Helpers\YaMap;
+use MROC\MainBundle\Entity\Comment;
 use MROC\MainBundle\Entity\Complaint;
 use MROC\MainBundle\Entity\Object;
 use MROC\MainBundle\Entity\ObjectType;
@@ -209,4 +210,62 @@ class DefaultController extends Controller
             'count' => $count
         ));
     }
+
+    public function commentListAction($page, Request $request)
+    {
+        $pageSize = 20;
+        $start = $page * $pageSize;
+
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        /** @var Complaint $repo */
+        $repo = $em->getRepository('MROCMainBundle:Comment');
+
+        $count = $repo->getElementsCount();
+        $pages = ceil($count / $pageSize);
+
+
+        $qb = $em->createQueryBuilder()
+            ->select('n')->from('MROCMainBundle:Comment','n')
+            ->setMaxResults($pageSize)
+            ->setFirstResult($start);
+
+        $entities = $qb->getQuery()->getResult();
+
+        return $this->render('MROCAdminBundle:Default:comments.html.twig',array(
+            'entities' => $entities,
+            'pages' => $pages,
+            'current' => $page,
+            'count' => $count
+        ));
+    }
+
+    public function commentApproveAction($id, Request $request)
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var Comment $node */
+        $node = $em->getRepository('MROCMainBundle:Comment')->findOneBy(array('id' => $id));
+        $node->setModerated(true);
+
+        $em->persist($node);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('mroc_admin_comments'));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

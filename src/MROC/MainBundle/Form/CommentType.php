@@ -17,6 +17,9 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('id',null,array(
+                'mapped' => false
+            ))
             ->add('name','text',array(
                 'label'=>'Ваше имя',
                 'constraints' => array(
@@ -30,14 +33,15 @@ class CommentType extends AbstractType
                     new Email(array('message'=>'Указаный вами email - {{ value }} не является адресом электронной почты.'))
                 ),
             ))
-            ->add('question','textarea',array(
-                'label'=>'Вопрос',
+            ->add('comment','textarea',array(
+                'label'=>'Комментарий',
                 'constraints' => array(
-                    new NotBlank(array('message'=>' Поле с вопросом должно быть заполнено.')),
+                    new NotBlank(array('message'=>' Поле с комментарием должно быть заполнено.')),
                 )
             ))
             ->add('captcha', 'captcha',array(
-                'invalid_message' => 'Неверная капча.'
+                'invalid_message' => 'Неверная капча.',
+                'width' => '190'
             ))
             ->add('send', 'submit', array('label' => 'Отправить'))
         ;

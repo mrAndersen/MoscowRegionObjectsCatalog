@@ -43,11 +43,56 @@ class Comment
     private $text;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="author", type="string", length=255)
+     */
+    private $author;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Object")
      * @ORM\JoinColumn(name="object", referencedColumnName="id", nullable=true)
      */
     private $object;
 
+    /**
+     * @return string
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param string $author
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
 
     /**
      * Get id
@@ -122,9 +167,9 @@ class Comment
     }
 
     /**
-     * Set object
+     * Set Object
      *
-     * @param \stdClass $object
+     * @param Object $object
      * @return Comment
      */
     public function setObject($object)

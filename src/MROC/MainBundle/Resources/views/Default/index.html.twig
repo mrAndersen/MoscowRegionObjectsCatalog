@@ -243,8 +243,20 @@
                 }
             });
 
+            $(document).on('click tap','.global-complaint',function(e){
+                e.preventDefault();
+                $('.darken').show();
+                $.ajax({
+                    type: 'get',
+                    url: '{{ path('_xhr_mroc_main_global_complaint') }}',
+                    success: function(result){
+                        showPopup('Отправить жалобу',result);
+                    }
+                });
+            });
+
             $(document).on('click tap','.complaint',function(){
-                $('.dark').show();
+                $('.darken').show();
                 $.ajax({
                     type: 'get',
                     url: '{{ path('_xhr_mroc_main_complaint') }}',
@@ -264,6 +276,61 @@
                     }
                 });
             });
+
+            $(document).on('click tap','.do-comment',function(){
+                $('.darken').show();
+                $.ajax({
+                    type: 'get',
+                    url: '{{ path('_xhr_mroc_main_comment') }}',
+                    data:{
+                        id: $(this).attr('data-for-id')
+                    },
+                    success: function(result){
+                        showPopup('Оставить комментарий',result);
+                    }
+                });
+            });
+
+
+
+
+            $(document).on('click tap','.send-global-complaint',function(e){
+                e.preventDefault();
+                var form = $('.global-complaint-form');
+
+                $.ajax({
+                    type: 'post',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(result){
+                        if(result.errors.length > 0){
+                            showPopup('Отправить жалобу','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
+                        }else{
+                            showPopup('Отправить жалобу',result.message);
+                        }
+
+                    }
+                });
+            });
+            $(document).on('click tap','.send-comment',function(e){
+                e.preventDefault();
+                var form = $('form[name="mroc_mainbundle_comment"]');
+
+                $.ajax({
+                    type: 'post',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(result){
+                        if(result.errors.length > 0){
+                            showPopup('Оставить комментарий','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
+                        }else{
+                            showPopup('Оставить комментарий',result.message);
+                        }
+
+                    }
+                });
+            });
+
 
             $(document).on('click tap','.send-complaint',function(e){
                 e.preventDefault();
@@ -370,7 +437,8 @@
             </div>
             <div class="to-right">
                 <a class="red button complaint">Пожаловаться на работу сервиса</a><br>
-                <a class="default button question">Отправить вопрос</a>
+                <a class="default button question">Отправить вопрос</a><br>
+                <a class="global-complaint" href="#">Пожаловаться в контролирующие органы</a>
             </div>
         </div>
     </div>

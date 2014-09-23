@@ -112,6 +112,26 @@ html body .button.primary {
 html body .button.primary:hover {
   background: #3071a9;
 }
+html body .label {
+  display: inline-block;
+  padding: 5px 20px;
+  color: #FFD;
+}
+html body .label.info {
+  background: #5bc0de;
+}
+html body .label.success {
+  background: #5cb85c;
+}
+html body .label.warning {
+  background: #f0ad4e;
+}
+html body .label.danger {
+  background: #d9534f;
+}
+html body .label.primary {
+  background: #428bca;
+}
 html body a {
   color: #39C;
 }
@@ -161,6 +181,11 @@ html body .admin-menu ul {
 }
 html body .admin-menu li {
   float: left;
+}
+html body .admin-menu li.divider {
+  width: 2px;
+  height: 28px;
+  background: #FFF;
 }
 html body .admin-menu li:hover {
   position: relative;

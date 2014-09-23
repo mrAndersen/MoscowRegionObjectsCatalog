@@ -5,8 +5,10 @@ namespace MROC\MainBundle\Controller;
 use Doctrine\ORM\EntityManager;
 use Intervention\Image\ImageManagerStatic;
 use Keboola\Csv\CsvFile;
+use MROC\MainBundle\Entity\Comment;
 use MROC\MainBundle\Entity\Complaint;
 use MROC\MainBundle\Entity\Object;
+use MROC\MainBundle\Form\CommentType;
 use MROC\MainBundle\Form\ComplaintType;
 use MROC\MainBundle\Form\QuestionType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -54,8 +56,97 @@ class DefaultController extends Controller
     }
 
 
-    public function commentAction(Request $reqeust)
+    public function commentAction(Request $request)
     {
+        if($request->getMethod() == 'GET'){
+
+            $em = $this->getDoctrine()->getManager();
+            $id = $request->query->get('id');
+
+            $form = $this->createForm(new CommentType(),null,array(
+                'action' => $this->generateUrl('_xhr_mroc_main_comment'),
+                'method' => 'POST'
+            ));
+
+            return $this->render('MROCMainBundle:Forms:comment.html.twig', array(
+                'form'   => $form->createView(),
+                'node' => $em->getRepository('MROCMainBundle:Object')->findOneBy(array('id' => $id))
+            ));
+        }
+
+
+        if($request->getMethod() == 'POST'){
+            $em = $this->getDoctrine()->getManager();
+
+            $form = $this->createForm(new CommentType());
+            $form->handleRequest($request);
+
+            if($form->isValid()){
+                $data = $form->getData();
+                $id = $request->request->get('mroc_mainbundle_comment');
+                $id = $id['id'];
+
+
+                $comment = new Comment();
+                $comment->setModerated(false);
+                $comment->setObject($em->getRepository('MROCMainBundle:Object')->findOneBy(array('id' => $id)));
+                $comment->setPosted(new \DateTime());
+                $comment->setText($data['comment']);
+                $comment->setEmail($data['email']);
+                $comment->setAuthor($data['name']);
+
+                $em->persist($comment);
+                $em->flush();
+
+                $message = 'Ваше сообщение успешно отправлено!';
+                $errors = array();
+            }else{
+                $message = 'Произошли ошибки:';
+
+                $errors = array();
+                foreach($form->getErrors(true) as $k=>$v){
+                    $errors[] = $v->getMessage();
+                }
+            }
+
+            return new JsonResponse(array('message'=>$message,'errors'=>$errors));
+        }
+    }
+
+    public function globalComplaintAction(Request $request)
+    {
+        if($request->getMethod() == 'GET'){
+            return $this->render('MROCMainBundle:Forms:global_complaint.html.twig');
+        }
+
+        if($request->getMethod() == 'POST'){
+            $form = $request->request->all();
+            $errors = array(); $valid = true;
+
+            if(!isset($form['where']) || !isset($form['what'])){
+                $valid = false;
+                $errors[] = 'Укажите хотя бы одну инстанцию и хотя бы одну причину обращения.';
+            }
+
+            if(empty($form['name']) || empty($form['tel']) || empty($form['email'])){
+                $valid = false;
+                $errors[] = 'Заполните все свои данные.';
+            }
+
+            if(!filter_var($form['email'],FILTER_VALIDATE_EMAIL)){
+                $valid = false;
+                $errors[] = 'Email указан не верно.';
+            }
+
+            if($valid){
+                $message = 'Ваше сообщение успешно отправлено!';
+            }else{
+                $message = 'Произошли ошибки:';
+            }
+
+            return new JsonResponse(array('message'=>$message,'errors'=>$errors));
+        }
+
 
     }
 

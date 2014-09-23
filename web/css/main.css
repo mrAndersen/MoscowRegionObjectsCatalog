@@ -100,9 +100,9 @@
   color: #FFF;
 }
 .button.blue {
-  background: #3399cc;
-  color: #fff;
-  border-bottom: solid 2px #339999;
+  background: #39C;
+  color: #FFF;
+  box-shadow: 0px 3px 0px #399;
 }
 .button.default {
   background: #fff;
@@ -149,17 +149,17 @@ html body .modal {
 html body .modal form .row {
   float: left;
   width: 100%;
+  margin: 0 0 10px 0;
 }
 html body .modal form img {
   float: left;
-  margin: 0 70px 0 0;
+  margin: 0 10px 0 0;
 }
 html body .modal form input[type="text"] {
   font-size: 15px;
   border: solid 1px #CCC;
   padding: 3px 10px;
   width: 300px;
-  margin: 0 0 10px 0;
 }
 html body .modal form textarea {
   font-size: 15px;
@@ -168,12 +168,58 @@ html body .modal form textarea {
   width: 500px;
   resize: none;
   font-family: 'PT Sans';
-  margin: 0 0 10px;
 }
 html body .modal .modal-content {
   padding: 40px 20px;
   float: left;
   width: 710px;
+}
+html body .modal .modal-content .global-complaint-form .top {
+  background: #F3F3F3;
+  float: left;
+  width: 710px;
+  margin: -40px -20px -20px -20px;
+  padding: 40px 20px;
+}
+html body .modal .modal-content .global-complaint-form .top label {
+  float: left;
+  margin: 0 50px 0 0;
+}
+html body .modal .modal-content .global-complaint-form .top label input {
+  float: left;
+  margin: 0 5px 0 0;
+  position: relative;
+  top: 2px;
+}
+html body .modal .modal-content .global-complaint-form .bottom {
+  float: left;
+  width: 710px;
+  margin: 40px 0 0 0;
+}
+html body .modal .modal-content .global-complaint-form .bottom .left {
+  float: left;
+  width: 300px;
+  padding: 0 0 0 50px;
+}
+html body .modal .modal-content .global-complaint-form .bottom .left label {
+  float: left;
+  width: 100%;
+  margin: 5px 0;
+}
+html body .modal .modal-content .global-complaint-form .bottom .left label input {
+  float: left;
+  margin: 0 5px 0 0;
+  position: relative;
+  top: 2px;
+}
+html body .modal .modal-content .global-complaint-form .bottom .right {
+  float: left;
+  width: 284px;
+  border-left: solid 1px #CCF;
+  padding: 0 0 0 75px;
+}
+html body .modal .modal-content .global-complaint-form .bottom .right .row input[type="text"] {
+  width: 180px;
 }
 html body .modal .modal-header {
   float: left;
@@ -233,6 +279,11 @@ html body .footer .inner .to-left .sq-link {
 html body .footer .inner .to-right {
   float: right;
   text-align: right;
+}
+html body .footer .inner .to-right .global-complaint {
+  display: inline-block;
+  margin: 10px 0 0 0;
+  font-size: 13px;
 }
 html body .container {
   height: 680px;

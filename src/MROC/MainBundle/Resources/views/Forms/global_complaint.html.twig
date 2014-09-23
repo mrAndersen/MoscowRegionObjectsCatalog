@@ -1,0 +1,32 @@
+<form action="{{ path('_xhr_mroc_main_global_complaint') }}" method="post" enctype="multipart/form-data" class="global-complaint-form">
+    <div class="top">
+        <label>МинПотребРУ<input type="checkbox" name="where[minpotreb]"></label>
+        <label>УФМС<input type="checkbox" name="where[ufms]"></label>
+        <label>Роспотребнадзор<input type="checkbox" name="where[rospotrebnadzor]"></label>
+        <label>Росадмнадзор<input type="checkbox" name="where[rosadmnadzor]"></label>
+        <label>ОМСУ<input type="checkbox" name="where[omsu]"></label>
+    </div>
+    <div class="bottom">
+        <div class="left">
+            <label>Нет на схеме<input type="checkbox" name="what[no-schema]"></label>
+            <label>Мигранты<input type="checkbox" name="what[foreign]"></label>
+            <label>Мусор<input type="checkbox" name="what[garbage]"></label>
+            <label>Некачественное обслуживание<input type="checkbox" name="what[bad-service]"></label>
+        </div>
+        <div class="right">
+            <div class="row">
+                <input type="text" name="name" placeholder="ФИО">
+            </div>
+            <div class="row">
+                <input type="text" name="tel" placeholder="Телефон">
+            </div>
+            <div class="row">
+                <input type="text" name="email" placeholder="Email">
+            </div>
+            <div class="row">
+                <button type="submit" class="button blue center fixed200 send-global-complaint">Отправить</button>
+            </div>
+        </div>
+    </div>
+
+</form>

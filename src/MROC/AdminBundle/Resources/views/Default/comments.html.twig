@@ -1,0 +1,47 @@
+{% extends '::admin_base.html.twig' %}
+{% block body -%}
+    <h1>Список комментариев ({{ count }})</h1>
+    <table class="records_list">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Имя автора</th>
+            <th>Email</th>
+            <th>Комментарий</th>
+            <th>Одобрен</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.id }}</td>
+                <td>{{ entity.author }}</td>
+                <td>{{ entity.email }}</td>
+                <td>{{ entity.text }}</td>
+                <td>
+                    {% if entity.moderated %}
+                        <span class="label success">да</span>
+                    {% else %}
+                        <span class="label danger">нет</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('mroc_admin_comment_approve',{'id': entity.id}) }}" class="button primary">Одобрить</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if pages > 0 %}
+        <div class="pages">
+            {% for i in 1..pages %}
+                {% if i == current + 1 %}
+                    <a class="page button info active" href="{{ path('mroc_admin_comments',{'page': i-1}) }}">{{ i }}</a>
+                {% else %}
+                    <a class="page button info" href="{{ path('mroc_admin_comments',{'page': i-1}) }}">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

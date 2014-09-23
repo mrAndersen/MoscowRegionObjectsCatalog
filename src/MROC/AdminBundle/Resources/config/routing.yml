@@ -14,6 +14,14 @@ mroc_admin_complaints:
     path: /complaints
     defaults: { _controller: MROCAdminBundle:Default:complaintList, page:0 }
 
+mroc_admin_comments:
+    path: /comments
+    defaults: { _controller: MROCAdminBundle:Default:commentList, page:0 }
+
+mroc_admin_comment_approve:
+    path: /comments/approve/{id}
+    defaults: { _controller: MROCAdminBundle:Default:commentApprove }
+
 MROCAdminBundle_object:
     resource: "@MROCAdminBundle/Resources/config/routing/object.yml"
     prefix:   /object

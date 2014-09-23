@@ -39,17 +39,17 @@ html{
         .row{
           float: left;
           width: 100%;
+          margin: 0 0 10px 0;
         }
         img{
           float: left;
-          margin: 0 70px 0 0;
+          margin: 0 10px 0 0;
         }
         input[type="text"]{
           font-size: 15px;
           border: solid 1px #CCC;
           padding: 3px 10px;
           width: 300px;
-          margin: 0 0 10px 0;
         }
         textarea{
           font-size: 15px;
@@ -58,13 +58,63 @@ html{
           width: 500px;
           resize: none;
           font-family: 'PT Sans';
-          margin: 0 0 10px;
         }
       }
       .modal-content{
         padding: 40px 20px;
         float: left;
         width: 710px;
+        .global-complaint-form{
+          .top{
+            background: #F3F3F3;
+            float: left;
+            width: 710px;
+            margin: -40px -20px -20px -20px;
+            padding: 40px 20px;
+            label{
+              float: left;
+              margin: 0 50px 0 0;
+              input{
+                float: left;
+                margin: 0 5px 0 0;
+                position: relative;
+                top: 2px;
+              }
+            }
+          }
+          .bottom{
+            float: left;
+            width: 710px;
+            margin: 40px 0 0 0;
+            .left{
+              float: left;
+              width: 300px;
+              padding: 0 0 0 50px;
+              label{
+                float: left;
+                width: 100%;
+                margin: 5px 0;
+                input{
+                  float: left;
+                  margin: 0 5px 0 0;
+                  position: relative;
+                  top: 2px;
+                }
+              }
+            }
+            .right{
+              float: left;
+              width: 284px;
+              border-left: solid 1px #CCF;
+              padding: 0 0 0 75px;
+              .row{
+                input[type="text"]{
+                  width: 180px;
+                }
+              }
+            }
+          }
+        }
       }
       .modal-header{
         float: left;
@@ -123,6 +173,11 @@ html{
         .to-right{
           float: right;
           text-align: right;
+          .global-complaint{
+            display: inline-block;
+            margin: 10px 0 0 0;
+            font-size: 13px;
+          }
         }
       }
     }
