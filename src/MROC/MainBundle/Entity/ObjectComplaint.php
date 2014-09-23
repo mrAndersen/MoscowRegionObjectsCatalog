@@ -3,6 +3,8 @@
 namespace MROC\MainBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Intervention\Image\Image;
+use Intervention\Image\ImageManagerStatic;
 
 /**
  * ObjectComplaint
@@ -180,5 +182,50 @@ class ObjectComplaint
     public function getImage()
     {
         return $this->image;
+    }
+
+    public function getAbsolutePath()
+    {
+        return null === $this->path
+            ? null
+            : $this->getUploadRootDir();
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->path
+            ? null
+            : $this->getUploadDir();
+    }
+
+    protected function getUploadRootDir()
+    {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'object_complaints';
+    }
+
+    public function upload()
+    {
+        if($this->getImage() !== null){
+            /** @var Image $image */
+            $image = ImageManagerStatic::make($this->image->getRealPath());
+            $name = md5($this->getName().mt_rand(0,999999999));
+            $ext = $this->image->guessExtension();
+
+            $image->save($this->getUploadRootDir().'/'.$name.'.'.$ext);
+            $this->image = '/'.$this->getUploadDir().'/'.$name.'.'.$ext;
+
+            return true;
+        }else{
+            return false;
+        }
     }
 }

@@ -37,7 +37,8 @@ class QuestionType extends AbstractType
                 )
             ))
             ->add('captcha', 'captcha',array(
-                'invalid_message' => 'Неверная капча.'
+                'invalid_message' => 'Неверная капча.',
+                'width' => '190'
             ))
             ->add('send', 'submit', array('label' => 'Отправить'))
         ;

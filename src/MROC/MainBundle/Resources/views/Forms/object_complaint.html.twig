@@ -1,0 +1,27 @@
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<div class="row node-id">
+    Жалоба для объекта #{{ id }}
+    <input type="hidden" name="mroc_mainbundle_objectcomplaint[id]" value="{{ id }}">
+</div>
+<div class="row">
+    {{ form_widget(form.name,{'attr': {'placeholder': 'Ваше имя' }}) }}
+</div>
+<div class="row">
+    {{ form_widget(form.email,{'attr': {'placeholder': 'E-mail' }}) }}
+</div>
+<div class="row">
+    {{ form_widget(form.tel, {'attr': {'placeholder': 'Телефон' }}) }}
+</div>
+<div class="row">
+    {{ form_widget(form.problem,{'attr': {'placeholder': 'Проблема','rows': 5 }}) }}
+</div>
+<div class="row">
+    {{ form_label(form.image) }}
+    {{ form_widget(form.image) }}
+</div>
+<div class="row">
+    {{ form_widget(form.captcha,{'attr': {'placeholder':'Капча','class':'captcha'}}) }}
+</div>
+{{ form_widget(form.send, {'attr': {'class':'button blue center fixed200 send-object-complaint'}}) }}
+{{ form_widget(form._token) }}

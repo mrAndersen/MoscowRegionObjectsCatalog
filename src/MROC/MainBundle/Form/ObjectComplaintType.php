@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ComplaintType extends AbstractType
+class ObjectComplaintType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,9 +15,18 @@ class ComplaintType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name','text',array('label'=>'Ваше имя'))
-            ->add('email','text',array('label'=>'E-mail'))
-            ->add('problem','textarea',array('label'=>'Проблема'))
+            ->add('id',null,array(
+                'mapped' => false
+            ))
+            ->add('name','text')
+            ->add('tel','text')
+            ->add('email','text')
+            ->add('problem','textarea')
+            ->add('image', 'file',array(
+                'label' => 'Фотография',
+                'data_class' => null,
+                'required' => true
+            ))
             ->add('captcha', 'captcha',array(
                 'invalid_message' => 'Неверная капча.',
                 'width' => '190'
@@ -32,7 +41,7 @@ class ComplaintType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'MROC\MainBundle\Entity\Complaint'
+            'data_class' => 'MROC\MainBundle\Entity\ObjectComplaint'
         ));
     }
 
@@ -41,6 +50,6 @@ class ComplaintType extends AbstractType
      */
     public function getName()
     {
-        return 'mroc_mainbundle_complaint';
+        return 'mroc_mainbundle_objectcomplaint';
     }
 }

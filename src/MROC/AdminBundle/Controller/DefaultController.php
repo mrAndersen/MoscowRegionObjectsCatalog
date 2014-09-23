@@ -240,6 +240,35 @@ class DefaultController extends Controller
         ));
     }
 
+    public function objectComplaintListAction($page, Request $request)
+    {
+        $pageSize = 20;
+        $start = $page * $pageSize;
+
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        /** @var Complaint $repo */
+        $repo = $em->getRepository('MROCMainBundle:ObjectComplaint');
+
+        $count = $repo->getElementsCount();
+        $pages = ceil($count / $pageSize);
+
+
+        $qb = $em->createQueryBuilder()
+            ->select('n')->from('MROCMainBundle:ObjectComplaint','n')
+            ->setMaxResults($pageSize)
+            ->setFirstResult($start);
+
+        $entities = $qb->getQuery()->getResult();
+
+        return $this->render('MROCAdminBundle:Default:object_complaints.html.twig',array(
+            'entities' => $entities,
+            'pages' => $pages,
+            'current' => $page,
+            'count' => $count
+        ));
+    }
+
     public function commentApproveAction($id, Request $request)
     {
         /** @var EntityManager $em */

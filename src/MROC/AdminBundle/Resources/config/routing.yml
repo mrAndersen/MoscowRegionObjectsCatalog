@@ -14,6 +14,10 @@ mroc_admin_complaints:
     path: /complaints
     defaults: { _controller: MROCAdminBundle:Default:complaintList, page:0 }
 
+mroc_admin_object_complaints:
+    path: /object_complaints_list
+    defaults: { _controller: MROCAdminBundle:Default:objectComplaintList, page:0 }
+
 mroc_admin_comments:
     path: /comments
     defaults: { _controller: MROCAdminBundle:Default:commentList, page:0 }

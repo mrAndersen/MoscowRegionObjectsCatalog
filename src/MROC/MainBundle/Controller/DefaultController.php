@@ -8,12 +8,15 @@ use Keboola\Csv\CsvFile;
 use MROC\MainBundle\Entity\Comment;
 use MROC\MainBundle\Entity\Complaint;
 use MROC\MainBundle\Entity\Object;
+use MROC\MainBundle\Entity\ObjectComplaint;
 use MROC\MainBundle\Form\CommentType;
 use MROC\MainBundle\Form\ComplaintType;
+use MROC\MainBundle\Form\ObjectComplaintType;
 use MROC\MainBundle\Form\QuestionType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Kernel;
 
 class DefaultController extends Controller
@@ -113,6 +116,50 @@ class DefaultController extends Controller
         }
     }
 
+    public function objectComplaintAction(Request $request)
+    {
+        if($request->getMethod() == 'GET'){
+            $entity = new ObjectComplaint();
+            $id = $request->query->get('id');
+
+            $form = $this->createForm(new ObjectComplaintType(),$entity,array(
+                'action' => $this->generateUrl('_xhr_mroc_main_object_complaint'),
+                'method' => 'POST'
+            ));
+
+            return $this->render('MROCMainBundle:Forms:object_complaint.html.twig', array(
+                'id' => $id,
+                'form'   => $form->createView(),
+            ));
+        }
+
+        if($request->getMethod() == 'POST'){
+            /** @var EntityManager $em */
+            $em = $this->getDoctrine()->getManager();
+
+            $entity = new ObjectComplaint();
+            $form = $this->createForm(new ObjectComplaintType(),$entity);
+            $form->handleRequest($request);
+
+            if($form->isValid()){
+                /** @var Session $session */
+                $session = $this->get('session');
+                $session->getFlashBag()->set('success','Ваше жалоба успешно отправлена');
+
+                $entity->upload();
+
+                $em->persist($entity);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('mroc_main_homepage'));
+            }else{
+                return $this->render('MROCMainBundle:Forms:failed_complaint.html.twig',array(
+                    'errors' => $form->getErrors()
+                ));
+            }
+        }
+    }
+
     public function globalComplaintAction(Request $request)
     {
         if($request->getMethod() == 'GET'){
@@ -149,7 +196,6 @@ class DefaultController extends Controller
 
 
     }
-
 
     public function complaintAction(Request $request)
     {

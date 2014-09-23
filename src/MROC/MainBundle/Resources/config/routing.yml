@@ -29,3 +29,7 @@ _xhr_mroc_main_comment:
 _xhr_mroc_main_global_complaint:
     path: /global
     defaults: { _controller: MROCMainBundle:Default:globalComplaint }
+
+_xhr_mroc_main_object_complaint:
+    path: /object_complaint
+    defaults: { _controller: MROCMainBundle:Default:objectComplaint }

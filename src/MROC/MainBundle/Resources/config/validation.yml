@@ -11,3 +11,26 @@ MROC\MainBundle\Entity\Complaint:
                 message: Поле с электронной почтой должно быть заполнено.
             - Email:
                 message: Указаный вами email - {{ value }} не является адресом электронной почты.
+
+MROC\MainBundle\Entity\ObjectComplaint:
+    properties:
+        image:
+            - Image:
+                minWidth: 200
+                minHeight: 200
+                minWidthMessage: Фотография должна быть не меньше 200px в ширину
+                minHeightMessage: Фотография должна быть не меньше 200px в высоту
+        tel:
+            - NotBlank:
+                message: Поле с телефоном должно быть заполнено.
+        problem:
+            - NotBlank:
+                message: Поле с описанием проблемы должно быть заполнено.
+        name:
+            - NotBlank:
+                message: Поле с именем должно быть заполнено.
+        email:
+            - NotBlank:
+                message: Поле с электронной почтой должно быть заполнено.
+            - Email:
+                message: Указаный вами email - {{ value }} не является адресом электронной почты.

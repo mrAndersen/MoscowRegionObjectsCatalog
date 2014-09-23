@@ -1,0 +1,10 @@
+{% extends '::base.html.twig' %}
+{% block title %}Произошли ошибки{% endblock %}
+
+{% block body %}
+    <h2>Произошли ошибки во время отправки ващего сообщения</h2>
+    {% for k,v in errors %}
+        {{ v.message }}<br>
+    {% endfor %}
+
+{% endblock %}

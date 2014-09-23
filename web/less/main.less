@@ -35,6 +35,16 @@ html{
       top: 10%;
       background: #FFF;
       display: none;
+      &.small{
+        width: 560px;
+        margin: 0 0 0 -280px;
+        .modal-header{
+          width: 510px;
+        }
+        .modal-content{
+          width: 520px;
+        }
+      }
       form{
         .row{
           float: left;
@@ -49,13 +59,16 @@ html{
           font-size: 15px;
           border: solid 1px #CCC;
           padding: 3px 10px;
-          width: 300px;
+          width: 298px;
+          &.captcha{
+            font-size: 36px;
+          }
         }
         textarea{
           font-size: 15px;
           border: solid 1px #CCC;
           padding: 3px 10px;
-          width: 500px;
+          width: 498px;
           resize: none;
           font-family: 'PT Sans';
         }
@@ -118,14 +131,14 @@ html{
       }
       .modal-header{
         float: left;
-        background: #369;
+        background: #347faf;
         color: #FFF;
         font-size: 23px;
         padding: 18px 25px;
         width: 700px;
         .header-text{
           float: left;
-          width: 500px;
+          width: 400px;
         }
         .close{
           float: right;

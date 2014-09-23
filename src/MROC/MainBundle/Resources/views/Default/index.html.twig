@@ -243,6 +243,12 @@
                 }
             });
 
+            {% if app.session.flashbag.has('success') %}
+                var message = '{{ app.session.flashbag.get('success')[0] }}';
+                showPopup('normal','Спасибо!',message);
+            {% endif %}
+
+
             $(document).on('click tap','.global-complaint',function(e){
                 e.preventDefault();
                 $('.darken').show();
@@ -250,7 +256,7 @@
                     type: 'get',
                     url: '{{ path('_xhr_mroc_main_global_complaint') }}',
                     success: function(result){
-                        showPopup('Отправить жалобу',result);
+                        showPopup('normal','Отправить жалобу',result);
                     }
                 });
             });
@@ -261,7 +267,21 @@
                     type: 'get',
                     url: '{{ path('_xhr_mroc_main_complaint') }}',
                     success: function(result){
-                        showPopup('Отправить жалобу',result);
+                        showPopup('small','Отправить жалобу',result);
+                    }
+                });
+            });
+
+            $(document).on('click tap','.object-complaint',function(){
+                $('.darken').show();
+                $.ajax({
+                    type: 'get',
+                    url: '{{ path('_xhr_mroc_main_object_complaint') }}',
+                    data:{
+                        id: $(this).attr('data-for-id')
+                    },
+                    success: function(result){
+                        showPopup('small','Пожаловаться на объект',result);
                     }
                 });
             });
@@ -272,7 +292,7 @@
                     type: 'get',
                     url: '{{ path('_xhr_mroc_main_question') }}',
                     success: function(result){
-                        showPopup('Задать вопрос',result);
+                        showPopup('small','Задать вопрос',result);
                     }
                 });
             });
@@ -286,13 +306,10 @@
                         id: $(this).attr('data-for-id')
                     },
                     success: function(result){
-                        showPopup('Оставить комментарий',result);
+                        showPopup('small','Оставить комментарий',result);
                     }
                 });
             });
-
-
-
 
             $(document).on('click tap','.send-global-complaint',function(e){
                 e.preventDefault();
@@ -304,14 +321,15 @@
                     data: form.serialize(),
                     success: function(result){
                         if(result.errors.length > 0){
-                            showPopup('Отправить жалобу','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
+                            showPopup('normal','Отправить жалобу','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
                         }else{
-                            showPopup('Отправить жалобу',result.message);
+                            showPopup('normal','Отправить жалобу',result.message);
                         }
 
                     }
                 });
             });
+
             $(document).on('click tap','.send-comment',function(e){
                 e.preventDefault();
                 var form = $('form[name="mroc_mainbundle_comment"]');
@@ -322,15 +340,14 @@
                     data: form.serialize(),
                     success: function(result){
                         if(result.errors.length > 0){
-                            showPopup('Оставить комментарий','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
+                            showPopup('small','Оставить комментарий','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
                         }else{
-                            showPopup('Оставить комментарий',result.message);
+                            showPopup('small','Оставить комментарий',result.message);
                         }
 
                     }
                 });
             });
-
 
             $(document).on('click tap','.send-complaint',function(e){
                 e.preventDefault();
@@ -342,9 +359,9 @@
                     data: form.serialize(),
                     success: function(result){
                         if(result.errors.length > 0){
-                            showPopup('Отправить жалобу','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
+                            showPopup('small','Отправить жалобу','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
                         }else{
-                            showPopup('Отправить жалобу',result.message);
+                            showPopup('small','Отправить жалобу',result.message);
                         }
 
                     }
@@ -361,9 +378,9 @@
                     data: form.serialize(),
                     success: function(result){
                         if(result.errors.length > 0){
-                            showPopup('Задать вопрос','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
+                            showPopup('small','Задать вопрос','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
                         }else{
-                            showPopup('Задать вопрос',result.message);
+                            showPopup('small','Задать вопрос',result.message);
                         }
 
                     }

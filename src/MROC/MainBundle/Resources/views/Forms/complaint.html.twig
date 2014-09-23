@@ -13,7 +13,7 @@
     {{ form_errors(form.problem) }}
 </div>
 <div class="row">
-    {{ form_widget(form.captcha,{'attr': {'placeholder':'Капча'}}) }}
+    {{ form_widget(form.captcha,{'attr': {'placeholder':'Капча','class':'captcha'}}) }}
     {{ form_errors(form.captcha) }}
 </div>
 {{ form_widget(form.send, {'attr': {'class':'button blue center fixed200 send-question'}}) }}

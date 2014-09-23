@@ -12,4 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class ObjectComplaintRepository extends EntityRepository
 {
+    /**
+     * @return mixed
+     */
+    public function getElementsCount()
+    {
+        $em = $this->getEntityManager();
+        $query = $em->getConnection()->prepare('select count(*) as count from '.$this->getClassMetadata()->getTableName());
+        $query->execute();
+        $st = $query->fetch();
+        return $st['count'];
+    }
 }

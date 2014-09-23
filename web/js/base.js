@@ -31,11 +31,15 @@ $(document).on('click tap','.modal .close',function(){
     });
 });
 
-function showPopup(header,content)
+function showPopup(className,header,content)
 {
+    var modal = $('.modal');
+    document.getElementsByClassName('modal')[0].className = 'modal';
+
     $('.darken').show();
     $('.modal-content').html(content);
     $('.header-text').html(header);
 
-    $('.modal').slideDown(200);
+    modal.addClass(className);
+    modal.slideDown(200);
 }
