@@ -2,31 +2,41 @@
     <li><a href="{{ path('mroc_main_homepage') }}">Главная сайта</a></li>
     <li><a href="{{ path('mroc_admin_homepage') }}">Панель администратора</a></li>
     <li class="divider"></li>
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
     <li><a href='#'>Список</a>
         <ul>
             <li><a href="{{ path('object') }}">Объектов</a></li>
             <li><a href="{{ path('object_type') }}">Типов объектов</a></li>
             <li><a href="{{ path('sale_type') }}">Типов продукции</a></li>
+            <li><a href="{{ path('mroc_admin_user_list') }}">Пользователей</a></li>
         </ul>
     </li>
-    <li><a href='#'>Создать</a>
-        <ul>
-            <li><a href="{{ path('object_new') }}">Объект</a></li>
-            <li><a href="{{ path('object_type_new') }}">Тип объекта</a></li>
-            <li><a href="{{ path('sale_type_new') }}">Тип продукции</a></li>
-        </ul>
-    </li>
-    <li><a href='#'>Синхронизация</a>
-        <ul>
-            <li><a href="{{ path('mroc_admin_csv') }}">Импорт из CSV</a></li>
-            <li><a href="{{ path('mroc_admin_images') }}">Синхронизация фото</a></li>
-        </ul>
-    </li>
-    <li><a href='#'>Модерация</a>
-        <ul>
-            <li><a href="{{ path('mroc_admin_complaints') }}">Жалобы о работе сайта</a></li>
-            <li><a href="{{ path('mroc_admin_comments') }}">Комментарии</a></li>
-            <li><a href="{{ path('mroc_admin_object_complaints') }}">Жалобы на объекты</a></li>
-        </ul>
-    </li>
+    {% endif %}
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <li><a href='#'>Создать</a>
+            <ul>
+                <li><a href="{{ path('object_new') }}">Объект</a></li>
+                <li><a href="{{ path('object_type_new') }}">Тип объекта</a></li>
+                <li><a href="{{ path('sale_type_new') }}">Тип продукции</a></li>
+            </ul>
+        </li>
+    {% endif %}
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <li><a href='#'>Синхронизация</a>
+            <ul>
+                <li><a href="{{ path('mroc_admin_csv') }}">Импорт из CSV</a></li>
+                <li><a href="{{ path('mroc_admin_images') }}">Синхронизация фото</a></li>
+            </ul>
+        </li>
+    {% endif %}
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <li><a href='#'>Модерация</a>
+            <ul>
+                <li><a href="{{ path('mroc_admin_complaints') }}">Жалобы о работе сайта</a></li>
+                <li><a href="{{ path('mroc_admin_comments') }}">Комментарии</a></li>
+                <li><a href="{{ path('mroc_admin_object_complaints') }}">Жалобы на объекты</a></li>
+                <li><a href="{{ path('mroc_admin_register_owner') }}">Регистрация владельца</a></li>
+            </ul>
+        </li>
+    {% endif %}
 </ul>

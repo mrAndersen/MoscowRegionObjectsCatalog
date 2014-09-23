@@ -14,7 +14,7 @@
     {% block javascripts %}{% endblock %}
 </head>
 <body>
-{% include '::admin_menu.html.twig' %}
+{% block admin_menu %}{% include '::admin_menu.html.twig' %}{% endblock %}
 <div class="admin-container">
 {% block body %}{% endblock %}
 </div>

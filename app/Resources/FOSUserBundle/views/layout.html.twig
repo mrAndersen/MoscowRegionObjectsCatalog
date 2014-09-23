@@ -1,0 +1,29 @@
+{% extends '::admin_base.html.twig' %}
+{% block admin_menu %}{% endblock %}
+{% block styleseets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/security.css') }}">
+{% endblock %}
+{% block body %}
+    <div>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+            <a href="{{ path('fos_user_security_logout') }}">
+                {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+            </a>
+        {% endif %}
+    </div>
+
+    {% for type, messages in app.session.flashBag.all %}
+        {% for message in messages %}
+            {% if type != 'token' %}
+                <div class="{{ type }}">
+                    {{ message|trans({}, 'FOSUserBundle') }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+    {% block fos_user_content %}
+    {% endblock fos_user_content %}
+{% endblock %}
+

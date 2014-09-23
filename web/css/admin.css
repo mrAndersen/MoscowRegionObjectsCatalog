@@ -200,7 +200,7 @@ html body .admin-menu li:hover ul {
 html body .admin-menu li:hover ul li a {
   padding: 5px;
   display: block;
-  width: 168px;
+  width: 200px;
   text-indent: 15px;
   background-color: #428bca;
 }
@@ -252,7 +252,8 @@ html body .admin-container form label {
   top: 8px;
 }
 html body .admin-container form input[type="text"],
-html body .admin-container form input[type="file"] {
+html body .admin-container form input[type="file"],
+html body .admin-container form input[type="password"] {
   font-family: "PT Sans";
   font-size: 14px;
   margin: 5px 0 0 0;
@@ -270,6 +271,13 @@ html body .admin-container form input[type="checkbox"] {
 html body .admin-container form select {
   width: 200px;
 }
+html body .admin-container form .multiple {
+  width: 600px;
+  height: 200px;
+}
 html body .admin-container form img {
   margin: 10px 0 0 0;
+}
+html body .admin-container form .login {
+  margin: 20px 0 0 0;
 }

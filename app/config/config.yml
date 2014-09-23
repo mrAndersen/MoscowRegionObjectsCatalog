@@ -5,7 +5,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: "%locale%" }
+    translator: ~
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -29,6 +29,12 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+
+
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: MROC\MainBundle\Entity\User
 
 # Assetic Configuration
 assetic:

@@ -4,6 +4,7 @@ namespace MROC\AdminBundle\Controller;
 
 use Doctrine\Entity;
 use Doctrine\ORM\EntityManager;
+use FOS\UserBundle\Doctrine\UserManager;
 use Intervention\Image\ImageManagerStatic;
 use Keboola\Csv\CsvFile;
 use MROC\AdminBundle\Helpers\YaMap;
@@ -282,6 +283,75 @@ class DefaultController extends Controller
         $em->flush();
 
         return $this->redirect($this->generateUrl('mroc_admin_comments'));
+    }
+
+    public function usersAction($page)
+    {
+        $pageSize = 20;
+        $start = $page * $pageSize;
+
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        /** @var Complaint $repo */
+        $repo = $em->getRepository('MROCMainBundle:User');
+
+        $count = $repo->getElementsCount();
+        $pages = ceil($count / $pageSize);
+
+
+        $qb = $em->createQueryBuilder()
+            ->select('n')->from('MROCMainBundle:User','n')
+            ->setMaxResults($pageSize)
+            ->setFirstResult($start);
+
+        $entities = $qb->getQuery()->getResult();
+
+        return $this->render('MROCAdminBundle:Default:users.html.twig',array(
+            'entities' => $entities,
+            'pages' => $pages,
+            'current' => $page,
+            'count' => $count
+        ));
+    }
+
+    public function registerOwnerAction(Request $request)
+    {
+        if($request->getMethod() == 'GET'){
+            $objects = $this->getDoctrine()->getManager()->getRepository('MROCMainBundle:Object')->findAll();
+
+            return $this->render('MROCAdminBundle:Default:register_owner.html.twig',array(
+                'objects' => $objects
+            ));
+        }
+        if($request->getMethod() == 'POST'){
+            $form = $request->request->all();
+
+            $em = $this->getDoctrine()->getManager();
+
+            /** @var UserManager $manager */
+            $manager = $this->container->get('fos_user.user_manager');
+
+            $user = $manager->createUser();
+            $user->setRoles(array('ROLE_OWNER'));
+            $user->setPlainPassword($form['password']);
+            $user->setEmail($form['email']);
+            $user->setUsername($form['username']);
+            $user->setEnabled(true);
+
+            $manager->updateUser($user);
+            $id = $user->getId();
+
+            foreach($form['objects'] as $v){
+                /** @var \MROC\MainBundle\Entity\Object $object */
+                $object = $em->getRepository('MROCMainBundle:Object')->findOneBy(array('id' => $v));
+
+                $object->setUser($user);
+                $em->persist($object);
+            }
+
+            $em->flush();
+            return $this->redirect($this->generateUrl('mroc_admin_user_list'));
+        }
     }
 
 

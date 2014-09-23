@@ -2,6 +2,8 @@
 
 namespace MROC\AdminBundle\Form;
 
+use MROC\MainBundle\Entity\User;
+use MROC\MainBundle\Entity\UserRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -30,6 +32,15 @@ class ObjectType extends AbstractType
                 'class' => 'MROCMainBundle:SaleType',
                 'label' => 'Тип продукции',
                 'property' => 'name'
+            ))
+            ->add('user','entity',array(
+                'class' => 'MROCMainBundle:User',
+                'label' => 'Пользователь',
+                'property' => 'username',
+                'query_builder' => function(UserRepository $er) {
+                    $qb = $er->createQueryBuilder('u');
+                    return $qb->where($qb->expr()->like('u.roles',$qb->expr()->literal('%ROLE_PARTNER%')));
+                }
             ))
             ->add('image', 'file',array(
                 'label' => 'Фотография',

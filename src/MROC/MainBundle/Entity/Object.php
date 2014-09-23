@@ -66,6 +66,12 @@ class Object
     private $address;
 
     /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user", referencedColumnName="id", nullable=true)
+     */
+    private $user;
+
+    /**
      * @ORM\ManyToOne(targetEntity="ObjectType")
      * @ORM\JoinColumn(name="object_type", referencedColumnName="id", nullable=true)
      */
@@ -246,6 +252,25 @@ class Object
     {
         return $this->id;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+
+
 
     /**
      * Set address

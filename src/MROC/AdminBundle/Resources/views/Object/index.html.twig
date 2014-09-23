@@ -49,7 +49,7 @@
             <th>Id</th>
             <th>Рейтинг(Отзывы)</th>
             <th>Координаты | Адрес</th>
-            <th>Владелец</th>
+            <th>Владелец | Связь</th>
             <th>Тип объекта</th>
             <th>Тип продукции</th>
             <th>Действия</th>
@@ -68,7 +68,20 @@
                     {% endif %}
                 </td>
                 <td>{{ entity.coordinates }} | {{ entity.address }}</td>
-                <td>{{ entity.owner }}</td>
+                <td>
+                    {% if entity.owner %}
+                        {{ entity.owner }}
+                    {% else %}
+                        &mdash;
+                    {% endif %}
+                    |
+                    {% if entity.user %}
+                        {{ entity.user.username }}
+                    {% else %}
+                        &mdash;
+                    {% endif %}
+
+                </td>
                 <td>{{ entity.objectType.name }}</td>
                 <td>{{ entity.saleType.name }}</td>
                 <td>

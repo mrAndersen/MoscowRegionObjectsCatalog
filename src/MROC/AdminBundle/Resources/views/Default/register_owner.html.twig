@@ -1,0 +1,49 @@
+{% extends '::admin_base.html.twig' %}
+{% block javascripts %}
+    <script>
+        $(function(){
+            var gen = $('.generate');
+
+            gen.click(function(){
+                var length = 8,
+                        charset = "abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+                        retVal = "";
+                for (var i = 0, n = charset.length; i < length; ++i) {
+                    retVal += charset.charAt(Math.floor(Math.random() * n));
+                }
+                $('#password').val(retVal);
+            });
+        })
+    </script>
+{% endblock %}
+{% block body -%}
+    <h1>Регистрация владельца</h1>
+    <form method="post" action="{{ path('mroc_admin_register_owner') }}" enctype="application/x-www-form-urlencoded">
+        <div class="row">
+            <label>Имя пользователя</label>
+            <input type="text" id="username" name="username" checked>
+        </div>
+        <div class="row">
+            <label>Пароль</label>
+            <input type="text" id="password" name="password" checked>
+            <a class="button info generate">☼</a>
+        </div>
+        <div class="row">
+            <label>E-mail</label>
+            <input type="text" id="email" name="email" checked>
+        </div>
+        <div class="row">
+            <label>Объекты</label>
+            <select multiple name="objects[]" class="multiple">
+                {% for k,v in objects %}
+                    {% if v.owner %}
+                        <option value="{{ v.id }}">{{ v.owner }}</option>
+                    {% else %}
+                        <option value="{{ v.id }}">{{ v.address }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <input type="submit" class="button primary" value="Создать">
+    </form>
+{% endblock %}

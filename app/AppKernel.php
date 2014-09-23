@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new MROC\MainBundle\MROCMainBundle(),
             new MROC\AdminBundle\MROCAdminBundle(),
             new Gregwar\CaptchaBundle\GregwarCaptchaBundle(),
+            new FOS\UserBundle\FOSUserBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
