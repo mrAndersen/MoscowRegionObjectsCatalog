@@ -188,10 +188,11 @@ html body .mobile-wrapper .top-menu .header {
   width: 82%;
 }
 html body .mobile-wrapper .object-info-layer {
-  position: relative;
+  position: absolute;
   z-index: 5;
   overflow-y: auto;
   display: none;
+  top: 5.9em;
 }
 html body .mobile-wrapper .object-info-layer .inner {
   float: left;
@@ -279,12 +280,13 @@ html body .mobile-wrapper .object-info-layer .inner .comments .comment .who {
   font-weight: bold;
 }
 html body .mobile-wrapper .modal {
-  position: relative;
+  position: absolute;
   z-index: 4;
   overflow-y: auto;
   color: #fff;
   display: none;
-  padding: 1em 2em 2em 2em;
+  padding: 1em 2em 0 2em;
+  top: 5.9em;
 }
 html body .mobile-wrapper .modal .modal-header {
   float: left;

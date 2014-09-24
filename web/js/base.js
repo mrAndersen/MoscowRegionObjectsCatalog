@@ -45,6 +45,7 @@ function showPopup(className,header,content)
         $('.menu-layer').hide();
         $('.object-info-layer').hide();
         $('.nice-layer').show();
+        $('.darken').hide();
     }
 
     modal.addClass(className);
