@@ -1,6 +1,7 @@
 {% extends '::base.html.twig' %}
 {% block title %}Главная страница, ГУП "МосОблКачество"{% endblock %}
 {% block javascripts %}
+    <script src="{{ asset('/js/base.js?scope='~scope) }}" type="text/javascript"></script>
     <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script type="text/javascript">
         window.onload = function(){
@@ -247,147 +248,7 @@
                 var message = '{{ app.session.flashbag.get('success')[0] }}';
                 showPopup('normal','Спасибо!',message);
             {% endif %}
-
-            $(document).on('click tap','.global-complaint',function(e){
-                e.preventDefault();
-                $('.darken').show();
-                $.ajax({
-                    type: 'get',
-                    url: '{{ path('_xhr_mroc_main_global_complaint') }}',
-                    success: function(result){
-                        showPopup('normal','Отправить жалобу',result);
-                    }
-                });
-            });
-
-            $(document).on('click tap','.complaint',function(){
-                $('.darken').show();
-                $.ajax({
-                    type: 'get',
-                    url: '{{ path('_xhr_mroc_main_complaint') }}',
-                    success: function(result){
-                        showPopup('small','Отправить жалобу',result);
-                    }
-                });
-            });
-
-            $(document).on('click tap','.object-complaint',function(){
-                $('.darken').show();
-                $.ajax({
-                    type: 'get',
-                    url: '{{ path('_xhr_mroc_main_object_complaint') }}',
-                    data:{
-                        id: $(this).attr('data-for-id')
-                    },
-                    success: function(result){
-                        showPopup('small','Пожаловаться на объект',result);
-                    }
-                });
-            });
-
-            $(document).on('click tap','.question',function(){
-                $('.darken').show();
-                $.ajax({
-                    type: 'get',
-                    url: '{{ path('_xhr_mroc_main_question') }}',
-                    success: function(result){
-                        showPopup('small','Задать вопрос',result);
-                    }
-                });
-            });
-
-            $(document).on('click tap','.do-comment',function(){
-                $('.darken').show();
-                $.ajax({
-                    type: 'get',
-                    url: '{{ path('_xhr_mroc_main_comment') }}',
-                    data:{
-                        id: $(this).attr('data-for-id')
-                    },
-                    success: function(result){
-                        showPopup('small','Оставить комментарий',result);
-                    }
-                });
-            });
-
-            $(document).on('click tap','.send-global-complaint',function(e){
-                e.preventDefault();
-                var form = $('.global-complaint-form');
-
-                $.ajax({
-                    type: 'post',
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    success: function(result){
-                        if(result.errors.length > 0){
-                            showPopup('normal','Отправить жалобу','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
-                        }else{
-                            showPopup('normal','Отправить жалобу',result.message);
-                        }
-
-                    }
-                });
-            });
-
-            $(document).on('click tap','.send-comment',function(e){
-                e.preventDefault();
-                var form = $('form[name="mroc_mainbundle_comment"]');
-
-                $.ajax({
-                    type: 'post',
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    success: function(result){
-                        if(result.errors.length > 0){
-                            showPopup('small','Оставить комментарий','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
-                        }else{
-                            showPopup('small','Оставить комментарий',result.message);
-                        }
-
-                    }
-                });
-            });
-
-            $(document).on('click tap','.send-complaint',function(e){
-                e.preventDefault();
-                var form = $('form[name="mroc_mainbundle_complaint"]');
-
-                $.ajax({
-                    type: 'post',
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    success: function(result){
-                        if(result.errors.length > 0){
-                            showPopup('small','Отправить жалобу','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
-                        }else{
-                            showPopup('small','Отправить жалобу',result.message);
-                        }
-
-                    }
-                });
-            });
-
-            $(document).on('click tap','.send-question',function(e){
-                e.preventDefault();
-                var form = $('form[name="mroc_mainbundle_question"]');
-
-                $.ajax({
-                    type: 'post',
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    success: function(result){
-                        if(result.errors.length > 0){
-                            showPopup('small','Задать вопрос','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
-                        }else{
-                            showPopup('small','Задать вопрос',result.message);
-                        }
-
-                    }
-                });
-            });
-
         };
-
     </script>
 {% endblock %}
 

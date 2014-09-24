@@ -5,6 +5,7 @@
  {% endblock %}
 
 {% block javascripts %}
+    <script src="{{ asset('/js/base.js?scope='~scope) }}" type="text/javascript"></script>
     <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script type="text/javascript">
         window.onload = function(){
@@ -19,13 +20,12 @@
             var openObjectInfo = document.getElementsByClassName('open-object-info')[0];
             var modal = document.getElementsByClassName('modal')[0];
 
-            map.style.height = window.screen.height - topMenu.offsetHeight + 'px';
-            menuLayer.style.height = window.screen.height - topMenu.offsetHeight + 'px';
-            objectLayer.style.height = window.screen.height - topMenu.offsetHeight + 'px';
-            modal.style.height = window.screen.height - topMenu.offsetHeight + 'px';
+            map.style.height = window.innerHeight - topMenu.offsetHeight + 'px';
+            menuLayer.style.height = window.innerHeight - topMenu.offsetHeight + 'px';
+            objectLayer.style.height = window.innerHeight - topMenu.offsetHeight + 'px';
+            modal.style.height = window.innerHeight - topMenu.offsetHeight + 'px';
 
-
-            niceLayer.style.height = window.screen.height - topMenu.offsetHeight + 'px';
+            niceLayer.style.height = window.innerHeight - topMenu.offsetHeight + 'px';
 
             menuLayerSwitch.on('click tap',function(){
                 $(niceLayer).toggle();
@@ -123,157 +123,6 @@
                     })
                 }
             }
-
-            $(document).on('click tap','.global-complaint',function(e){
-                e.preventDefault();
-                $('.darken').show();
-                $.ajax({
-                    type: 'get',
-                    url: '{{ path('_xhr_mroc_main_global_complaint') }}',
-                    success: function(result){
-                        $(niceLayer).show();
-                        showPopup('normal','Отправить жалобу',result);
-                    }
-                });
-            });
-
-            $(document).on('click tap','.complaint',function(){
-                $('.darken').show();
-                $.ajax({
-                    type: 'get',
-                    url: '{{ path('_xhr_mroc_main_complaint') }}',
-                    success: function(result){
-                        $(niceLayer).show();
-                        showPopup('normal','Отправить жалобу',result);
-                    }
-                });
-            });
-
-            $(document).on('click tap','.object-complaint',function(){
-                $('.darken').show();
-                $.ajax({
-                    type: 'get',
-                    url: '{{ path('_xhr_mroc_main_object_complaint') }}',
-                    data:{
-                        id: $(this).attr('data-for-id')
-                    },
-                    success: function(result){
-                        $(niceLayer).show();
-                        showPopup('normal','Пожаловаться на объект',result);
-                    }
-                });
-            });
-
-            $(document).on('click tap','.question',function(){
-                $('.darken').show();
-                $.ajax({
-                    type: 'get',
-                    url: '{{ path('_xhr_mroc_main_question') }}',
-                    success: function(result){
-                        $(niceLayer).show();
-                        showPopup('normal','Задать вопрос',result);
-                    }
-                });
-            });
-
-            $(document).on('click tap','.do-comment',function(){
-                $('.darken').show();
-                $.ajax({
-                    type: 'get',
-                    url: '{{ path('_xhr_mroc_main_comment') }}',
-                    data:{
-                        id: $(this).attr('data-for-id')
-                    },
-                    success: function(result){
-                        $(niceLayer).show();
-                        showPopup('normal','Оставить комментарий',result);
-                    }
-                });
-            });
-
-            $(document).on('click tap','.send-global-complaint',function(e){
-                e.preventDefault();
-                var form = $('.global-complaint-form');
-
-                $.ajax({
-                    type: 'post',
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    success: function(result){
-                        if(result.errors.length > 0){
-                            $(niceLayer).show();
-                            showPopup('normal','Отправить жалобу','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
-                        }else{
-                            $(niceLayer).show();
-                            showPopup('normal','Отправить жалобу',result.message);
-                        }
-
-                    }
-                });
-            });
-
-            $(document).on('click tap','.send-comment',function(e){
-                e.preventDefault();
-                var form = $('form[name="mroc_mainbundle_comment"]');
-
-                $.ajax({
-                    type: 'post',
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    success: function(result){
-                        if(result.errors.length > 0){
-                            $(niceLayer).show();
-                            showPopup('normal','Оставить комментарий','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
-                        }else{
-                            $(niceLayer).show();
-                            showPopup('normal','Оставить комментарий',result.message);
-                        }
-
-                    }
-                });
-            });
-
-            $(document).on('click tap','.send-complaint',function(e){
-                e.preventDefault();
-                var form = $('form[name="mroc_mainbundle_complaint"]');
-
-                $.ajax({
-                    type: 'post',
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    success: function(result){
-                        if(result.errors.length > 0){
-                            $(niceLayer).show();
-                            showPopup('normal','Отправить жалобу','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
-                        }else{
-                            $(niceLayer).show();
-                            showPopup('normal','Отправить жалобу',result.message);
-                        }
-
-                    }
-                });
-            });
-
-            $(document).on('click tap','.send-question',function(e){
-                e.preventDefault();
-                var form = $('form[name="mroc_mainbundle_question"]');
-
-                $.ajax({
-                    type: 'post',
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    success: function(result){
-                        if(result.errors.length > 0){
-                            $(niceLayer).show();
-                            showPopup('normal','Задать вопрос','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
-                        }else{
-                            $(niceLayer).show();
-                            showPopup('normal','Задать вопрос',result.message);
-                        }
-
-                    }
-                });
-            });
         };
     </script>
 {% endblock %}
@@ -289,8 +138,8 @@
         <div class="nice-layer"></div>
         <div class="menu-layer">
             <div class="inner">
-                <a class="open-filter">Фильтр</a>
-                <a class="open-object-info">Информация об объекте</a>
+                <a class="open-filter">Фильтр</a><br>
+                <a class="open-object-info">Информация об объекте</a><br>
                 <div class="hr"></div>
                 <div class="button red complaint">Пожаловаться</div>
                 <div class="button default question">Отправить вопрос</div>
