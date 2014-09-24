@@ -16,7 +16,7 @@ class ObjectRepository extends EntityRepository
     public function getIdAddressList()
     {
         $em = $this->getEntityManager();
-        $q = $em->createQueryBuilder()->select('n.coordinates','n.id')
+        $q = $em->createQueryBuilder()->select('n.coordinates','n.id','IDENTITY(n.object_type) as ot','IDENTITY(n.sale_type) as st')
             ->from('MROCMainBundle:Object','n')
             ->getQuery();
         $result = $q->getResult();

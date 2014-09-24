@@ -13,6 +13,43 @@
             var animationPeriod = 200;
             var hasVotedForIds  = [];
 
+            $(document).on('change','.sale_type_select, .object_type_select',function(e){
+                var newList = [];
+                var checkedOT = [];
+                var checkedST = [];
+
+                $('.sale_type_select:checked').each(function(){
+                    checkedST.push(parseInt($(this).val()));
+                });
+
+                $('.object_type_select:checked').each(function(){
+                    checkedOT.push(parseInt($(this).val()));
+                });
+
+                iterate(list,function(key,val){
+                    if(checkedST.indexOf(parseInt(val.st)) != -1 && checkedOT.indexOf(parseInt(val.ot)) != -1){
+                        newList.push(val);
+                    }else{
+                        if(checkedST.indexOf(parseInt(val.st)) != -1){
+                            newList.push(val);
+                        }else{
+                            if(checkedOT.indexOf(parseInt(val.ot)) != -1){
+                                newList.push(val);
+                            }
+                        }
+                    }
+                });
+
+                if(newList.length > 0){
+                    moscowRegionMap.geoObjects.removeAll();
+                    fillMap(moscowRegionMap,newList,fillSidePanel);
+                }else{
+                    newList = list;
+                }
+            });
+
+
+
             ymaps.ready(function(){
                 moscowRegionMap = new ymaps.Map("map",
                         {
@@ -22,45 +59,7 @@
                         }
                 );
 
-                var mapObjects = [];
-                iterate(list,function(key,val){
-                    var g = new ymaps.GeoObject({
-                        geometry: {
-                            type: "Point",
-                            coordinates: val.coordinates
-                        },
-                        properties: {
-                            clusterCaption: 'Объект # '+val.id,
-                            balloonContent: 'Объект # '+val.id
-                        }
-                    },{
-                        hasBaloon: false
-                    });
-                    g.properties.set('mrocId',val.id);
-                    g.events.add('balloonopen',function(e){
-                        fillSidePanel(g.properties.get('mrocId'));
-                    });
-
-                    mapObjects.push(g);
-                });
-
-                var cluster = new ymaps.Clusterer();
-                var activeObjectMonitor;
-
-                cluster.events
-                        .add('balloonopen',function(event){
-                            activeObjectMonitor = new ymaps.Monitor(event.get('cluster').state);
-                            activeObjectMonitor.add('activeObject', function (newValue) {
-                                fillSidePanel(newValue.properties.get('mrocId'));
-                            });
-                        })
-                        .remove('balloonclose', function (event) {
-                            activeObjectMonitor.removeAll();
-                        });
-
-
-                cluster.add(mapObjects);
-                moscowRegionMap.geoObjects.add(cluster);
+                fillMap(moscowRegionMap,list,fillSidePanel);
                 resizeObjects();
             });
 

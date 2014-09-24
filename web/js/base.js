@@ -75,6 +75,49 @@ function getScope(script_name) {
     return {};
 }
 
+function fillMap(map,list,fillExtendedInfoCallback)
+{
+    var mapObjects = [];
+
+    iterate(list,function(key,val){
+        var g = new ymaps.GeoObject({
+            geometry: {
+                type: "Point",
+                coordinates: val.coordinates
+            },
+            properties: {
+                clusterCaption: 'Объект # '+val.id,
+                balloonContent: 'Объект # '+val.id
+            }
+        },{
+            hasBaloon: false
+        });
+        g.properties.set('mrocId',val.id);
+        g.events.add('balloonopen',function(e){
+            fillExtendedInfoCallback(g.properties.get('mrocId'));
+        });
+
+        mapObjects.push(g);
+    });
+
+    var cluster = new ymaps.Clusterer();
+    var activeObjectMonitor;
+
+    cluster.events
+        .add('balloonopen',function(event){
+            activeObjectMonitor = new ymaps.Monitor(event.get('cluster').state);
+            activeObjectMonitor.add('activeObject', function (newValue) {
+                fillExtendedInfoCallback(newValue.properties.get('mrocId'));
+            });
+        })
+        .remove('balloonclose', function (event) {
+            activeObjectMonitor.removeAll();
+        });
+
+    cluster.add(mapObjects);
+    map.geoObjects.add(cluster);
+}
+
 $(document).on('click tap','.global-complaint',function(e){
     e.preventDefault();
     $('.darken').show();

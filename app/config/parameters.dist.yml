@@ -18,4 +18,4 @@ parameters:
     debug_redirects:        false
     use_assetic_controller: false
 
-    complaint_email: mrandersen2004@yandex.ru
+    complaint_email: golikanu@yandex.ru
