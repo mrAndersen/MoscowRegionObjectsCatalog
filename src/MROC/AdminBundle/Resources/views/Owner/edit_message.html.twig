@@ -1,0 +1,15 @@
+{% extends '::admin_base.html.twig' %}
+
+{% block body -%}
+    <h1>Редактирование сообщения</h1>
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_row(form.header) }}
+    {{ form_row(form.text,{'attr':{'rows':6}}) }}
+
+    {{ form_widget(form.save,{'label': 'Сохранить'}) }}
+
+    {{ form_widget(form._token) }}
+{% endblock %}

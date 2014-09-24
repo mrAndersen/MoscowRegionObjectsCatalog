@@ -1,0 +1,65 @@
+{% extends '::admin_base.html.twig' %}
+{% block body -%}
+    <h1>Список ваших объектов ({{ count }})</h1>
+    <table class="records_list">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Рейтинг(Отзывы)</th>
+            <th>Координаты | Адрес</th>
+            <th>Владелец | Связь</th>
+            <th>Тип объекта</th>
+            <th>Тип продукции</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.id }}</td>
+                <td>
+                    {% if entity.rating %}
+                        {{ entity.rating }}
+                        ({{ entity.votes }})
+                    {% else %}
+                        &mdash;
+                    {% endif %}
+                </td>
+                <td>{{ entity.coordinates }} | {{ entity.address }}</td>
+                <td>
+                    {% if entity.owner %}
+                        {{ entity.owner }}
+                    {% else %}
+                        &mdash;
+                    {% endif %}
+                    |
+                    {% if entity.user %}
+                        {{ entity.user.username }}
+                    {% else %}
+                        &mdash;
+                    {% endif %}
+
+                </td>
+                <td>{{ entity.objectType.name }}</td>
+                <td>{{ entity.saleType.name }}</td>
+                <td>
+                    <a class="button info" href="{{ path('owner_edit_message',{id:entity.id}) }}">Редактировать сообщение</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if pages > 0 %}
+        <div class="pages">
+            {% for i in 1..pages %}
+                {% if i == current + 1 %}
+                    <a class="page button info active" href="{{ path('object',{'page': i-1}) }}">{{ i }}</a>
+                {% else %}
+                    <a class="page button info" href="{{ path('object',{'page': i-1}) }}">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+{% endblock %}

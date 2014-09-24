@@ -1,0 +1,7 @@
+owner_list_objects:
+    path:     /list
+    defaults: { _controller: "MROCAdminBundle:Owner:list", page:0 }
+
+owner_edit_message:
+    path: /message/{id}
+    defaults: { _controller: "MROCAdminBundle:Owner:editMessage" }

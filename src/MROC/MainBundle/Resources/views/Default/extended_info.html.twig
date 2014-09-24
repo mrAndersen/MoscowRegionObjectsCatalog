@@ -25,13 +25,25 @@
     </div>
     <div class="current-position">Местов рейтинге: {{ rank }}</div>
 </div>
+{% if node.ownerMessageHeader and node.ownerMessage %}
+    <div class="owner">
+        <div class="owner-header">{{ node.ownerMessageHeader }}</div>
+        <div class="owner-message">{{ node.ownerMessage }}</div>
+    </div>
+{% endif %}
 <div class="comments">
     <div class="comments-line">Отзывы</div>
     <div class="comments-list">
-        <div class="comment">
-            <div class="who">Василий</div>
-            <div class="text">В этой палатке самые  добрые продавцы, за 20 лет ни разу не обвесили</div>
-        </div>
+        {% if comments | length > 0 %}
+            {% for k,v in comments %}
+                <div class="comment">
+                    <div class="who">{{ v.author }}</div>
+                    <div class="text">{{ v.text }}</div>
+                </div>
+            {% endfor %}
+        {% else %}
+            Отзывов нету
+        {% endif %}
     </div>
     <a class="do-comment" data-for-id="{{ node.id }}">Оставить отзыв</a>
     <a class="red button object-complaint" data-for-id="{{ node.id }}">Пожаловаться на объект</a>

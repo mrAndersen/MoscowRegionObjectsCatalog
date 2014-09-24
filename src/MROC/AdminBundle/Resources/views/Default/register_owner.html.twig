@@ -37,9 +37,9 @@
             <select multiple name="objects[]" class="multiple">
                 {% for k,v in objects %}
                     {% if v.owner %}
-                        <option value="{{ v.id }}">{{ v.owner }}</option>
+                        <option value="{{ v.id }}">{{ v.id }} - {{ v.owner }}</option>
                     {% else %}
-                        <option value="{{ v.id }}">{{ v.address }}</option>
+                        <option value="{{ v.id }}">{{ v.id }} - {{ v.address }}</option>
                     {% endif %}
                 {% endfor %}
             </select>

@@ -66,6 +66,20 @@ class Object
     private $address;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="owner_message", type="string", length=255, nullable=true)
+     */
+    private $owner_message;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="owner_message_header", type="string", length=255, nullable=true)
+     */
+    private $owner_message_header;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user", referencedColumnName="id", nullable=true)
      */
@@ -121,6 +135,38 @@ class Object
     public function setImage($image)
     {
         $this->image = $image;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOwnerMessage()
+    {
+        return $this->owner_message;
+    }
+
+    /**
+     * @param string $owner_message
+     */
+    public function setOwnerMessage($owner_message)
+    {
+        $this->owner_message = $owner_message;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOwnerMessageHeader()
+    {
+        return $this->owner_message_header;
+    }
+
+    /**
+     * @param string $owner_message_header
+     */
+    public function setOwnerMessageHeader($owner_message_header)
+    {
+        $this->owner_message_header = $owner_message_header;
     }
 
     /**

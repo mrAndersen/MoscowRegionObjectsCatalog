@@ -431,6 +431,15 @@ html body .container .right {
   z-index: 5;
   border-left: solid 3px #CFF;
 }
+html body .container .right .owner {
+  float: left;
+  margin: 10px;
+  width: 175px;
+}
+html body .container .right .owner .owner-header {
+  font-weight: bold;
+  font-size: 15px;
+}
 html body .container .right .comments {
   padding: 10px 14px 0;
   text-align: center;

@@ -27,12 +27,16 @@ mroc_admin_comment_approve:
     defaults: { _controller: MROCAdminBundle:Default:commentApprove }
 
 mroc_admin_register_owner:
-    path: /owner/register
+    path: /owner_register
     defaults: { _controller: MROCAdminBundle:Default:registerOwner }
 
 mroc_admin_user_list:
     path: /users
     defaults: { _controller: MROCAdminBundle:Default:users, page:0 }
+
+MROCAdminBundle_owner:
+    resource: "@MROCAdminBundle/Resources/config/routing/owner.yml"
+    prefix:   /owner
 
 MROCAdminBundle_object:
     resource: "@MROCAdminBundle/Resources/config/routing/object.yml"

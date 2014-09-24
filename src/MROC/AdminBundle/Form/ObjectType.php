@@ -35,11 +35,13 @@ class ObjectType extends AbstractType
             ))
             ->add('user','entity',array(
                 'class' => 'MROCMainBundle:User',
-                'label' => 'Пользователь',
+                'label' => 'Владелец из базы',
+                'required' => false,
                 'property' => 'username',
+                'empty_value' => 'Выберите пользователя',
                 'query_builder' => function(UserRepository $er) {
                     $qb = $er->createQueryBuilder('u');
-                    return $qb->where($qb->expr()->like('u.roles',$qb->expr()->literal('%ROLE_PARTNER%')));
+                    return $qb->where($qb->expr()->like('u.roles',$qb->expr()->literal('%ROLE_OWNER%')));
                 }
             ))
             ->add('image', 'file',array(

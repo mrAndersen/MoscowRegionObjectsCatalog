@@ -1,7 +1,13 @@
 <ul class="admin-menu">
     <li><a href="{{ path('mroc_main_homepage') }}">Главная сайта</a></li>
     <li><a href="{{ path('mroc_admin_homepage') }}">Панель администратора</a></li>
+    <li><a href="{{ path('fos_user_security_logout') }}">Выйти({{ app.user.username }})</a></li>
     <li class="divider"></li>
+
+    {% if is_granted('ROLE_OWNER') %}
+        <li><a href="{{ path('owner_list_objects') }}">Ваши объекты</a></li>
+    {% endif %}
+
     {% if is_granted('ROLE_SUPER_ADMIN') %}
     <li><a href='#'>Список</a>
         <ul>
@@ -39,4 +45,5 @@
             </ul>
         </li>
     {% endif %}
+    <li class="divider"></li>
 </ul>

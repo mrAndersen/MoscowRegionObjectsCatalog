@@ -1,0 +1,56 @@
+<div class="inner">
+    <div class="node-id">#{{ node.id }}<span>&times;</span></div>
+    <div class="node-address">{{ node.address }}</div>
+    <div class="node-type">{{ node.objectType.name }}</div>
+    <div class="node-sale-type">{{ node.saleType.name }}</div>
+
+    {% if node.imageT and node.image %}
+        <a href="#" class="image"><img src="{{ node.imageT }}" alt="Объект # {{ node.id }}"/></a>
+    {% else %}
+        <a href="#" class="image empty">Фотография недоступна</a>
+    {% endif %}
+
+
+
+    <div class="rating-container">
+        <div class="stars-container">
+            <i class="icon star-empty"></i>
+            <i class="icon star-empty"></i>
+            <i class="icon star-empty"></i>
+            <i class="icon star-empty"></i>
+            <i class="icon star-empty"></i>
+        </div>
+        <div class="rating">
+            Рейтинг:
+            {% if node.rating %}
+                {{ node.rating }}
+            {% else %}
+                нет
+            {% endif %}
+        </div>
+        <div class="rank">Местов рейтинге: {{ rank }}</div>
+    </div>
+    {% if node.ownerMessageHeader and node.ownerMessage %}
+        <div class="owner">
+            <div class="owner-header">{{ node.ownerMessageHeader }}</div>
+            <div class="owner-message">{{ node.ownerMessage }}</div>
+        </div>
+    {% endif %}
+    <div class="comments">
+        <div class="comments-line">Отзывы</div>
+        <div class="comments-list">
+            {% if comments | length > 0 %}
+                {% for k,v in comments %}
+                    <div class="comment">
+                        <div class="who">{{ v.author }}</div>
+                        <div class="text">{{ v.text }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                Отзывов нету
+            {% endif %}
+        </div>
+        <a class="default button do-comment" data-for-id="{{ node.id }}">Оставить отзыв</a>
+        <a class="red button object-complaint" data-for-id="{{ node.id }}">Пожаловаться на объект</a>
+    </div>
+</div>
