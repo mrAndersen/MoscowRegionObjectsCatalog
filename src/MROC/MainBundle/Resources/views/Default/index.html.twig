@@ -40,12 +40,9 @@
                     }
                 });
 
-                if(newList.length > 0){
-                    moscowRegionMap.geoObjects.removeAll();
-                    fillMap(moscowRegionMap,newList,fillSidePanel);
-                }else{
-                    newList = list;
-                }
+                moscowRegionMap.geoObjects.removeAll();
+                newList = newList.length == 0 ? list : newList;
+                fillMap(moscowRegionMap,newList,fillSidePanel);
             });
 
 
