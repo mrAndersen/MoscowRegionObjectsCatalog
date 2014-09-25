@@ -17,6 +17,7 @@ use MROC\MainBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -127,7 +128,37 @@ class DefaultController extends Controller
         }
 
         $webDir = __DIR__.'/../../../../web/';
-        $file = new CsvFile($webDir.'out.csv');
+        $fileName = $webDir.'out.csv';
+
+        $file = new CsvFile($fileName,';');
+
+        foreach($objects as $k=>$v){
+            $data = array();
+
+            /** @var \MROC\MainBundle\Entity\Object $v */
+            $data[] = $v->getAddress();
+            $data[] = $v->getObjectType()->getName();
+            $data[] = $v->getSaleType()->getName();
+            $data[] = $v->getOwner();
+            $data[] = $v->getTimes();
+            $data[] = (string)$v->getRegisteredLand();
+            $data[] = $v->getMunicipalId();
+            $data[] = $v->getRating();
+
+            $file->writeRow($data);
+        }
+
+        $file->__destruct();
+
+        $response = new Response();
+        $response->setContent(file_get_contents($file));
+
+        unlink($fileName);
+
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename="output.csv"');
+
+        return $response;
     }
 
     public function filterStringVariable($var)
@@ -147,9 +178,9 @@ class DefaultController extends Controller
         }
         $result = array_unique($result);
         foreach($result as $k=>$v){
-            $t = new SaleType();
-            $t->setName($v);
-            $em->persist($t);
+            $s = new SaleType();
+            $s->setName($v);
+            $em->persist($s);
 
             $i++;
         }
@@ -192,12 +223,12 @@ class DefaultController extends Controller
             foreach($csv as $k=>$v){
                 $lines[] = $v;
             }
+            $ot = 0; $st = 0; $o = 0;
+
 
             $this->clearDatabase();
             $ot = $this->writeUniqueObjectTypes($lines);
             $st = $this->writeUniqueSaleTypes($lines);
-
-            $ot = 0; $st = 0; $o = 0;
 
             foreach($lines as $k=>$v){
                 $address = $v[0] !='' ? $v[0] : null;

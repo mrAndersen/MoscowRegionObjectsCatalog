@@ -7,12 +7,14 @@ use Intervention\Image\Image;
 use Intervention\Image\ImageManagerStatic;
 use MROC\AdminBundle\Helpers\YaMap;
 use MROC\MainBundle\Entity\ObjectRepository;
+use MROC\MainBundle\Entity\User;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use MROC\MainBundle\Entity\Object;
 use MROC\AdminBundle\Form\ObjectType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Object controller.
@@ -27,6 +29,9 @@ class ObjectController extends Controller
      */
     public function indexAction($page, Request $request)
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
         $pageSize = 30;
         $start = $page * $pageSize;
 
@@ -38,15 +43,22 @@ class ObjectController extends Controller
         /** @var ObjectRepository $repo */
         $repo = $em->getRepository('MROCMainBundle:Object');
 
-        $count = $repo->getElementsCount();
-        $pages = ceil($count / $pageSize);
+        $qcb = $em->createQueryBuilder()->select('count(n.id)')->from('MROCMainBundle:Object','n');
+        if($user->hasRole('ROLE_MUNICIPAL')){
+            $qcb->where('n.municipal_id = :id')->setParameter(':id',$user->getMunicipalId());
+        }
+        $count = $qcb->getQuery()->getOneOrNullResult();
+        $count = $count[1];
 
+        $pages = ceil($count / $pageSize);
 
         $qb = $em->createQueryBuilder()
             ->select('n')->from('MROCMainBundle:Object','n')
-            ->orderBy('n.'.$sort,$order)
-            ->setMaxResults($pageSize)
-            ->setFirstResult($start);
+            ->orderBy('n.'.$sort,$order);
+        if($user->hasRole('ROLE_MUNICIPAL')){
+            $qb->where('n.municipal_id = :id')->setParameter(':id',$user->getMunicipalId());
+        }
+        $qb->setMaxResults($pageSize)->setFirstResult($start);
 
         $entities = $qb->getQuery()->getResult();
 
@@ -104,12 +116,17 @@ class ObjectController extends Controller
      */
     private function createCreateForm(Object $entity)
     {
+        $user = $this->getUser();
         $form = $this->createForm(new ObjectType(), $entity, array(
             'action' => $this->generateUrl('object_create'),
             'method' => 'POST',
         ));
 
         $form->add('submit', 'submit', array('label' => 'Create'));
+
+        if($user->hasRole('ROLE_MUNICIPAL')){
+            $form->get('municipal_id')->setData($user->getMunicipalId());
+        }
 
         return $form;
     }
@@ -135,9 +152,14 @@ class ObjectController extends Controller
      */
     public function editAction($id)
     {
+        $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
-
+        /** @var Object $entity */
         $entity = $em->getRepository('MROCMainBundle:Object')->find($id);
+
+        if($user->hasRole('ROLE_MUNICIPAL') && $entity->getMunicipalId() !== $user->getMunicipalId()){
+            throw new AccessDeniedException;
+        }
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Object entity.');
@@ -177,7 +199,7 @@ class ObjectController extends Controller
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
-
+        /** @var Object $entity */
         $entity = $em->getRepository('MROCMainBundle:Object')->find($id);
 
         if (!$entity) {
@@ -206,11 +228,17 @@ class ObjectController extends Controller
      */
     public function deleteAction($id)
     {
+        $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
+        /** @var Object $entity */
         $entity = $em->getRepository('MROCMainBundle:Object')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Object entity.');
+        }
+
+        if($user->hasRole('ROLE_MUNICIPAL') && $entity->getMunicipalId() !== $user->getMunicipalId()){
+            throw new AccessDeniedException;
         }
 
         $em->remove($entity);

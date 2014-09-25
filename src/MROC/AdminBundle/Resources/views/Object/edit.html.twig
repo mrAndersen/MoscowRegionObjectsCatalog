@@ -12,7 +12,19 @@
     {{ form_row(edit_form.sale_type) }}
     {{ form_row(edit_form.user) }}
     {{ form_row(edit_form.registered_land) }}
-    {{ form_row(edit_form.municipal_id) }}
+
+    {% if is_granted('ROLE_MUNICIPAL') %}
+        <div>
+            {{ form_label(edit_form.municipal_id) }}
+            {{ form_errors(edit_form.municipal_id) }}
+            {{ form_widget(edit_form.municipal_id, {'attr': {'disabled':'disabled'} }) }}
+        </div>
+    {% else %}
+        {{ form_row(edit_form.municipal_id) }}
+    {% endif %}
+
+
+
     {{ form_row(edit_form.image) }}
     <div>
         <label>Текущая фотография</label>

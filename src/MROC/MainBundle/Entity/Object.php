@@ -182,6 +182,8 @@ class Object
         return $this->municipal_id;
     }
 
+
+
     /**
      * @param int $municipal_id
      */
@@ -209,7 +211,7 @@ class Object
     /**
      * @return boolean
      */
-    public function isRegisteredLand()
+    public function getRegisteredLand()
     {
         return $this->registered_land;
     }

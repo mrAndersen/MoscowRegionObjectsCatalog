@@ -12,7 +12,15 @@
     {{ form_row(form.sale_type) }}
     {{ form_row(form.user) }}
     {{ form_row(form.registered_land) }}
-    {{ form_row(form.municipal_id) }}
+    {% if is_granted('ROLE_MUNICIPAL') %}
+        <div>
+            {{ form_label(form.municipal_id) }}
+            {{ form_errors(form.municipal_id) }}
+            {{ form_widget(form.municipal_id, {'attr': {'disabled':'disabled'} }) }}
+        </div>
+    {% else %}
+        {{ form_row(form.municipal_id) }}
+    {% endif %}
     {{ form_row(form.image) }}
     {{ form_row(form.override) }}
 
