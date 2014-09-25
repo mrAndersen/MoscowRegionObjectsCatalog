@@ -163,9 +163,18 @@ class DefaultController extends Controller
 
                 return $this->redirect($this->generateUrl('mroc_main_homepage'));
             }else{
-                return $this->render('MROCMainBundle:Forms:failed_complaint.html.twig',array(
-                    'errors' => $form->getErrors()
-                ));
+                /** @var Session $session */
+                $session = $this->get('session');
+
+                $session->getFlashBag()->set('failed','Произошли ошибки:');
+
+                $errors = array();
+                foreach($form->getErrors(true) as $k=>$v){
+                    $errors[] = $v->getMessage();
+                }
+
+                $session->getFlashBag()->set('errors',json_encode($errors));
+                return $this->redirect($this->generateUrl('mroc_main_homepage'));
             }
         }
     }

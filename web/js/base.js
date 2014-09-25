@@ -245,6 +245,7 @@ $(document).on('click tap','.do-comment',function(){
     });
 });
 
+
 $(document).on('click tap','.send-global-complaint',function(e){
     e.preventDefault();
     var form = $('.global-complaint-form');
@@ -316,6 +317,7 @@ $(document).on('click tap','.send-question',function(e){
         }
     });
 });
+
 
 $(document).on('click tap','.modal .close',function(){
     $('.modal').hide();

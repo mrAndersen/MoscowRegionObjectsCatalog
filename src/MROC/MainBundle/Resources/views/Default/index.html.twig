@@ -12,6 +12,7 @@
             var rightBar        = $('.right');
             var animationPeriod = 200;
             var hasVotedForIds  = [];
+            var message = '';
 
             ymaps.ready(function(){
                 initMap();
@@ -187,9 +188,16 @@
                 }
             });
 
+
+
             {% if app.session.flashbag.has('success') %}
-                var message = '{{ app.session.flashbag.get('success')[0] }}';
-                showPopup('normal','Спасибо!',message);
+                message = '{{ app.session.flashbag.get('success')[0] }}';
+                showPopup('small','Спасибо!',message);
+            {% endif %}
+
+            {% if app.session.flashbag.has('failed') and app.session.flashbag.has('errors') %}
+                message = {{ app.session.flashbag.get('errors')[0] | raw }};
+                showPopup('small','Произошли ошибки',message.join('<br>'));
             {% endif %}
         };
     </script>

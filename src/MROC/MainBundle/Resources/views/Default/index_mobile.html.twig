@@ -96,6 +96,16 @@
                     })
                 }
             }
+
+            {% if app.session.flashbag.has('success') %}
+                var message = '{{ app.session.flashbag.get('success')[0] }}';
+                showPopup('normal','Спасибо!',message);
+            {% endif %}
+
+            {% if app.session.flashbag.has('failed') %}
+                var message = '{{ app.session.flashbag.get('errors') | json_encode }}';
+                showPopup('normal','Произошли ошибки',message.join('<br>'));
+            {% endif %}
         };
     </script>
 {% endblock %}
