@@ -390,6 +390,8 @@ html body .container .left .tab-content {
   border: solid #CCC;
   border-width: 1px 0 1px 0;
   padding: 15px;
+  height: 130px;
+  overflow-y: auto;
 }
 html body .container .left .tab-content .content {
   display: none;

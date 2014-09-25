@@ -279,6 +279,96 @@ html body .mobile-wrapper .object-info-layer .inner .comments .comment {
 html body .mobile-wrapper .object-info-layer .inner .comments .comment .who {
   font-weight: bold;
 }
+html body .mobile-wrapper .filter-layer {
+  position: absolute;
+  z-index: 4;
+  overflow-y: auto;
+  color: #fff;
+  display: none;
+  padding: 1em 2em 0 2em;
+  top: 5.9em;
+}
+html body .mobile-wrapper .filter-layer .filter-header {
+  float: left;
+  width: 100%;
+  margin: 0 0 1em 0;
+}
+html body .mobile-wrapper .filter-layer .filter-header .filter-text {
+  float: left;
+  width: 90%;
+  font-size: 1.6em;
+  font-weight: bold;
+}
+html body .mobile-wrapper .filter-layer .filter-header .close {
+  font-size: 3em;
+  line-height: 0.7em;
+  float: left;
+  width: 10%;
+}
+html body .mobile-wrapper .filter-layer .tabs {
+  float: left;
+  width: 100%;
+}
+html body .mobile-wrapper .filter-layer .tabs .tab {
+  padding: 0.4em 0.8em;
+  background: #CCC;
+  border-radius: 5px 5px 0 0;
+  text-decoration: underline;
+  font-weight: bold;
+  display: block;
+  float: left;
+  margin: 0 0.2em 0 0;
+}
+html body .mobile-wrapper .filter-layer .tabs .tab.active {
+  background: #FFF;
+  color: #186EA4;
+  text-decoration: none;
+}
+html body .mobile-wrapper .filter-layer .tab-content {
+  float: left;
+  width: 83.5%;
+  border: solid 0.2em;
+  padding: 7%;
+}
+html body .mobile-wrapper .filter-layer .tab-content .content {
+  display: none;
+}
+html body .mobile-wrapper .filter-layer .tab-content .content ul {
+  list-style: none;
+}
+html body .mobile-wrapper .filter-layer .tab-content .content ul li label input {
+  position: relative;
+  top: 2px;
+  margin: 0 0.2em 0 0;
+}
+html body .mobile-wrapper .filter-layer .tab-content .content.active {
+  display: block;
+}
+html body .mobile-wrapper .filter-layer .best {
+  float: left;
+  width: 100%;
+  margin: 1em 0 0 0;
+}
+html body .mobile-wrapper .filter-layer .best .best-line {
+  font-size: 1.2em;
+  background: #FFF;
+  color: #186EA4;
+  padding: 0.2em 1em;
+  margin: 0 0 1em 0;
+  display: inline-block;
+}
+html body .mobile-wrapper .filter-layer .best .best-list {
+  float: left;
+  width: 100%;
+}
+html body .mobile-wrapper .filter-layer .best .best-list .list-item {
+  border-bottom: solid 1px #FFF;
+  padding: 0 0 1em 0;
+  margin: 0 0 1em 0;
+}
+html body .mobile-wrapper .filter-layer .best .best-list .list-item a {
+  color: #FFF;
+}
 html body .mobile-wrapper .modal {
   position: absolute;
   z-index: 4;

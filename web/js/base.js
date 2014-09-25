@@ -52,7 +52,8 @@ function showPopup(className,header,content)
     modal.slideDown(200);
 }
 
-function getScope(script_name) {
+function getScope(script_name)
+{
     // Find all script tags
     var scripts = document.getElementsByTagName("script");
 
@@ -117,6 +118,69 @@ function fillMap(map,list,fillExtendedInfoCallback)
 
     cluster.add(mapObjects);
     map.geoObjects.add(cluster);
+}
+
+function initMap()
+{
+    var zoom = _scope == 'mobile' ? 8 : 9;
+
+    moscowRegionMap = new ymaps.Map("map",
+        {
+            center: [55.76, 37.64],
+            zoom: zoom,
+            controls: ['typeSelector','geolocationControl']
+        }
+    );
+
+
+    var zoomControl = new ymaps.control.ZoomControl({
+        options:{
+            size: 'small'
+        }
+    });
+    var searchControl = new ymaps.control.SearchControl({
+        options:{
+            size: 'small'
+        }
+    });
+
+    moscowRegionMap.controls.add(zoomControl);
+    moscowRegionMap.controls.add(searchControl);
+}
+
+function handleStates(list,fillExtendedInfoCallback)
+{
+    $(document).on('change','.sale_type_select, .object_type_select',function(e){
+        var newList = [];
+        var checkedOT = [];
+        var checkedST = [];
+
+        $('.sale_type_select:checked').each(function(){
+            checkedST.push(parseInt($(this).val()));
+        });
+
+        $('.object_type_select:checked').each(function(){
+            checkedOT.push(parseInt($(this).val()));
+        });
+
+        iterate(list,function(key,val){
+            if(checkedST.indexOf(parseInt(val.st)) != -1 && checkedOT.indexOf(parseInt(val.ot)) != -1){
+                newList.push(val);
+            }else{
+                if(checkedST.indexOf(parseInt(val.st)) != -1){
+                    newList.push(val);
+                }else{
+                    if(checkedOT.indexOf(parseInt(val.ot)) != -1){
+                        newList.push(val);
+                    }
+                }
+            }
+        });
+
+        moscowRegionMap.geoObjects.removeAll();
+        newList = newList.length == 0 ? list : newList;
+        fillMap(moscowRegionMap,newList,fillExtendedInfoCallback);
+    });
 }
 
 $(document).on('click tap','.global-complaint',function(e){
@@ -261,4 +325,18 @@ $(document).on('click tap','.modal .close',function(){
         $('.nice-layer').show();
         $('.menu-layer').show();
     }
+});
+
+$(document).on('click tap','.tabs .tab',function(){
+    var allTabs = $('.tabs .tab');
+    var allContents = $('.tab-content .content');
+    var targetName = $(this).attr('data-for-tab');
+    var target = $('.tab-content .content[data-tab-name="'+targetName+'"]');
+
+    allTabs.removeClass('active');
+    $(this).addClass('active');
+
+
+    allContents.removeClass('active');
+    target.addClass('active');
 });

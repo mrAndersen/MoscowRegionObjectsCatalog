@@ -18,12 +18,16 @@
             var objectLayer = document.getElementsByClassName('object-info-layer')[0];
             var topMenu = document.getElementsByClassName('top-menu')[0];
             var openObjectInfo = document.getElementsByClassName('open-object-info')[0];
+            var openFilter = document.getElementsByClassName('open-filter')[0];
+
             var modal = document.getElementsByClassName('modal')[0];
+            var filterLayer = document.getElementsByClassName('filter-layer')[0];
 
             map.style.height = window.innerHeight - topMenu.offsetHeight + 'px';
             menuLayer.style.height = window.innerHeight - topMenu.offsetHeight + 'px';
             objectLayer.style.height = window.innerHeight - topMenu.offsetHeight + 'px';
-            modal.style.height = window.innerHeight - topMenu.offsetHeight + 'px';
+            modal.style.height = window.innerHeight - topMenu.offsetHeight + -20 + 'px';
+            filterLayer.style.height = window.innerHeight - topMenu.offsetHeight - 20 + 'px';
 
             niceLayer.style.height = window.innerHeight - topMenu.offsetHeight + 'px';
 
@@ -40,62 +44,31 @@
                 }else{
                     alert('Объект не выбран');
                 }
+            });
 
+            $(openFilter).on('click tap',function(){
+                $(niceLayer).show();
+                $(menuLayer).hide();
+                $(filterLayer).show();
             });
 
             $(document).on('click tap','.object-info-layer .node-id span',function(){
                 $(menuLayer).show();
                 $(objectLayer).hide();
+                $(filterLayer).hide();
+            });
+
+            $(document).on('click tap','.filter-layer .filter-header .close',function(){
+                $(menuLayer).show();
+                $(objectLayer).hide();
+                $(filterLayer).hide();
             });
 
             ymaps.ready(function(){
-                moscowRegionMap = new ymaps.Map("map",
-                        {
-                            center: [55.76, 37.64],
-                            zoom: 8,
-                            controls: ['smallMapDefaultSet']
-                        }
-                );
+                initMap();
+                fillMap(moscowRegionMap,list,fillObjectLayer);
 
-                var mapObjects = [];
-                iterate(list,function(key,val){
-                    var g = new ymaps.GeoObject({
-                        geometry: {
-                            type: "Point",
-                            coordinates: val.coordinates
-                        },
-                        properties: {
-                            clusterCaption: 'Объект # '+val.id,
-                            balloonContent: 'Объект # '+val.id
-                        }
-                    },{
-                        hasBaloon: false
-                    });
-                    g.properties.set('mrocId',val.id);
-                    g.events.add('balloonopen',function(e){
-                        fillObjectLayer(g.properties.get('mrocId'));
-                    });
-
-                    mapObjects.push(g);
-                });
-
-                var cluster = new ymaps.Clusterer();
-                var activeObjectMonitor;
-
-                cluster.events
-                        .add('balloonopen',function(event){
-                            activeObjectMonitor = new ymaps.Monitor(event.get('cluster').state);
-                            activeObjectMonitor.add('activeObject', function (newValue) {
-                                fillObjectLayer(newValue.properties.get('mrocId'));
-                            });
-                        })
-                        .remove('balloonclose', function (event) {
-                            activeObjectMonitor.removeAll();
-                        });
-
-
-                cluster.add(mapObjects);
-                moscowRegionMap.geoObjects.add(cluster);
+                handleStates(list,fillObjectLayer);
             });
 
             function fillObjectLayer(mrocId)
@@ -147,6 +120,47 @@
                     <a href="" class="global-complaint">Пожаловаться в контролирующие органы</a>
                     <a href="">Сайт министерства потребительских услуг и рынка МО</a>
                     <a href="">Сайт министерства потребительских услуг и рынка МО</a>
+                </div>
+            </div>
+        </div>
+        <div class="filter-layer">
+            <div class="filter-header">
+                <div class="filter-text">Фильтр</div>
+                <div class="close">&times;</div>
+            </div>
+            <div class="tabs">
+                <a class="tab active" data-for-tab="by-type">По типу</a>
+                <a class="tab" data-for-tab="by-production">По виду продукции</a>
+            </div>
+            <div class="tab-content">
+                <div class="content active" data-tab-name="by-type">
+                    <ul>
+                        {% for k,v in object_type_list %}
+                            <li><label><input type="checkbox" class="object_type_select" value="{{ v.id }}">{{ v.name }}</label></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="content" data-tab-name="by-production">
+                    <ul>
+                        {% for k,v in sale_type_list %}
+                            <li><label><input type="checkbox" class="sale_type_select" value="{{ v.id }}">{{ v.name }}</label></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="best">
+                <div class="best-line line">Рейтинг лучших</div>
+                <div class="best-list">
+                    {% for k,v in top %}
+                        <div class="list-item">
+                            {{ loop.index }}. <a class="bold" href="#">{{ v.address }}</a><br>
+                            {% if v.rating %}
+                                <span>Рейтинг: {{ v.rating }}</span>
+                            {% else %}
+                                <span>Рейтинг: &mdash;</span>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

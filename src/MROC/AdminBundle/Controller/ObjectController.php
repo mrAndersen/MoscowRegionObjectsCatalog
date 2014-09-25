@@ -27,7 +27,7 @@ class ObjectController extends Controller
      */
     public function indexAction($page, Request $request)
     {
-        $pageSize = 10;
+        $pageSize = 30;
         $start = $page * $pageSize;
 
         $sort = $request->query->get('sort','id');
