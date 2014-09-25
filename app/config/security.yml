@@ -17,6 +17,18 @@ security:
 
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        - { path: ^/admin/users, role: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/municipal_register, role: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/owner_register, role: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/comments, role: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/object_complaints_list, role: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/complaints, role: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/images, role: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/csv_import, role: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/object_type, role: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/sale_type, role: ROLE_SUPER_ADMIN }
+
         - { path: ^/admin/, role: [ROLE_MUNICIPAL,ROLE_OWNER] }
         - { path: ^/admin$, role: [ROLE_MUNICIPAL,ROLE_OWNER] }
 
