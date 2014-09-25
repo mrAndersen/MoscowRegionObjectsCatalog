@@ -11,6 +11,7 @@
         window.onload = function(){
             var menuLayerSwitch = $('.open-mobile-menu');
             var list = {{ list | raw }};
+            var message = '';
 
             var map = document.getElementById('map');
             var menuLayer = document.getElementsByClassName('menu-layer')[0];
@@ -66,7 +67,9 @@
 
             ymaps.ready(function(){
                 initMap();
+
                 fillMap(moscowRegionMap,list,fillObjectLayer);
+                handleQR(list,fillObjectLayer);
 
                 handleStates(list,fillObjectLayer);
             });
@@ -92,19 +95,21 @@
 
                             $(niceLayer).show();
                             $(objectLayer).show();
+
+                            moscowRegionMap.setCenter(list[mrocId].coordinates,16);
                         }
                     })
                 }
             }
 
             {% if app.session.flashbag.has('success') %}
-                var message = '{{ app.session.flashbag.get('success')[0] }}';
-                showPopup('normal','Спасибо!',message);
+                message = '{{ app.session.flashbag.get('success')[0] }}';
+                showPopup('small','Спасибо!',message);
             {% endif %}
 
-            {% if app.session.flashbag.has('failed') %}
-                var message = '{{ app.session.flashbag.get('errors') | json_encode }}';
-                showPopup('normal','Произошли ошибки',message.join('<br>'));
+            {% if app.session.flashbag.has('failed') and app.session.flashbag.has('errors') %}
+                message = {{ app.session.flashbag.get('errors')[0] | raw }};
+                showPopup('small','Произошли ошибки',message.join('<br>'));
             {% endif %}
         };
     </script>

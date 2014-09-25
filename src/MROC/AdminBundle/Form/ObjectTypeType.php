@@ -18,6 +18,10 @@ class ObjectTypeType extends AbstractType
             ->add('name','text',array(
                 'label' => 'Название'
             ))
+            ->add('color','text',array(
+                'label' => 'Цвет',
+                'required'=> false
+            ))
             ->add('save', 'submit', array(
                 'attr' => array('class' => 'button success'),
                 'label' => 'Добавить'

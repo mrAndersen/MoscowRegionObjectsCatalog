@@ -19,13 +19,15 @@ class ObjectRepository extends EntityRepository
         $q = $em->createQueryBuilder()->select('n.coordinates','n.id','IDENTITY(n.object_type) as ot','IDENTITY(n.sale_type) as st')
             ->from('MROCMainBundle:Object','n')
             ->getQuery();
-        $result = $q->getResult();
+        $result = $q->getResult(); $data = array();
 
         foreach($result as $k=>$v){
-            $result[$k]['coordinates'] = explode(' ',$v['coordinates']);
-            $result[$k]['coordinates'] = array_reverse($result[$k]['coordinates']);
+            $data[$v['id']]['coordinates'] = explode(' ',$v['coordinates']);
+            $data[$v['id']]['coordinates'] = array_reverse($data[$v['id']]['coordinates']);
+            $data[$v['id']]['ot'] = $v['ot'];
+            $data[$v['id']]['st'] = $v['st'];
         }
-        return $result;
+        return $data;
     }
 
     public function getTop($n = 5)

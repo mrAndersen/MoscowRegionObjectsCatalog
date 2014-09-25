@@ -6,6 +6,7 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Цвет</th>
                 <th>Название</th>
                 <th>Действия</th>
             </tr>
@@ -14,6 +15,7 @@
         {% for entity in entities %}
             <tr>
                 <td>{{ entity.id }}</td>
+                <td style="background: {{ entity.color }}">{{ entity.color }}</td>
                 <td>{{ entity.name }}</td>
                 <td>
                     <a class="button info" href="{{ path('object_type_edit',{id:entity.id}) }}">Редактировать</a>

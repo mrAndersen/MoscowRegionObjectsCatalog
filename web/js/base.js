@@ -88,13 +88,13 @@ function fillMap(map,list,fillExtendedInfoCallback)
                 coordinates: val.coordinates
             },
             properties: {
-                clusterCaption: 'Объект # '+val.id,
-                balloonContent: 'Объект # '+val.id
+                clusterCaption: 'Объект # '+ key,
+                balloonContent: 'Объект # '+ key
             }
         },{
             hasBaloon: false
         });
-        g.properties.set('mrocId',val.id);
+        g.properties.set('mrocId',key);
         g.events.add('balloonopen',function(e){
             fillExtendedInfoCallback(g.properties.get('mrocId'));
         });
@@ -183,6 +183,18 @@ function handleStates(list,fillExtendedInfoCallback)
     });
 }
 
+function handleQR(list,fillExtendedInfoCallback)
+{
+    if(document.URL.indexOf('#') != -1){
+        var id = document.URL.substring(document.URL.indexOf('#') + 1,document.URL.length).split('#')[0].substring(3);
+        if(Object.keys(list).indexOf(id) != -1){
+            fillExtendedInfoCallback(id);
+        }else{
+            showPopup('small','Ошбика','Нет такого объекта');
+        }
+    }
+}
+
 $(document).on('click tap','.global-complaint',function(e){
     e.preventDefault();
     $('.darken').show();
@@ -244,6 +256,8 @@ $(document).on('click tap','.do-comment',function(){
         }
     });
 });
+
+
 
 
 $(document).on('click tap','.send-global-complaint',function(e){
@@ -317,6 +331,8 @@ $(document).on('click tap','.send-question',function(e){
         }
     });
 });
+
+
 
 
 $(document).on('click tap','.modal .close',function(){

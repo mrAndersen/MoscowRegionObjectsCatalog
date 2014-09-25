@@ -47,9 +47,26 @@
         <thead>
         <tr>
             <th>Id</th>
-            <th>Рейтинг(Отзывы)</th>
-            <th>Координаты | Адрес</th>
-            <th>Владелец | Связь</th>
+            <th>
+                <ul>
+                    <li>Рейтинг</li>
+                    <li>Количество отзывов</li>
+                </ul>
+            </th>
+            <th>
+                <ul>
+                    <li>Координаты</li>
+                    <li>Адрес</li>
+                    <li>Номер муниципала</li>
+                </ul>
+            </th>
+            <th>
+                <ul>
+                    <li>Владелец</li>
+                    <li>Владелец у нас</li>
+                    <li>Есть в кадастровом реестре</li>
+                </ul>
+            </th>
             <th>Тип объекта</th>
             <th>Тип продукции</th>
             <th>Действия</th>
@@ -60,27 +77,60 @@
             <tr>
                 <td>{{ entity.id }}</td>
                 <td>
-                    {% if entity.rating %}
-                        {{ entity.rating }}
-                        ({{ entity.votes }})
-                    {% else %}
-                        &mdash;
-                    {% endif %}
+                    <ul>
+                        <li>
+                            {% if entity.rating %}
+                                {{ entity.rating }}
+                            {% else %}
+                                &mdash;
+                            {% endif %}
+                        </li>
+                        <li>
+                            {% if entity.rating %}
+                                {{ entity.votes }}
+                            {% else %}
+                                &mdash;
+                            {% endif %}
+                        </li>
+                    </ul>
                 </td>
-                <td>{{ entity.coordinates }} | {{ entity.address }}</td>
                 <td>
-                    {% if entity.owner %}
-                        {{ entity.owner }}
-                    {% else %}
-                        &mdash;
-                    {% endif %}
-                    |
-                    {% if entity.user %}
-                        {{ entity.user.username }}
-                    {% else %}
-                        &mdash;
-                    {% endif %}
-
+                    <ul>
+                        <li>{{ entity.coordinates }}</li>
+                        <li>{{ entity.address }}</li>
+                        <li>
+                            {% if entity.municipalId %}
+                                {{ entity.municipalId }}
+                            {% else %}
+                                &mdash;
+                            {% endif %}
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li>
+                            {% if entity.owner %}
+                                {{ entity.owner }}
+                            {% else %}
+                                &mdash;
+                            {% endif %}
+                        </li>
+                        <li>
+                            {% if entity.user %}
+                                {{ entity.user.username }}
+                            {% else %}
+                                &mdash;
+                            {% endif %}
+                        </li>
+                        <li>
+                            {% if entity.registeredLand %}
+                                <span class="label success">да</span>
+                            {% else %}
+                                <span class="label danger">нет</span>
+                            {% endif %}
+                        </li>
+                    </ul>
                 </td>
                 <td>{{ entity.objectType.name }}</td>
                 <td>{{ entity.saleType.name }}</td>

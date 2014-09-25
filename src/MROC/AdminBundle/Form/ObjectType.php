@@ -44,6 +44,13 @@ class ObjectType extends AbstractType
                     return $qb->where($qb->expr()->like('u.roles',$qb->expr()->literal('%ROLE_OWNER%')));
                 }
             ))
+            ->add('registered_land','choice',array(
+                'label' => 'Есть в кадастровом реестре',
+                'choices' => array(1 => 'Да',0 => 'Нет')
+            ))
+            ->add('municipal_id','integer',array(
+                'label' => 'Отвественный муниципал'
+            ))
             ->add('image', 'file',array(
                 'label' => 'Фотография',
                 'data_class' => null,

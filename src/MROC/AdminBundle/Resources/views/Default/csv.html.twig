@@ -16,7 +16,7 @@
             Внимание! Загрузка данных из файла полностью перезапишет существующую базу. А так же создаст
             новые типы объектов и типы продукции согласно уникальным значениям из вашего файла.
         </p>
-        <form method="post" enctype="multipart/form-data" action="{{ path('mroc_admin_csv') }}">
+        <form method="post" enctype="multipart/form-data" action="{{ path('mroc_admin_csv_import') }}">
             <input type="file" name="csv_file"><br><br>
             <input type="submit" class="button primary" value="Загрузить">
         </form>

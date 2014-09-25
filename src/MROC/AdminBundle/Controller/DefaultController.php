@@ -13,6 +13,7 @@ use MROC\MainBundle\Entity\Complaint;
 use MROC\MainBundle\Entity\Object;
 use MROC\MainBundle\Entity\ObjectType;
 use MROC\MainBundle\Entity\SaleType;
+use MROC\MainBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -90,6 +91,7 @@ class DefaultController extends Controller
 
         $repositories[] = $em->getRepository('MROCMainBundle:ObjectType');
         $repositories[] = $em->getRepository('MROCMainBundle:SaleType');
+        $repositories[] = $em->getRepository('MROCMainBundle:Comment');
         $repositories[] = $em->getRepository('MROCMainBundle:Object');
 
         foreach($repositories as $k=>$v){
@@ -106,6 +108,77 @@ class DefaultController extends Controller
         }
     }
 
+    public function exportCSVAction(Request $request)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        if($user->hasRole('ROLE_MUNICIPAL')){
+            $objects = $em->createQueryBuilder()
+                ->select('n')->from('MROCMainBundle:Object','n')
+                ->where('n.municipal_id = :mid')
+                ->setParameter(':mid',$user->getMunicipalId())
+                ->getQuery()
+                ->getResult();
+        }else{
+            $objects = $em->getRepository('MROCMainBundle:Object')->findAll();
+        }
+
+        $webDir = __DIR__.'/../../../../web/';
+        $file = new CsvFile($webDir.'out.csv');
+    }
+
+    public function filterStringVariable($var)
+    {
+        $var = preg_replace('/( )+/', ' ', $var);
+        return $var;
+    }
+
+    public function writeUniqueSaleTypes($lines)
+    {
+        $i = 0;
+        $em = $this->getDoctrine()->getManager();
+
+        foreach($lines as $k=>$v){
+            $key = $v[2] !='' ? $v[2] : null;
+            $result[] = $this->filterStringVariable($key);
+        }
+        $result = array_unique($result);
+        foreach($result as $k=>$v){
+            $t = new SaleType();
+            $t->setName($v);
+            $em->persist($t);
+
+            $i++;
+        }
+        $em->flush();
+        return $i;
+    }
+
+    public function writeUniqueObjectTypes($lines)
+    {
+        $i = 0;
+        $em = $this->getDoctrine()->getManager();
+
+        foreach($lines as $k=>$v){
+            $key = $v[1] !='' ? $v[1] : null;
+            $result[] = $this->filterStringVariable($key);
+        }
+        $result = array_unique($result);
+        foreach($result as $k=>$v){
+            $t = new ObjectType();
+            $t->setName($v);
+            $em->persist($t);
+
+            $i++;
+        }
+        $em->flush();
+        return $i;
+    }
+
+
     public function importCSVAction(Request $request)
     {
         if($request->getMethod() == 'POST'){
@@ -114,44 +187,36 @@ class DefaultController extends Controller
             /** @var UploadedFile $file */
             $file = $request->files->get('csv_file');
 
+            $lines = array();
             $csv =  new CsvFile($file->getRealPath(),';');
             foreach($csv as $k=>$v){
                 $lines[] = $v;
             }
 
             $this->clearDatabase();
-            $objectsTypeRepo = $em->getRepository('MROCMainBundle:ObjectType');
-            $saleTypeRepo = $em->getRepository('MROCMainBundle:SaleType');
+            $ot = $this->writeUniqueObjectTypes($lines);
+            $st = $this->writeUniqueSaleTypes($lines);
+
             $ot = 0; $st = 0; $o = 0;
 
             foreach($lines as $k=>$v){
-                $address = !empty($v[0]) ? $v[0] : null;
-                $objectTypeName = !empty($v[1]) ? $v[1] : null;
-                $saleTypeName = !empty($v[2]) ? $v[2] : null;
-                $owner = !empty($v[3]) ? $v[3] : null;
+                $address = $v[0] !='' ? $v[0] : null;
+                $objectTypeName = $v[1] !='' ? $v[1] : null;
+                $saleTypeName = $v[2] !='' ? $v[2] : null;
+                $owner = $v[3] !='' ? $v[3] : null;
+                $times = $v[4] !='' ? $v[4] : null;
+                $land = $v[5] !='' ? filter_var($v[5],FILTER_VALIDATE_BOOLEAN) : null;
+                $municipal = $v[6] !='' ? $v[6] : null;
+                $rating = $v[7] !='' ? $v[7] : null;
 
-                $address = trim(preg_replace('/\s+/', ' ', $address));
-                $objectTypeName = trim(preg_replace('/\s+/', ' ', $objectTypeName));
-                $saleTypeName = trim(preg_replace('/\s+/', ' ', $saleTypeName));
-                $owner = trim(preg_replace('/\s+/', ' ', $owner));
+                $address = $this->filterStringVariable($address);
+                $objectTypeName = $this->filterStringVariable($objectTypeName);
+                $saleTypeName =$this->filterStringVariable($saleTypeName);
+                $owner = $this->filterStringVariable($owner);
 
-                if($objectsTypeRepo->findOneBy(array('name'=>$objectTypeName)) === null){
-                    $objectType = new ObjectType();
-                    $objectType->setName($objectTypeName);
-                    $em->persist($objectType); $ot++;
-                    $em->flush();
-                }else{
-                    $objectType = $objectsTypeRepo->findOneBy(array('name'=>$objectTypeName));
-                }
 
-                if($saleTypeRepo->findOneBy(array('name'=>$saleTypeName)) === null){
-                    $saleType = new SaleType();
-                    $saleType->setName($saleTypeName);
-                    $em->persist($saleType); $st++;
-                    $em->flush();
-                }else{
-                    $saleType = $saleTypeRepo->findOneBy(array('name'=>$saleTypeName));
-                }
+                $objectType = $em->getRepository('MROCMainBundle:ObjectType')->findOneBy(array('name'=>$objectTypeName));
+                $saleType = $em->getRepository('MROCMainBundle:SaleType')->findOneBy(array('name'=>$saleTypeName));
 
                 $helper = new YaMap();
                 $coordinates = $helper->getLatLon($address);
@@ -162,6 +227,10 @@ class DefaultController extends Controller
                 $object->setObjectType($objectType);
                 $object->setSaleType($saleType);
                 $object->setCoordinates($coordinates);
+                $object->setRegisteredLand($land);
+                $object->setMunicipalId($municipal);
+                $object->setRating($rating);
+                $object->setTimes($times);
 
                 $o++;
 
@@ -350,6 +419,35 @@ class DefaultController extends Controller
             }
 
             $em->flush();
+            return $this->redirect($this->generateUrl('mroc_admin_user_list'));
+        }
+    }
+
+    public function registerMunicipalAction(Request $request)
+    {
+        if($request->getMethod() == 'GET'){
+            return $this->render('MROCAdminBundle:Default:register_municipal.html.twig');
+        }
+
+        if($request->getMethod() == 'POST'){
+            $form = $request->request->all();
+            $em = $this->getDoctrine()->getManager();
+
+            /** @var UserManager $manager */
+            $manager = $this->container->get('fos_user.user_manager');
+
+            /** @var User $user */
+            $user = $manager->createUser();
+
+            $user->setRoles(array('ROLE_MUNICIPAL'));
+            $user->setPlainPassword($form['password']);
+            $user->setEmail($form['email']);
+            $user->setUsername($form['username']);
+            $user->setEnabled(true);
+            $user->setMunicipalId($form['number']);
+
+            $manager->updateUser($user);
+
             return $this->redirect($this->generateUrl('mroc_admin_user_list'));
         }
     }

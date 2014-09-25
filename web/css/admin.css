@@ -114,8 +114,9 @@ html body .button.primary:hover {
 }
 html body .label {
   display: inline-block;
-  padding: 5px 20px;
-  color: #FFD;
+  padding: 0px 10px;
+  color: #FFF;
+  background: #CCC;
 }
 html body .label.info {
   background: #5bc0de;
@@ -149,8 +150,18 @@ html body .records_list th {
   margin: 5px;
   padding: 5px 10px;
 }
+html body .records_list td ul,
+html body .records_list th ul {
+  padding: 0;
+  margin: 0;
+  list-style-type: square;
+}
+html body .records_list td ul {
+  margin: 0 0 0 20px;
+}
 html body .records_list th {
   text-align: left;
+  border-bottom: solid 2px #CFCFCF;
 }
 html body p {
   margin: 10px 0;
@@ -253,7 +264,8 @@ html body .admin-container form label {
 }
 html body .admin-container form input[type="text"],
 html body .admin-container form input[type="file"],
-html body .admin-container form input[type="password"] {
+html body .admin-container form input[type="password"],
+html body .admin-container form input[type="number"] {
   font-family: "PT Sans";
   font-size: 14px;
   margin: 5px 0 0 0;
@@ -261,6 +273,9 @@ html body .admin-container form input[type="password"] {
   border-radius: 3px;
   padding: 3px 10px;
   width: 400px;
+}
+html body .admin-container form input[type="number"] {
+  width: 40px;
 }
 html body .admin-container form input[type="checkbox"] {
   position: relative;

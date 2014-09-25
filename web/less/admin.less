@@ -78,8 +78,9 @@ html{
     }
     .label{
       display: inline-block;
-      padding: 5px 20px;
-      color: #FFD;
+      padding: 0px 10px;
+      color: #FFF;
+      background: #CCC;
       &.info{
         background: @info;
       }
@@ -110,9 +111,20 @@ html{
         border-bottom: solid 1px #CFCFCF;
         margin: 5px;
         padding: 5px 10px;
+        ul{
+          padding: 0;
+          margin: 0;
+          list-style-type: square;
+        }
+      }
+      td{
+        ul{
+          margin: 0 0 0 20px;
+        }
       }
       th{
         text-align: left;
+        border-bottom: solid 2px #CFCFCF;
       }
     }
     p{
@@ -215,7 +227,7 @@ html{
           position: relative;
           top: 8px;
         }
-        input[type="text"], input[type="file"], input[type="password"]{
+        input[type="text"], input[type="file"], input[type="password"], input[type="number"]{
           font-family: "PT Sans";
           font-size: 14px;
           margin: 5px 0 0 0;
@@ -223,6 +235,9 @@ html{
           border-radius: 3px;
           padding: 3px 10px;
           width: 400px;
+        }
+        input[type="number"]{
+          width: 40px;
         }
         input[type="checkbox"]{
           position: relative;

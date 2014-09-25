@@ -43,13 +43,20 @@ class Object
      * @ORM\Column(name="image", type="string", nullable=true)
      */
     private $image;
+
     /**
-     *
      * @var string
      *
      * @ORM\Column(name="image_t", type="string", nullable=true)
      */
     private $image_t;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="municipal_id", type="integer", nullable=true)
+     */
+    private $municipal_id;
 
     /**
      * @var boolean
@@ -59,9 +66,16 @@ class Object
     private $override;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="registered_land", type="boolean", nullable=true)
+     */
+    private $registered_land;
+
+    /**
      * @var string
      *
-     * @ORM\Column(name="address", type="string", length=800, nullable=true)
+     * @ORM\Column(name="address", type="string", length=3000, nullable=true)
      */
     private $address;
 
@@ -107,6 +121,13 @@ class Object
     /**
      * @var string
      *
+     * @ORM\Column(name="times", type="string", length=10, nullable=true)
+     */
+    private $times;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="coordinates", type="string", length=100, nullable=true)
      */
     private $coordinates;
@@ -140,6 +161,38 @@ class Object
     /**
      * @return string
      */
+    public function getTimes()
+    {
+        return $this->times;
+    }
+
+    /**
+     * @param string $times
+     */
+    public function setTimes($times)
+    {
+        $this->times = $times;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMunicipalId()
+    {
+        return $this->municipal_id;
+    }
+
+    /**
+     * @param int $municipal_id
+     */
+    public function setMunicipalId($municipal_id)
+    {
+        $this->municipal_id = $municipal_id;
+    }
+
+    /**
+     * @return string
+     */
     public function getOwnerMessage()
     {
         return $this->owner_message;
@@ -151,6 +204,22 @@ class Object
     public function setOwnerMessage($owner_message)
     {
         $this->owner_message = $owner_message;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isRegisteredLand()
+    {
+        return $this->registered_land;
+    }
+
+    /**
+     * @param boolean $registered_land
+     */
+    public function setRegisteredLand($registered_land)
+    {
+        $this->registered_land = $registered_land;
     }
 
     /**
@@ -314,9 +383,6 @@ class Object
     {
         $this->user = $user;
     }
-
-
-
 
     /**
      * Set address

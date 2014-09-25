@@ -28,6 +28,31 @@ class ObjectType
      */
     private $name;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="color", type="string", length=20, nullable=true)
+     */
+    private $color;
+
+    /**
+     * @return string
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * @param string $color
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+    }
+
+
+
 
     /**
      * Get id

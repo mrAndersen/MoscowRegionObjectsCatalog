@@ -16,8 +16,11 @@
 
             ymaps.ready(function(){
                 initMap();
-                fillMap(moscowRegionMap,list,fillSidePanel);
 
+                fillMap(moscowRegionMap,list,fillSidePanel);
+                handleQR(list,fillSidePanel);
+
+                handleStates(list,fillSidePanel);
                 resizeObjects();
             });
 
@@ -55,6 +58,7 @@
                             panel.find('*').not('.arrow, .icon').remove();
                             panel.find('.arrow').after(result.view);
 
+                            moscowRegionMap.setCenter(list[mrocId].coordinates,16);
                             showRightBar();
                         }
                     })
@@ -187,8 +191,6 @@
                     });
                 }
             });
-
-
 
             {% if app.session.flashbag.has('success') %}
                 message = '{{ app.session.flashbag.get('success')[0] }}';

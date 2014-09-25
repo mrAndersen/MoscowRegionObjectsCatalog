@@ -20,9 +20,32 @@ class User extends BaseUser
      */
     protected $id;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="municipal_id", type="integer", nullable=true)
+     */
+    private $municipal_id;
+
     public function __construct()
     {
         parent::__construct();
+    }
+
+    /**
+     * @return int
+     */
+    public function getMunicipalId()
+    {
+        return $this->municipal_id;
+    }
+
+    /**
+     * @param int $municipal_id
+     */
+    public function setMunicipalId($municipal_id)
+    {
+        $this->municipal_id = $municipal_id;
     }
 
     /**

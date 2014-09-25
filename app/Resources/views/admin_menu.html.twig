@@ -3,35 +3,41 @@
     <li><a href="{{ path('mroc_admin_homepage') }}">Панель администратора</a></li>
     <li><a href="{{ path('fos_user_security_logout') }}">Выйти({{ app.user.username }})</a></li>
     <li class="divider"></li>
-
     {% if is_granted('ROLE_OWNER') %}
         <li><a href="{{ path('owner_list_objects') }}">Ваши объекты</a></li>
     {% endif %}
 
-    {% if is_granted('ROLE_SUPER_ADMIN') %}
+    {% if is_granted('ROLE_MUNICIPAL') %}
     <li><a href='#'>Список</a>
         <ul>
             <li><a href="{{ path('object') }}">Объектов</a></li>
-            <li><a href="{{ path('object_type') }}">Типов объектов</a></li>
-            <li><a href="{{ path('sale_type') }}">Типов продукции</a></li>
-            <li><a href="{{ path('mroc_admin_user_list') }}">Пользователей</a></li>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <li><a href="{{ path('object_type') }}">Типов объектов</a></li>
+                <li><a href="{{ path('sale_type') }}">Типов продукции</a></li>
+                <li><a href="{{ path('mroc_admin_user_list') }}">Пользователей</a></li>
+            {% endif %}
         </ul>
     </li>
     {% endif %}
-    {% if is_granted('ROLE_SUPER_ADMIN') %}
+    {% if is_granted('ROLE_MUNICIPAL') %}
         <li><a href='#'>Создать</a>
             <ul>
                 <li><a href="{{ path('object_new') }}">Объект</a></li>
-                <li><a href="{{ path('object_type_new') }}">Тип объекта</a></li>
-                <li><a href="{{ path('sale_type_new') }}">Тип продукции</a></li>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <li><a href="{{ path('object_type_new') }}">Тип объекта</a></li>
+                    <li><a href="{{ path('sale_type_new') }}">Тип продукции</a></li>
+                {% endif %}
             </ul>
         </li>
     {% endif %}
-    {% if is_granted('ROLE_SUPER_ADMIN') %}
+    {% if is_granted('ROLE_MUNICIPAL') %}
         <li><a href='#'>Синхронизация</a>
             <ul>
-                <li><a href="{{ path('mroc_admin_csv') }}">Импорт из CSV</a></li>
+                <li><a href="{{ path('mroc_admin_csv_export') }}">Экспорт в CSV</a></li>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <li><a href="{{ path('mroc_admin_csv_import') }}">Импорт из CSV</a></li>
                 <li><a href="{{ path('mroc_admin_images') }}">Синхронизация фото</a></li>
+                {% endif %}
             </ul>
         </li>
     {% endif %}
@@ -42,6 +48,7 @@
                 <li><a href="{{ path('mroc_admin_comments') }}">Комментарии</a></li>
                 <li><a href="{{ path('mroc_admin_object_complaints') }}">Жалобы на объекты</a></li>
                 <li><a href="{{ path('mroc_admin_register_owner') }}">Регистрация владельца</a></li>
+                <li><a href="{{ path('mroc_admin_register_municipal') }}">Регистрация муниципала</a></li>
             </ul>
         </li>
     {% endif %}

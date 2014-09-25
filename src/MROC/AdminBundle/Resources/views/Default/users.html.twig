@@ -6,6 +6,7 @@
         <tr>
             <th>Id</th>
             <th>Имя</th>
+            <th>Номер муниципала</th>
             <th>Email</th>
             <th>Роли</th>
         </tr>
@@ -15,10 +16,22 @@
             <tr>
                 <td>{{ entity.id }}</td>
                 <td>{{ entity.username }}</td>
+                <td>
+                    {% if entity.municipalId %}
+                        {{ entity.municipalId }}
+                    {% else %}
+                        &mdash;
+                    {% endif %}
+                </td>
                 <td>{{ entity.email }}</td>
                 <td>
                     {% for k,v in entity.roles %}
-                        {{ v }}
+                        {% if v == 'ROLE_SUPER_ADMIN' %}{% set color = 'success' %}{% set name = 'СуперАдминистратор' %}{% endif %}
+                        {% if v == 'ROLE_OWNER' %}{% set color = 'warning' %}{% set name = 'Владелец объекта' %}{% endif %}
+                        {% if v == 'ROLE_MUNICIPAL' %}{% set color = 'info' %}{% set name = 'Муниципал' %}{% endif %}
+                        {% if v == 'ROLE_USER' %}{% set color = '' %}{% set name = 'Пользователь' %}{% endif %}
+
+                        <span class="label {{ color }}">{{ name }}</span>
                         {% if not loop.last %}
                             ,
                         {% endif %}

@@ -171,9 +171,6 @@ html body .modal form input[type="text"] {
   padding: 3px 10px;
   width: 298px;
 }
-html body .modal form input[type="text"].captcha {
-  font-size: 36px;
-}
 html body .modal form textarea {
   font-size: 15px;
   border: solid 1px #CCC;
