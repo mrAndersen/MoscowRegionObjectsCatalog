@@ -106,10 +106,7 @@ function fillMap(map,list,fillExtendedInfoCallback)
         mapObjects.push(g);
     });
 
-    var cluster = new ymaps.Clusterer({
-        hasBalloon: false
-    });
-
+    var cluster = new ymaps.Clusterer();
     var activeObjectMonitor;
 
     cluster.events
