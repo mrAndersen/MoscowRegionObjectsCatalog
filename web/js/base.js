@@ -339,7 +339,6 @@ $(document).on('click tap','.send-question',function(e){
 
 
 
-
 $(document).on('click tap','.modal .close',function(){
     $('.modal').hide();
     $('.darken').hide();

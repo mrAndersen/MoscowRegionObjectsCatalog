@@ -310,7 +310,7 @@ html body .mobile-wrapper .filter-layer .tabs {
   width: 100%;
 }
 html body .mobile-wrapper .filter-layer .tabs .tab {
-  padding: 0.4em 0.8em;
+  padding: 0.4em 0.5em;
   background: #CCC;
   border-radius: 5px 5px 0 0;
   text-decoration: underline;
