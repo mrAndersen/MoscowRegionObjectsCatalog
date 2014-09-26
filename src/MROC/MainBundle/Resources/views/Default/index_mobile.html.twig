@@ -33,9 +33,18 @@
             niceLayer.style.height = window.innerHeight - topMenu.offsetHeight + 'px';
 
             menuLayerSwitch.on('click tap',function(){
-                $(niceLayer).toggle();
-                $(menuLayer).toggle();
-                menuLayerSwitch.toggleClass('active');
+                if($(this).hasClass('active')){
+                    $(niceLayer).hide();
+                    $(menuLayer).hide();
+                    $(modal).hide();
+                    $(filterLayer).hide();
+
+                    $(this).removeClass('active');
+                }else{
+                    $(niceLayer).show();
+                    $(menuLayer).show();
+                    $(this).addClass('active');
+                }
             });
 
             $(openObjectInfo).on('click tap',function(){
