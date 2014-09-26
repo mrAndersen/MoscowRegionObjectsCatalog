@@ -92,10 +92,14 @@ function fillMap(map,list,fillExtendedInfoCallback)
                 balloonContent: 'Объект # '+ key
             }
         },{
-            hasBaloon: false
+            openBalloonOnClick: false,
+            fillColor: val.color,
+            iconColor: val.color,
+            strokeColor: val.color
+
         });
         g.properties.set('mrocId',key);
-        g.events.add('balloonopen',function(e){
+        g.events.add('click',function(e){
             fillExtendedInfoCallback(g.properties.get('mrocId'));
         });
 
@@ -189,6 +193,7 @@ function handleQR(list,fillExtendedInfoCallback)
         var id = document.URL.substring(document.URL.indexOf('#') + 1,document.URL.length).split('#')[0].substring(3);
         if(Object.keys(list).indexOf(id) != -1){
             fillExtendedInfoCallback(id);
+            moscowRegionMap.setCenter(list[id].coordinates,16);
         }else{
             showPopup('small','Ошбика','Нет такого объекта');
         }

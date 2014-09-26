@@ -13,11 +13,12 @@ use Doctrine\ORM\EntityRepository;
 class ObjectRepository extends EntityRepository
 {
 
-    public function getIdAddressList()
+    public function getIdAddressList($land_missing_color,$default_color)
     {
         $em = $this->getEntityManager();
-        $q = $em->createQueryBuilder()->select('n.coordinates','n.id','IDENTITY(n.object_type) as ot','IDENTITY(n.sale_type) as st')
+        $q = $em->createQueryBuilder()->select('n.coordinates','n.id','t.color','t.id as ot','IDENTITY(n.sale_type) as st','n.registered_land')
             ->from('MROCMainBundle:Object','n')
+            ->leftJoin('MROCMainBundle:ObjectType','t','WITH','n.object_type = t.id')
             ->getQuery();
         $result = $q->getResult(); $data = array();
 
@@ -26,6 +27,15 @@ class ObjectRepository extends EntityRepository
             $data[$v['id']]['coordinates'] = array_reverse($data[$v['id']]['coordinates']);
             $data[$v['id']]['ot'] = $v['ot'];
             $data[$v['id']]['st'] = $v['st'];
+            if($v['registered_land']){
+                if($v['color']){
+                    $data[$v['id']]['color'] = $v['color'];
+                }else{
+                    $data[$v['id']]['color'] = $default_color;
+                }
+            }else{
+                $data[$v['id']]['color'] = $land_missing_color;
+            }
         }
         return $data;
     }

@@ -19,3 +19,6 @@ parameters:
     use_assetic_controller: false
 
     complaint_email: golikanu@yandex.ru
+
+    color.land_missing: '#ffff00'
+    color.default: '#0e53a7'

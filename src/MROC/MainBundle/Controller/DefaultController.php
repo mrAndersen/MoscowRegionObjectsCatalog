@@ -311,7 +311,10 @@ class DefaultController extends Controller
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
-        $list = $em->getRepository('MROCMainBundle:Object')->getIdAddressList();
+        $land_missing_color = $this->container->getParameter('color.land_missing');
+        $default_color = $this->container->getParameter('color.default');
+
+        $list = $em->getRepository('MROCMainBundle:Object')->getIdAddressList($land_missing_color,$default_color);
         $top =$em->getRepository('MROCMainBundle:Object')->getTop(5);
 
         $objectTypes = $em->getRepository('MROCMainBundle:ObjectType')->findAll();
