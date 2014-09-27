@@ -154,15 +154,37 @@ html{
       }
     }
     .top-header{
-      font-weight: bold;
       font-size: 27px;
-      color: #FFF;
-      background: #39C;
-      height: 59px;
-      text-align: center;
+      color: #444;
+      background: #fff;
       width: 100%;
       border-top: solid 17px #069;
-      padding: 20px 0 0 0;
+      padding: 10px 0 5px 0;
+      .centered{
+        width: 1024px;
+        margin: 0 auto;
+        height: 64px;
+        .login{
+          float: right;
+          margin: 25px;
+          font-weight: normal;
+        }
+        .logo{
+          width: 64px;
+          height: 64px;
+          background: url("/images/logo.png");
+          float: left;
+        }
+        .text{
+          float: left;
+          margin: 15px;
+          font-family: 'PT Sans Caption';
+          span{
+            margin: 0 20px;
+            font-weight: bold;
+          }
+        }
+      }
     }
     .footer{
       height: 136px;
@@ -183,9 +205,15 @@ html{
         .to-right{
           float: right;
           text-align: right;
+          a{
+            cursor: pointer;
+          }
           .global-complaint{
             display: inline-block;
             margin: 10px 0 0 0;
+            font-size: 13px;
+          }
+          .object-suggestion{
             font-size: 13px;
           }
         }

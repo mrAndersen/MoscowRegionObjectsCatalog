@@ -206,7 +206,11 @@
 
 {% block body %}
     <div class="top-header">
-        ГУП “МосОблКачество”
+        <div class="centered">
+            <div class="logo"></div>
+            <div class="text">ГУП<span>Мособлкачество</span></div>
+            <a class="login" href="{{ path('mroc_admin_homepage') }}">вход в панель администратора</a>
+        </div>
     </div>
     <div class="container">
         <div class="left" data-state="on">
@@ -214,7 +218,6 @@
             <div class="filter-line line">
                 Фильтр
             </div>
-
             <div class="tabs">
                 <a class="tab active" data-for-tab="by-type">По типу</a>
                 <a class="tab" data-for-tab="by-production">По виду продукции</a>
@@ -265,9 +268,10 @@
                 <a href="#" class="sq-link"><img alt="Конкурс" src="{{ asset('/images/competition.png') }}"></a>
             </div>
             <div class="to-right">
-                <a class="red button complaint">Пожаловаться на работу сервиса</a><br>
+                <a class="red button complaint">Пожаловаться на работу сервиса</a>
                 <a class="default button question">Отправить вопрос</a><br>
-                <a class="global-complaint" href="#">Пожаловаться в контролирующие органы</a>
+                <a class="global-complaint">Пожаловаться в контролирующие органы</a><br>
+                <a class="object-suggestion">Заявка на добавление объекта</a>
             </div>
         </div>
     </div>

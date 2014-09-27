@@ -3,6 +3,8 @@ var _xhr_mroc_main_complaint = '/complaint';
 var _xhr_mroc_main_object_complaint = '/object_complaint';
 var _xhr_mroc_main_question = '/question';
 var _xhr_mroc_main_comment = '/comment';
+var _xhr_mroc_main_object_suggestion = '/object_suggestion';
+
 var _scope = getScope('base.js');
 
 function iterate(arrayLikeStructure,callback)
@@ -189,7 +191,7 @@ function handleStates(list,fillExtendedInfoCallback)
 
 function handleQR(list,fillExtendedInfoCallback)
 {
-    if(document.URL.indexOf('#') != -1){
+    if(document.URL.indexOf('#qr-') != -1){
         var id = document.URL.substring(document.URL.indexOf('#') + 1,document.URL.length).split('#')[0].substring(3);
         if(Object.keys(list).indexOf(id) != -1){
             fillExtendedInfoCallback(id);
@@ -258,6 +260,17 @@ $(document).on('click tap','.do-comment',function(){
         },
         success: function(result){
             showPopup('small','Оставить комментарий',result);
+        }
+    });
+});
+
+$(document).on('click tap','.object-suggestion',function(){
+    $('.darken').show();
+    $.ajax({
+        type: 'get',
+        url: _xhr_mroc_main_object_suggestion,
+        success: function(result){
+            showPopup('small','Предложить объект',result);
         }
     });
 });

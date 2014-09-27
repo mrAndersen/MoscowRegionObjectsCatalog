@@ -9,9 +9,11 @@ use MROC\MainBundle\Entity\Comment;
 use MROC\MainBundle\Entity\Complaint;
 use MROC\MainBundle\Entity\Object;
 use MROC\MainBundle\Entity\ObjectComplaint;
+use MROC\MainBundle\Entity\ObjectSuggestion;
 use MROC\MainBundle\Form\CommentType;
 use MROC\MainBundle\Form\ComplaintType;
 use MROC\MainBundle\Form\ObjectComplaintType;
+use MROC\MainBundle\Form\ObjectSuggestionType;
 use MROC\MainBundle\Form\QuestionType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -295,6 +297,55 @@ class DefaultController extends Controller
             }
 
             return new JsonResponse(array('message'=>$message,'errors'=>$errors));
+        }
+    }
+
+    public function objectSuggestionAction(Request $request)
+    {
+        if($request->getMethod() == 'GET'){
+            $form = $this->createForm(new ObjectSuggestionType(),null,array(
+                'action' => $this->generateUrl('_xhr_mroc_main_object_suggestion'),
+                'method' => 'POST'
+            ));
+
+            return $this->render('MROCMainBundle:Forms:suggestion.html.twig', array(
+                'form'   => $form->createView(),
+            ));
+        }
+
+        if($request->getMethod() == 'POST'){
+            /** @var EntityManager $em */
+            $em = $this->getDoctrine()->getManager();
+
+            $entity = new ObjectSuggestion();
+            $form = $this->createForm(new ObjectSuggestionType(),$entity);
+            $form->handleRequest($request);
+
+            if($form->isValid()){
+                /** @var Session $session */
+                $session = $this->get('session');
+                $session->getFlashBag()->set('success','Ваше предложение успешно отправлено');
+
+                $entity->upload();
+
+                $em->persist($entity);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('mroc_main_homepage'));
+            }else{
+                /** @var Session $session */
+                $session = $this->get('session');
+
+                $session->getFlashBag()->set('failed','Произошли ошибки:');
+
+                $errors = array();
+                foreach($form->getErrors(true) as $k=>$v){
+                    $errors[] = $v->getMessage();
+                }
+
+                $session->getFlashBag()->set('errors',json_encode($errors));
+                return $this->redirect($this->generateUrl('mroc_main_homepage'));
+            }
         }
     }
 

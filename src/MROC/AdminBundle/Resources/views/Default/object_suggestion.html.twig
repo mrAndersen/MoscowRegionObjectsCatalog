@@ -1,0 +1,41 @@
+{% extends '::admin_base.html.twig' %}
+{% block body -%}
+    <h1>Список претензий по объектам ({{ count }})</h1>
+    <table class="records_list">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Имя</th>
+            <th>Email</th>
+            <th>Телефон</th>
+            <th>Описание</th>
+            <th>Фотография</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.id }}</td>
+                <td>{{ entity.name }}</td>
+                <td>{{ entity.email }}</td>
+                <td>{{ entity.tel }}</td>
+                <td>{{ entity.text }}</td>
+                <td>
+                    <a href="{{ entity.image }}">Посмотреть</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if pages > 0 %}
+        <div class="pages">
+            {% for i in 1..pages %}
+                {% if i == current + 1 %}
+                    <a class="page button info active" href="{{ path('mroc_admin_object_suggestions',{'page': i-1}) }}">{{ i }}</a>
+                {% else %}
+                    <a class="page button info" href="{{ path('mroc_admin_object_suggestions',{'page': i-1}) }}">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

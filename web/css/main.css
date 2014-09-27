@@ -258,15 +258,37 @@ html body a.bold {
   font-weight: bold;
 }
 html body .top-header {
-  font-weight: bold;
   font-size: 27px;
-  color: #FFF;
-  background: #39C;
-  height: 59px;
-  text-align: center;
+  color: #444;
+  background: #fff;
   width: 100%;
   border-top: solid 17px #069;
-  padding: 20px 0 0 0;
+  padding: 10px 0 5px 0;
+}
+html body .top-header .centered {
+  width: 1024px;
+  margin: 0 auto;
+  height: 64px;
+}
+html body .top-header .centered .login {
+  float: right;
+  margin: 25px;
+  font-weight: normal;
+}
+html body .top-header .centered .logo {
+  width: 64px;
+  height: 64px;
+  background: url("/images/logo.png");
+  float: left;
+}
+html body .top-header .centered .text {
+  float: left;
+  margin: 15px;
+  font-family: 'PT Sans Caption';
+}
+html body .top-header .centered .text span {
+  margin: 0 20px;
+  font-weight: bold;
 }
 html body .footer {
   height: 136px;
@@ -290,9 +312,15 @@ html body .footer .inner .to-right {
   float: right;
   text-align: right;
 }
+html body .footer .inner .to-right a {
+  cursor: pointer;
+}
 html body .footer .inner .to-right .global-complaint {
   display: inline-block;
   margin: 10px 0 0 0;
+  font-size: 13px;
+}
+html body .footer .inner .to-right .object-suggestion {
   font-size: 13px;
 }
 html body .container {

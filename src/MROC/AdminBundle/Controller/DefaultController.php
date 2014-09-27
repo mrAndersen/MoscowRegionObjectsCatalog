@@ -209,7 +209,6 @@ class DefaultController extends Controller
         return $i;
     }
 
-
     public function importCSVAction(Request $request)
     {
         if($request->getMethod() == 'POST'){
@@ -369,6 +368,36 @@ class DefaultController extends Controller
             'count' => $count
         ));
     }
+
+    public function objectSuggestionListAction($page, Request $request)
+    {
+        $pageSize = 20;
+        $start = $page * $pageSize;
+
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        /** @var Complaint $repo */
+        $repo = $em->getRepository('MROCMainBundle:ObjectSuggestion');
+
+        $count = $repo->getElementsCount();
+        $pages = ceil($count / $pageSize);
+
+
+        $qb = $em->createQueryBuilder()
+            ->select('n')->from('MROCMainBundle:ObjectSuggestion','n')
+            ->setMaxResults($pageSize)
+            ->setFirstResult($start);
+
+        $entities = $qb->getQuery()->getResult();
+
+        return $this->render('MROCAdminBundle:Default:object_suggestion.html.twig',array(
+            'entities' => $entities,
+            'pages' => $pages,
+            'current' => $page,
+            'count' => $count
+        ));
+    }
+
 
     public function commentApproveAction($id, Request $request)
     {

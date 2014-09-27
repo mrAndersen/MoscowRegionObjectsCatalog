@@ -20,5 +20,5 @@ parameters:
 
     complaint_email: golikanu@yandex.ru
 
-    color.land_missing: '#ffff00'
+    color.land_missing: '#ff0000'
     color.default: '#0e53a7'
