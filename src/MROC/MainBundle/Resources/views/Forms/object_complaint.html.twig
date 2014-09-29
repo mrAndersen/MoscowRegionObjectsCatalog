@@ -1,27 +1,50 @@
-{{ form_start(form) }}
-{{ form_errors(form) }}
-<div class="row node-id">
-    Жалоба для объекта #{{ id }}
-    <input type="hidden" name="mroc_mainbundle_objectcomplaint[id]" value="{{ id }}">
-</div>
-<div class="row">
-    {{ form_widget(form.name,{'attr': {'placeholder': 'Ваше имя' }}) }}
-</div>
-<div class="row">
-    {{ form_widget(form.email,{'attr': {'placeholder': 'E-mail' }}) }}
-</div>
-<div class="row">
-    {{ form_widget(form.tel, {'attr': {'placeholder': 'Телефон' }}) }}
-</div>
-<div class="row">
-    {{ form_widget(form.problem,{'attr': {'placeholder': 'Проблема','rows': 5 }}) }}
-</div>
-<div class="row">
-    {{ form_label(form.image) }}
-    {{ form_widget(form.image) }}
-</div>
-<div class="row">
-    {{ form_widget(form.captcha,{'attr': {'placeholder':'Текст с картинки','class':'captcha'}}) }}
-</div>
-{{ form_widget(form.send, {'attr': {'class':'button blue center fixed200 send-object-complaint'}}) }}
-{{ form_widget(form._token) }}
+<script>
+    $(function(){
+        var no_schema = 'Объекта нет на схеме.';
+        var foreign = 'Присутствуют мигранты.';
+        var garbage = 'На объекте мусор.';
+        var bad_service = 'Плохое обслуживание.';
+
+        $('.fast').click(function(e){
+            var textarea = $('textarea[name="problem"]');
+            var text = eval($(this).attr('data-text'));
+
+            textarea.val(textarea.val() + text + "\n");
+        });
+    });
+</script>
+<form action="{{ path('_xhr_mroc_main_object_complaint') }}" method="post" enctype="multipart/form-data" class="object-complaint-form">
+    <div class="top">
+        <label>МинПотребРУ<input type="checkbox" name="where[minpotreb]"></label>
+        <label>УФМС<input type="checkbox" name="where[ufms]"></label>
+        <label>Роспотребнадзор<input type="checkbox" name="where[rospotrebnadzor]"></label>
+        <label>Росадмнадзор<input type="checkbox" name="where[rosadmnadzor]"></label>
+        <label>ОМСУ<input type="checkbox" name="where[omsu]"></label>
+    </div>
+    <div class="bottom">
+        <div class="left">
+            <textarea required="required" rows="6" name="problem" placeholder="Опишите проблему, или воспользуйтесь быстрыми ссылками снизу."></textarea>
+            <a class="fast" data-text="no_schema">Нет на схеме</a>
+            <a class="fast" data-text="foreign">Мигранты</a>
+            <a class="fast" data-text="garbage">Мусор</a>
+            <a class="fast" data-text="bad_service">Некачественное обслуживание</a>
+            <label>Фотография<input type="file" name="image" required="required"></label>
+        </div>
+        <div class="right">
+            <input type="hidden" name="object_id" value="{{ id }}">
+            <div class="row">
+                <input type="text" name="name" placeholder="ФИО" required="required">
+            </div>
+            <div class="row">
+                <input type="text" name="tel" placeholder="Телефон">
+            </div>
+            <div class="row">
+                <input type="text" name="email" placeholder="Email">
+            </div>
+            <div class="row">
+                <button type="submit" class="button blue center fixed200 send-global-complaint">Отправить</button>
+            </div>
+        </div>
+    </div>
+
+</form>

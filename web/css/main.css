@@ -184,51 +184,57 @@ html body .modal .modal-content {
   float: left;
   width: 710px;
 }
-html body .modal .modal-content .global-complaint-form .top {
+html body .modal .modal-content .object-complaint-form .top {
   background: #F3F3F3;
   float: left;
   width: 710px;
   margin: -40px -20px -20px -20px;
   padding: 40px 20px;
 }
-html body .modal .modal-content .global-complaint-form .top label {
+html body .modal .modal-content .object-complaint-form .top label {
   float: left;
   margin: 0 50px 0 0;
 }
-html body .modal .modal-content .global-complaint-form .top label input {
+html body .modal .modal-content .object-complaint-form .top label input {
   float: left;
   margin: 0 5px 0 0;
   position: relative;
   top: 2px;
 }
-html body .modal .modal-content .global-complaint-form .bottom {
+html body .modal .modal-content .object-complaint-form .bottom {
   float: left;
   width: 710px;
   margin: 40px 0 0 0;
 }
-html body .modal .modal-content .global-complaint-form .bottom .left {
+html body .modal .modal-content .object-complaint-form .bottom .left {
   float: left;
   width: 300px;
   padding: 0 0 0 50px;
+  border-right: solid 1px #CCF;
 }
-html body .modal .modal-content .global-complaint-form .bottom .left label {
+html body .modal .modal-content .object-complaint-form .bottom .left textarea[name="problem"] {
+  width: 260px;
+}
+html body .modal .modal-content .object-complaint-form .bottom .left .fast {
+  cursor: pointer;
+}
+html body .modal .modal-content .object-complaint-form .bottom .left label {
   float: left;
   width: 100%;
   margin: 5px 0;
 }
-html body .modal .modal-content .global-complaint-form .bottom .left label input {
+html body .modal .modal-content .object-complaint-form .bottom .left label input {
   float: left;
   margin: 0 5px 0 0;
   position: relative;
   top: 2px;
 }
-html body .modal .modal-content .global-complaint-form .bottom .right {
+html body .modal .modal-content .object-complaint-form .bottom .right {
   float: left;
   width: 284px;
-  border-left: solid 1px #CCF;
   padding: 0 0 0 75px;
 }
-html body .modal .modal-content .global-complaint-form .bottom .right .row input[type="text"] {
+html body .modal .modal-content .object-complaint-form .bottom .right .row input[type="text"] {
   width: 180px;
 }
 html body .modal .modal-header {
@@ -264,6 +270,7 @@ html body .top-header {
   width: 100%;
   border-top: solid 17px #069;
   padding: 10px 0 5px 0;
+  border-bottom: solid 1px #069;
 }
 html body .top-header .centered {
   width: 1024px;

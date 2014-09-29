@@ -31,6 +31,12 @@ class ObjectComplaint
     private $name;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Object")
+     * @ORM\JoinColumn(name="object", referencedColumnName="id", nullable=true)
+     */
+    private $object;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="tel", type="string", length=255)
@@ -80,6 +86,22 @@ class ObjectComplaint
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getObject()
+    {
+        return $this->object;
+    }
+
+    /**
+     * @param mixed $object
+     */
+    public function setObject($object)
+    {
+        $this->object = $object;
     }
 
     /**
