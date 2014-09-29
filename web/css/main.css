@@ -275,7 +275,7 @@ html body .top-header {
 html body .top-header .centered {
   width: 1024px;
   margin: 0 auto;
-  height: 64px;
+  height: 62px;
 }
 html body .top-header .centered .login {
   float: right;
