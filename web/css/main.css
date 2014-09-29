@@ -334,6 +334,7 @@ html body .container {
   height: 680px;
   position: relative;
   width: 100%;
+  overflow-x: hidden;
 }
 html body .container .arrow {
   height: 31px;
