@@ -3,6 +3,7 @@
 namespace MROC\MainBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Gregwar\Captcha\CaptchaBuilder;
 use Intervention\Image\ImageManagerStatic;
 use Keboola\Csv\CsvFile;
 use MROC\MainBundle\Entity\Comment;
@@ -130,10 +131,16 @@ class DefaultController extends Controller
 
     public function objectComplaintAction(Request $request)
     {
+        $builder = new CaptchaBuilder();
+
         if($request->getMethod() == 'GET'){
+            $builder->build(202);
+            $captcha = $builder->inline();
+
 
             return $this->render('MROCMainBundle:Forms:object_complaint.html.twig',array(
-                'id' => $request->query->get('id')
+                'id' => $request->query->get('id'),
+                'captcha' => $captcha
             ));
         }
 
@@ -163,6 +170,11 @@ class DefaultController extends Controller
             if($request->files->get('image') === null){
                 $valid = false;
                 $messages[] = 'Вы должны приложить фотографию проблемы.';
+            }
+
+            if(!$builder->testPhrase($form['captcha'])){
+                $valid = false;
+                $messages[] = 'Вы ввели неверный текст с картинки.';
             }
 
             if($valid){
