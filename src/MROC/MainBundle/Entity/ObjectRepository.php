@@ -17,10 +17,11 @@ class ObjectRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $q = $em->createQueryBuilder()->select('n.coordinates','n.id','t.color','t.id as ot','IDENTITY(n.sale_type) as st','n.registered_land')
-            ->from('MROCMainBundle:Object','n')
-            ->leftJoin('MROCMainBundle:ObjectType','t','WITH','n.object_type = t.id')
-            ->getQuery();
-        $result = $q->getResult(); $data = array();
+            ->from('MROCMainBundle:Object','n');
+        $q->where($q->expr()->isNotNull('n.coordinates'))
+            ->join('MROCMainBundle:ObjectType','t','WITH','n.object_type = t.id');
+
+        $result = $q->getQuery()->getResult(); $data = array();
 
         foreach($result as $k=>$v){
             $data[$v['id']]['coordinates'] = explode(' ',$v['coordinates']);
