@@ -3,6 +3,7 @@
 namespace MROC\MainBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Gregwar\Captcha\CaptchaBuilder;
 use Intervention\Image\ImageManagerStatic;
 use Keboola\Csv\CsvFile;
 use MROC\MainBundle\Entity\Comment;
@@ -130,129 +131,93 @@ class DefaultController extends Controller
 
     public function objectComplaintAction(Request $request)
     {
+        $builder = new CaptchaBuilder();
+
         if($request->getMethod() == 'GET'){
-            $entity = new ObjectComplaint();
-            $id = $request->query->get('id');
+            $builder->build(202);
+            $captcha = $builder->inline();
 
-            $form = $this->createForm(new ObjectComplaintType(),$entity,array(
-                'action' => $this->generateUrl('_xhr_mroc_main_object_complaint'),
-                'method' => 'POST'
-            ));
 
-            return $this->render('MROCMainBundle:Forms:object_complaint.html.twig', array(
-                'id' => $id,
-                'form'   => $form->createView(),
+            return $this->render('MROCMainBundle:Forms:object_complaint.html.twig',array(
+                'id' => $request->query->get('id'),
+                'captcha' => $captcha
             ));
         }
 
         if($request->getMethod() == 'POST'){
             /** @var EntityManager $em */
             $em = $this->getDoctrine()->getManager();
-
             $entity = new ObjectComplaint();
-            $form = $this->createForm(new ObjectComplaintType(),$entity);
-            $form->handleRequest($request);
+            $valid = true;
 
-            if($form->isValid()){
-                /** @var Session $session */
-                $session = $this->get('session');
-                $session->getFlashBag()->set('success','Ваше жалоба успешно отправлена');
-
-                $entity->upload();
-
-                $em->persist($entity);
-                $em->flush();
-
-                return $this->redirect($this->generateUrl('mroc_main_homepage'));
-            }else{
-                /** @var Session $session */
-                $session = $this->get('session');
-
-                $session->getFlashBag()->set('failed','Произошли ошибки:');
-
-                $errors = array();
-                foreach($form->getErrors(true) as $k=>$v){
-                    $errors[] = $v->getMessage();
-                }
-
-                $session->getFlashBag()->set('errors',json_encode($errors));
-                return $this->redirect($this->generateUrl('mroc_main_homepage'));
-            }
-        }
-    }
-
-    public function globalComplaintAction(Request $request)
-    {
-        if($request->getMethod() == 'GET'){
-            return $this->render('MROCMainBundle:Forms:global_complaint.html.twig');
-        }
-
-        if($request->getMethod() == 'POST'){
             $form = $request->request->all();
-            $errors = array(); $valid = true;
 
-            if(!isset($form['where']) || !isset($form['what'])){
+            if(!isset($form['where'])){
                 $valid = false;
-                $errors[] = 'Укажите хотя бы одну инстанцию и хотя бы одну причину обращения.';
+                $messages[] = 'Укажите хотя бы одну инстанцию.';
             }
 
-            if(empty($form['name']) || empty($form['tel']) || empty($form['email'])){
+            if($form['problem'] == '' || $form['name'] == '' || $form['tel'] == '' || $form['email'] == ''){
                 $valid = false;
-                $errors[] = 'Заполните все свои данные.';
+                $messages[] = 'Заполните все данные.';
             }
 
             if(!filter_var($form['email'],FILTER_VALIDATE_EMAIL)){
                 $valid = false;
-                $errors[] = 'Email указан не верно.';
+                $messages[] = 'Email указан не верно.';
+            }
+
+            if($request->files->get('image') === null){
+                $valid = false;
+                $messages[] = 'Вы должны приложить фотографию проблемы.';
+            }
+
+            if(!$builder->testPhrase($form['captcha'])){
+                $valid = false;
+                $messages[] = 'Вы ввели неверный текст с картинки.';
             }
 
             if($valid){
-                $body = "С сайта ГУП МосОблКачество была отправлена жалоба в контролирующие органы"."\r\n\r\n";
-                $body .= "Данные отправителя: "."\r\n";
-                $body .= "Имя: ".$form['name']."\r\n";
-                $body .= "Телефон: ".$form['tel']."\r\n";
-                $body .= "Электронная почта: ".$form['email']."\r\n"."\r\n";
+                $entity = new ObjectComplaint();
+                $entity->setName($form['name']);
+                $entity->setEmail($form['email']);
+                $entity->setTel($form['tel']);
+                $entity->setImage($request->files->get('image'));
+                $entity->setObject($em->getRepository('MROCMainBundle:Object')->findOneBy(array('id' => $form['object_id'])));
+
+                $entity->upload();
 
                 $replace = array(
                     'minpotreb' => 'МинПотребРУ',
                     'ufms' => 'УФМС',
                     'rospotrebnadzor' => 'Роспотребнадзор',
                     'rosadmnadzor' => 'Росадмнадзор',
-                    'omsu' => 'ОМСУ',
-                    'no-schema' => 'Отсутсвие объектов на схеме',
-                    'foreign' => 'Мигрантов',
-                    'garbage' => 'Мусор',
-                    'bad-service' => 'Плохой сервис'
+                    'omsu' => 'ОМСУ'
                 );
 
                 foreach($form['where'] as $k=>$v){
                     $where[] = $replace[$k];
                 }
 
-                foreach($form['what'] as $k=>$v){
-                    $what[] = $replace[$k];
-                }
+                $entity->setProblem('Для инстанций: '.implode("\n",$where)."\n\n".$form['problem']);
 
-                $body .= "Посетитель жалуется на:"."\r\n".implode("\r\n",$what)."\r\n\r\n";
-                $body .= "В инстанции:"."\r\n".implode("\r\n",$where)."\r\n";
+                $em->persist($entity);
+                $em->flush();
 
-                $email = \Swift_Message::newInstance()
-                    ->setSubject('Жалоба в контролирующие органы, с сайта ГУП МосОблКачество')
-                    ->setFrom('mosoblkach@yandex.ru')
-                    ->setTo($this->container->getParameter('complaint_email'))
-                    ->setBody($body);
+                $session = $this->get('session');
+                $session->getFlashBag()->set('success','Ваше жалоба успешно отправлена');
 
-                $this->get('mailer')->send($email);
+                return $this->redirect($this->generateUrl('mroc_main_homepage'));
 
-                $message = 'Ваше сообщение успешно отправлено!';
             }else{
-                $message = 'Произошли ошибки:';
+                /** @var Session $session */
+                $session = $this->get('session');
+                $session->getFlashBag()->set('failed','Произошли ошибки:');
+                $session->getFlashBag()->set('errors',json_encode($messages));
+
+                return $this->redirect($this->generateUrl('mroc_main_homepage'));
             }
-
-            return new JsonResponse(array('message'=>$message,'errors'=>$errors));
         }
-
-
     }
 
     public function complaintAction(Request $request)

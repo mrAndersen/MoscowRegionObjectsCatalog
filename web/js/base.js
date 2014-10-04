@@ -202,18 +202,6 @@ function handleQR(list,fillExtendedInfoCallback)
     }
 }
 
-$(document).on('click tap','.global-complaint',function(e){
-    e.preventDefault();
-    $('.darken').show();
-    $.ajax({
-        type: 'get',
-        url: _xhr_mroc_main_global_complaint,
-        success: function(result){
-            showPopup('normal','Отправить жалобу',result);
-        }
-    });
-});
-
 $(document).on('click tap','.complaint',function(){
     $('.darken').show();
     $.ajax({
@@ -234,7 +222,7 @@ $(document).on('click tap','.object-complaint',function(){
             id: $(this).attr('data-for-id')
         },
         success: function(result){
-            showPopup('small','Пожаловаться на объект',result);
+            showPopup('normal','Пожаловаться на объект',result);
         }
     });
 });
@@ -276,25 +264,6 @@ $(document).on('click tap','.object-suggestion',function(){
 });
 
 
-
-
-$(document).on('click tap','.send-global-complaint',function(e){
-    e.preventDefault();
-    var form = $('.global-complaint-form');
-
-    $.ajax({
-        type: 'post',
-        url: form.attr('action'),
-        data: form.serialize(),
-        success: function(result){
-            if(result.errors.length > 0){
-                showPopup('normal','Отправить жалобу','<b>' + result.message + '</b>' + '<br>'+ result.errors.join('<br>'));
-            }else{
-                showPopup('normal','Отправить жалобу',result.message);
-            }
-        }
-    });
-});
 
 $(document).on('click tap','.send-comment',function(e){
     e.preventDefault();

@@ -74,7 +74,7 @@ html{
         padding: 40px 20px;
         float: left;
         width: 710px;
-        .global-complaint-form{
+        .object-complaint-form{
           .top{
             background: #F3F3F3;
             float: left;
@@ -100,6 +100,13 @@ html{
               float: left;
               width: 300px;
               padding: 0 0 0 50px;
+              border-right: solid 1px #CCF;
+              textarea[name="problem"]{
+                width: 260px;
+              }
+              .fast{
+                cursor: pointer;
+              }
               label{
                 float: left;
                 width: 100%;
@@ -115,7 +122,6 @@ html{
             .right{
               float: left;
               width: 284px;
-              border-left: solid 1px #CCF;
               padding: 0 0 0 75px;
               .row{
                 input[type="text"]{
@@ -164,7 +170,7 @@ html{
       .centered{
         width: 1024px;
         margin: 0 auto;
-        height: 64px;
+        height: 62px;
         .login{
           float: right;
           margin: 25px;
@@ -224,6 +230,7 @@ html{
       height: 680px;
       position: relative;
       width: 100%;
+      overflow-x: hidden;
       .arrow{
         height: 31px;
         background: #069;

@@ -5,6 +5,7 @@
         <thead>
         <tr>
             <th>Id</th>
+            <th>Объект</th>
             <th>Имя</th>
             <th>Email</th>
             <th>Телефон</th>
@@ -16,10 +17,17 @@
         {% for entity in entities %}
             <tr>
                 <td>{{ entity.id }}</td>
+                <td>
+                    <ul>
+                        <li>{{ entity.object.address }}</li>
+                        <li>{{ entity.object.saleType.name }}</li>
+                        <li>{{ entity.object.objectType.name }}</li>
+                    </ul>
+                </td>
                 <td>{{ entity.name }}</td>
                 <td>{{ entity.email }}</td>
                 <td>{{ entity.tel }}</td>
-                <td>{{ entity.problem }}</td>
+                <td>{{ entity.problem | raw }}</td>
                 <td>
                     <a href="{{ entity.image }}">Посмотреть</a>
                 </td>
