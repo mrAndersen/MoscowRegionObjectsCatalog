@@ -219,18 +219,18 @@
                 Фильтр
             </div>
             <div class="tabs">
-                <a class="tab active" data-for-tab="by-type">По типу</a>
-                <a class="tab" data-for-tab="by-production">По виду продукции</a>
+                <a class="tab" data-for-tab="by-type">По типу</a>
+                <a class="tab active" data-for-tab="by-production">По виду продукции</a>
             </div>
             <div class="tab-content">
-                <div class="content active" data-tab-name="by-type">
+                <div class="content" data-tab-name="by-type">
                     <ul>
                         {% for k,v in object_type_list %}
                             <li><label><input type="checkbox" class="object_type_select" value="{{ v.id }}">{{ v.name }}</label></li>
                         {% endfor %}
                     </ul>
                 </div>
-                <div class="content" data-tab-name="by-production">
+                <div class="content active" data-tab-name="by-production">
                     <ul>
                         {% for k,v in sale_type_list %}
                             <li><label><input type="checkbox" class="sale_type_select" value="{{ v.id }}">{{ v.name }}</label></li>

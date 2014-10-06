@@ -15,11 +15,30 @@
 </script>
 <form action="{{ path('_xhr_mroc_main_object_complaint') }}" method="post" enctype="multipart/form-data" class="object-complaint-form">
     <div class="top">
-        <label>МинПотребРУ<input type="checkbox" name="where[minpotreb]"></label>
-        <label>УФМС<input type="checkbox" name="where[ufms]"></label>
-        <label>Роспотребнадзор<input type="checkbox" name="where[rospotrebnadzor]"></label>
+        <label>
+            МинПотреб<input type="checkbox" name="where[minpotreb]">
+            <span class="small">Министерство потребительского рынка и услуг МО</span>
+        </label>
+        <label>
+            Управление ФАС по МО<input type="checkbox" name="where[fas]">
+            <span class="small">Управления Федеральной антимонопольной службы по Московской области</span>
+        </label>
+        <label>
+            Роспотребнадзор<input type="checkbox" name="where[rospotrebnadzor]">
+        </label>
+        <label>
+            УФМС<input type="checkbox" name="where[ufms]">
+            <span class="small">Управление Федеральной Миграционной Службы</span>
+        </label>
         <label>Росадмнадзор<input type="checkbox" name="where[rosadmnadzor]"></label>
-        <label>ОМСУ<input type="checkbox" name="where[omsu]"></label>
+        <label>
+            ОМСУ<input type="checkbox" name="where[omsu]">
+            <span class="small">Органы местного самоуправления</span>
+        </label>
+        <label>
+            МВД<input type="checkbox" name="where[mvd]">
+            <span class="small">Министерство внутренних дел</span>
+        </label>
     </div>
     <div class="bottom">
         <div class="left">

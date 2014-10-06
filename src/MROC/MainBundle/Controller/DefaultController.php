@@ -192,7 +192,9 @@ class DefaultController extends Controller
                     'ufms' => 'УФМС',
                     'rospotrebnadzor' => 'Роспотребнадзор',
                     'rosadmnadzor' => 'Росадмнадзор',
-                    'omsu' => 'ОМСУ'
+                    'omsu' => 'ОМСУ',
+                    'mvd' => 'МВД',
+                    'fas' => 'Управление ФАС'
                 );
 
                 foreach($form['where'] as $k=>$v){
@@ -313,14 +315,6 @@ class DefaultController extends Controller
             }
         }
     }
-
-
-
-
-
-
-
-
 
     public function indexAction()
     {
