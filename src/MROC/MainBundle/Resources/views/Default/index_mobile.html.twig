@@ -121,6 +121,10 @@
                 }
             }
 
+            $(document).on('click tap','.list-item a.bold',function(e){
+                fillObjectLayer($(this).attr('data-id'));
+            });
+
             {% if app.session.flashbag.has('success') %}
                 message = '{{ app.session.flashbag.get('success')[0] }}';
                 showPopup('small','Спасибо!',message);
@@ -187,7 +191,7 @@
                 <div class="best-list">
                     {% for k,v in top %}
                         <div class="list-item">
-                            {{ loop.index }}. <a class="bold" href="#">{{ v.address }}</a><br>
+                            {{ loop.index }}. <a data-id="{{ v.id }}" class="bold" href="/#qr-{{ v.id }}">{{ v.address }}</a><br>
                             {% if v.rating %}
                                 <span>Рейтинг: {{ v.rating }}</span>
                             {% else %}
