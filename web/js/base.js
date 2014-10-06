@@ -1,4 +1,3 @@
-var _xhr_mroc_main_global_complaint = '/global';
 var _xhr_mroc_main_complaint = '/complaint';
 var _xhr_mroc_main_object_complaint = '/object_complaint';
 var _xhr_mroc_main_question = '/question';
@@ -90,8 +89,8 @@ function fillMap(map,list,fillExtendedInfoCallback)
                 coordinates: val.coordinates
             },
             properties: {
-                clusterCaption: 'Объект # '+ key,
-                balloonContent: 'Объект # '+ key
+                clusterCaption: 'Объект # '+ val.id,
+                balloonContent: 'Объект # '+ val.id
             }
         },{
             openBalloonOnClick: false,
@@ -100,7 +99,7 @@ function fillMap(map,list,fillExtendedInfoCallback)
             strokeColor: val.color
 
         });
-        g.properties.set('mrocId',key);
+        g.properties.set('mrocId',val.id);
         g.events.add('click',function(e){
             fillExtendedInfoCallback(g.properties.get('mrocId'));
         });
@@ -185,6 +184,7 @@ function handleStates(list,fillExtendedInfoCallback)
 
         moscowRegionMap.geoObjects.removeAll();
         newList = newList.length == 0 ? list : newList;
+        console.log(newList);
         fillMap(moscowRegionMap,newList,fillExtendedInfoCallback);
     });
 }

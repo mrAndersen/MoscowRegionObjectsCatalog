@@ -33,12 +33,13 @@
             niceLayer.style.height = window.innerHeight - topMenu.offsetHeight + 'px';
 
             menuLayerSwitch.on('click tap',function(){
-                if($(this).hasClass('active')){
-                    $(niceLayer).hide();
-                    $(menuLayer).hide();
-                    $(modal).hide();
-                    $(filterLayer).hide();
+                $(niceLayer).hide();
+                $(menuLayer).hide();
+                $(modal).hide();
+                $(filterLayer).hide();
+                $(objectLayer).hide();
 
+                if($(this).hasClass('active')){
                     $(this).removeClass('active');
                 }else{
                     $(niceLayer).show();
@@ -64,12 +65,14 @@
 
             $(document).on('click tap','.object-info-layer .node-id span',function(){
                 $(menuLayer).show();
+
                 $(objectLayer).hide();
                 $(filterLayer).hide();
             });
 
             $(document).on('click tap','.filter-layer .filter-header .close',function(){
                 $(menuLayer).show();
+
                 $(objectLayer).hide();
                 $(filterLayer).hide();
             });
@@ -87,6 +90,12 @@
             {
                 var panel = $('.object-info-layer');
                 var url = '{{ path('_xhr_mroc_main_get_extended_info',{'mobile':true}) }}';
+
+                $(niceLayer).hide();
+                $(menuLayer).hide();
+                $(modal).hide();
+                $(filterLayer).hide();
+                $(objectLayer).hide();
 
                 if(panel.attr('data-current-id') != mrocId){
                     $.ajax({
@@ -106,6 +115,9 @@
                             $(objectLayer).show();
                         }
                     })
+                }else{
+                    $(niceLayer).show();
+                    $(objectLayer).show();
                 }
             }
 

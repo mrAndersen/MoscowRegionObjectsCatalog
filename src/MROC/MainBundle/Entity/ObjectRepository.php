@@ -24,19 +24,25 @@ class ObjectRepository extends EntityRepository
         $result = $q->getQuery()->getResult(); $data = array();
 
         foreach($result as $k=>$v){
-            $data[$v['id']]['coordinates'] = explode(' ',$v['coordinates']);
-            $data[$v['id']]['coordinates'] = array_reverse($data[$v['id']]['coordinates']);
-            $data[$v['id']]['ot'] = $v['ot'];
-            $data[$v['id']]['st'] = $v['st'];
+            $temp = array();
+
+            $temp['coordinates'] = explode(' ',$v['coordinates']);
+            $temp['coordinates'] = array_reverse($temp['coordinates']);
+            $temp['ot'] = $v['ot'];
+            $temp['st'] = $v['st'];
+            $temp['id'] = $v['id'];
+
             if($v['registered_land']){
                 if($v['color']){
-                    $data[$v['id']]['color'] = $v['color'];
+                    $temp['color'] = $v['color'];
                 }else{
-                    $data[$v['id']]['color'] = $default_color;
+                    $temp['color'] = $default_color;
                 }
             }else{
-                $data[$v['id']]['color'] = $land_missing_color;
+                $temp['color'] = $land_missing_color;
             }
+
+            $data[] = $temp;
         }
         return $data;
     }
