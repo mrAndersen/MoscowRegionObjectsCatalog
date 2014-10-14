@@ -55,7 +55,7 @@
             </th>
             <th>
                 <ul>
-                    <li>Координаты</li>
+                    <li>Координаты(Тип)</li>
                     <li>Адрес</li>
                     <li>Номер муниципала</li>
                 </ul>
@@ -96,7 +96,13 @@
                 </td>
                 <td>
                     <ul>
-                        <li>{{ entity.coordinates }}</li>
+                        <li>
+                            {{ entity.coordinates }}
+                            {% if entity.coordinateType == 'A' %}{% set text = 'Из адреса' %}{% endif %}
+                            {% if entity.coordinateType == 'C' %}{% set text = 'Из csv' %}{% endif %}
+                            {% if entity.coordinateType == 'I' %}{% set text = 'Из картинки' %}{% endif %}
+                            ({{ text }})
+                        </li>
                         <li>{{ entity.address }}</li>
                         <li>
                             {% if entity.municipalId %}

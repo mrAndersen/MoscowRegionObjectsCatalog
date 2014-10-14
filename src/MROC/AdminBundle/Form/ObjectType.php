@@ -17,6 +17,19 @@ class ObjectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('generation_type','choice',array(
+                'mapped' => false,
+                'label' => 'Генерировать координаты из',
+                'choices'   => array(
+                    'C' => 'Поле координат',
+                    'A'   => 'Адреса',
+                    'I'   => 'Картинки',
+                ),
+            ))
+            ->add('coordinates','text',array(
+                'label' => 'Координаты',
+                'required' => false
+            ))
             ->add('address','text',array(
                 'label' => 'Адрес'
             ))
@@ -54,10 +67,6 @@ class ObjectType extends AbstractType
             ->add('image', 'file',array(
                 'label' => 'Фотография',
                 'data_class' => null,
-                'required' => false
-            ))
-            ->add('override','checkbox',array(
-                'label' => 'Генерировать координаты из фотографии',
                 'required' => false
             ))
             ->add('save', 'submit', array(

@@ -80,20 +80,34 @@ class ObjectController extends Controller
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
-        if ($form->isValid()){
+        if($form->isValid()){
             $entity->upload();
+
+            $raw = $request->request->get('mroc_mainbundle_object');
+            $gen_type = $raw['generation_type'];
 
             $em = $this->getDoctrine()->getManager();
             $helper = new YaMap();
 
-            if($entity->getOverride() == true){
+            $entity->setCoordinateType($gen_type);
+
+            if($gen_type === 'I'){
                 $entity->setCoordinates($helper->getLatLonFromImage($entity->getImage()));
                 if($entity->getCoordinates() == null){
                     $entity->setCoordinates($helper->getLatLon($entity->getAddress()));
+                    $entity->setCoordinateType($entity::FROM_ADDRESS);
                 }
-            }else{
+            }
+
+            if($gen_type === 'C'){
+                $entity->setCoordinates($form->get('coordinates')->getData());
+            }
+
+            if($gen_type === 'A'){
                 $entity->setCoordinates($helper->getLatLon($entity->getAddress()));
             }
+
+
 
             $em->persist($entity);
             $em->flush();
@@ -209,8 +223,31 @@ class ObjectController extends Controller
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
-        if ($editForm->isValid()){
+        if($editForm->isValid()){
             $entity->upload();
+            $helper = new YaMap();
+
+            $raw = $request->request->get('mroc_mainbundle_object');
+            $gen_type = $raw['generation_type'];
+
+            $entity->setCoordinateType($gen_type);
+
+            if($gen_type === 'I'){
+                $entity->setCoordinates($helper->getLatLonFromImage($entity->getImage()));
+                if($entity->getCoordinates() == null){
+                    $entity->setCoordinates($helper->getLatLon($entity->getAddress()));
+                    $entity->setCoordinateType($entity::FROM_ADDRESS);
+                }
+            }
+
+            if($gen_type === 'C'){
+                $entity->setCoordinates($editForm->get('coordinates')->getData());
+            }
+
+            if($gen_type === 'A'){
+                $entity->setCoordinates($helper->getLatLon($entity->getAddress()));
+            }
+
 
             $em->flush();
             return $this->redirect($this->generateUrl('object'));

@@ -45,6 +45,7 @@ class DefaultController extends Controller
                     $coordinates = $helper->getLatLonFromImage($path);
                     if($coordinates){
                         $node->setCoordinates($coordinates);
+                        $node->setCoordinateType($node::FROM_IMAGE);
                         $i++;
                     }
                 }
@@ -93,6 +94,7 @@ class DefaultController extends Controller
         $repositories[] = $em->getRepository('MROCMainBundle:ObjectType');
         $repositories[] = $em->getRepository('MROCMainBundle:SaleType');
         $repositories[] = $em->getRepository('MROCMainBundle:Comment');
+        $repositories[] = $em->getRepository('MROCMainBundle:ObjectComplaint');
         $repositories[] = $em->getRepository('MROCMainBundle:Object');
 
         foreach($repositories as $k=>$v){
@@ -238,6 +240,7 @@ class DefaultController extends Controller
                 $land = $v[5] !='' ? filter_var($v[5],FILTER_VALIDATE_BOOLEAN) : null;
                 $municipal = $v[6] !='' ? $v[6] : null;
                 $rating = $v[7] !='' ? $v[7] : null;
+                $coordinates = filter_var($v[8],FILTER_VALIDATE_BOOLEAN) == false ? $v[8] : null;
 
                 $address = $this->filterStringVariable($address);
                 $objectTypeName = $this->filterStringVariable($objectTypeName);
@@ -248,19 +251,28 @@ class DefaultController extends Controller
                 $objectType = $em->getRepository('MROCMainBundle:ObjectType')->findOneBy(array('name'=>$objectTypeName));
                 $saleType = $em->getRepository('MROCMainBundle:SaleType')->findOneBy(array('name'=>$saleTypeName));
 
-                $helper = new YaMap();
-                $coordinates = $helper->getLatLon($address);
-
                 $object = new Object();
+
+                if($coordinates){
+                    $object->setCoordinateType($object::FROM_CSV);
+                    $object->setCoordinates($coordinates);
+                }else{
+                    $helper = new YaMap();
+
+                    $coordinates = $helper->getLatLon($address);
+                    $object->setCoordinateType($object::FROM_ADDRESS);
+                    $object->setCoordinates($coordinates);
+                }
+
                 $object->setAddress($address);
                 $object->setOwner($owner);
                 $object->setObjectType($objectType);
                 $object->setSaleType($saleType);
-                $object->setCoordinates($coordinates);
                 $object->setRegisteredLand($land);
                 $object->setMunicipalId($municipal);
                 $object->setRating($rating);
                 $object->setTimes($times);
+
 
                 $o++;
 
@@ -397,7 +409,6 @@ class DefaultController extends Controller
             'count' => $count
         ));
     }
-
 
     public function commentApproveAction($id, Request $request)
     {

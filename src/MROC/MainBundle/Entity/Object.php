@@ -14,6 +14,10 @@ use Intervention\Image\ImageManagerStatic;
  */
 class Object
 {
+    const FROM_CSV = 'C';
+    const FROM_IMAGE = 'I';
+    const FROM_ADDRESS = 'A';
+
     /**
      * @var integer
      *
@@ -57,13 +61,6 @@ class Object
      * @ORM\Column(name="municipal_id", type="integer", nullable=true)
      */
     private $municipal_id;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="override", type="boolean", nullable=true)
-     */
-    private $override;
 
     /**
      * @var boolean
@@ -132,6 +129,13 @@ class Object
      */
     private $coordinates;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="coordinate_type", type="string", length=1, nullable=true)
+     */
+    private $coordinate_type;
+
     private $path = null;
 
     /**
@@ -148,6 +152,22 @@ class Object
     public function getCoordinates()
     {
         return $this->coordinates;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCoordinateType()
+    {
+        return $this->coordinate_type;
+    }
+
+    /**
+     * @param string $coordinate_type
+     */
+    public function setCoordinateType($coordinate_type)
+    {
+        $this->coordinate_type = $coordinate_type;
     }
 
     /**
@@ -278,22 +298,6 @@ class Object
     public function getImage()
     {
         return $this->image;
-    }
-
-    /**
-     * @param boolean $override
-     */
-    public function setOverride($override)
-    {
-        $this->override = $override;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getOverride()
-    {
-        return $this->override;
     }
 
     /**
