@@ -98,6 +98,7 @@
                     <ul>
                         <li>
                             {{ entity.coordinates }}
+                            {% set text = 'Не определено' %}
                             {% if entity.coordinateType == 'A' %}{% set text = 'Из адреса' %}{% endif %}
                             {% if entity.coordinateType == 'C' %}{% set text = 'Из csv' %}{% endif %}
                             {% if entity.coordinateType == 'I' %}{% set text = 'Из картинки' %}{% endif %}
