@@ -127,11 +127,11 @@ function fillMap(map,list,fillExtendedInfoCallback)
 
 function initMap()
 {
-    var zoom = _scope == 'mobile' ? 8 : 9;
+    var zoom = _scope == 'mobile' ? 9 : 10;
 
     moscowRegionMap = new ymaps.Map("map",
         {
-            center: [55.76, 37.64],
+            center: [54.750951, 38.237024],
             zoom: zoom,
             controls: ['typeSelector','geolocationControl']
         }
