@@ -139,8 +139,8 @@
                         </li>
                     </ul>
                 </td>
-                <td>{{ entity.objectType.name }}</td>
-                <td>{{ entity.saleType.name }}</td>
+                <td>{{ entity.objectType ? entity.objectType.name : "" }}</td>
+                <td>{{ entity.saleType ? entity.saleType.name : "" }}</td>
                 <td>
                     <a class="button info" href="{{ path('object_edit',{id:entity.id}) }}">Редактировать</a>
                     <a class="button danger" href="{{ path('object_delete',{id:entity.id}) }}">Удалить</a>

@@ -139,8 +139,8 @@ class DefaultController extends Controller
 
             /** @var \MROC\MainBundle\Entity\Object $v */
             $data[] = $v->getAddress();
-            $data[] = $v->getObjectType()->getName();
-            $data[] = $v->getSaleType()->getName();
+            $data[] = $v->getObjectType() ? $v->getObjectType()->getName() : '';
+            $data[] = $v->getSaleType() ? $v->getSaleType()->getName() : '';
             $data[] = $v->getOwner();
             $data[] = $v->getTimes();
             $data[] = (string)$v->getRegisteredLand();
